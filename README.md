@@ -1,6 +1,7 @@
 thunderbird
 =====
 
-"Fork thunderbird" to create a new MOOSE-based application.
+First test was to reproduce example 1.
 
-For more information see: [http://mooseframework.org/create-an-app/](http://mooseframework.org/create-an-app/)
+Now let's change the mesh...
+
