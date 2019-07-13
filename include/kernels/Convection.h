@@ -15,7 +15,7 @@
 class Convection;
 
 template <>
-InputParameters validParams<ExampleConvection>();
+InputParameters validParams<Convection>();
 
 class Convection : public Kernel
 {

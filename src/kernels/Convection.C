@@ -13,14 +13,14 @@ registerMooseObject("thunderbirdApp", Convection);
 
 template <>
 InputParameters
-validParams<ExampleConvection>()
+validParams<Convection>()
 {
   InputParameters params = validParams<Kernel>();
   params.addRequiredParam<RealVectorValue>("velocity", "Velocity Vector");
   return params;
 }
 
-ExampleConvection::ExampleConvection(const InputParameters & parameters)
+Convection::Convection(const InputParameters & parameters)
   : // You must call the constructor of the base class first
     Kernel(parameters),
     _velocity(getParam<RealVectorValue>("velocity"))
@@ -28,13 +28,13 @@ ExampleConvection::ExampleConvection(const InputParameters & parameters)
 }
 
 Real
-ExampleConvection::computeQpResidual()
+Convection::computeQpResidual()
 {
   return _test[_i][_qp] * (_velocity * _grad_u[_qp]);
 }
 
 Real
-ExampleConvection::computeQpJacobian()
+Convection::computeQpJacobian()
 {
   return _test[_i][_qp] * (_velocity * _grad_phi[_j][_qp]);
 }

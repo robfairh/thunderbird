@@ -5,12 +5,7 @@
 []
 
 [Variables]
-  [./diffused]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-
-  [./convected]
+  [./temperature]
     order = FIRST
     family = LAGRANGE
   [../]
@@ -25,7 +20,7 @@
   [./conv]
     type = Convection
     variable = temperature
-    velocity = '1.0 0 0'
+    velocity = '0.0 -1.0 0.0'
   [../]
 []
 
@@ -41,7 +36,7 @@
     type = DirichletBC
     variable = temperature
     boundary = 'top' # This must match a named boundary in the mesh file
-    value = 1
+    value = 0
   [../]
 []
 
