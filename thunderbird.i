@@ -9,28 +9,39 @@
     order = FIRST
     family = LAGRANGE
   [../]
+
+  [./convected]
+    order = FIRST
+    family = LAGRANGE
+  [../]
 []
 
 [Kernels]
   [./diff]
     type = Diffusion
-    variable = diffused
+    variable = temperature
+  [../]
+
+  [./conv]
+    type = Convection
+    variable = temperature
+    velocity = '1.0 0 0'
   [../]
 []
 
 [BCs]
   [./bottom] # arbitrary user-chosen name
     type = DirichletBC
-    variable = diffused
+    variable = temperature
     boundary = 'bottom' # This must match a named boundary in the mesh file
     value = 1
   [../]
 
   [./top] # arbitrary user-chosen name
     type = DirichletBC
-    variable = diffused
+    variable = temperature
     boundary = 'top' # This must match a named boundary in the mesh file
-    value = 0
+    value = 1
   [../]
 []
 
