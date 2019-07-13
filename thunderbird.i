@@ -1,7 +1,7 @@
 [Mesh]
   # We use a pre-generated mesh file (in exodus format).
   # This mesh file has 'top' and 'bottom' named boundaries defined inside it.
-  file = mug.e
+  file = square.msh
 []
 
 [Variables]
