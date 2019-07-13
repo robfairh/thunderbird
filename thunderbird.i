@@ -20,7 +20,7 @@
   [./conv]
     type = Convection
     variable = temperature
-    velocity = '0.0 -1.0 0.0'
+    velocity = '0.0 1.0 0.0'
   [../]
 []
 
@@ -29,14 +29,21 @@
     type = DirichletBC
     variable = temperature
     boundary = 'bottom' # This must match a named boundary in the mesh file
+    value = 0
+  [../]
+
+  [./left]
+    type = DirichletBC
+    variable = temperature
+    boundary = 'left'
     value = 1
   [../]
 
-  [./top] # arbitrary user-chosen name
+  [./right]
     type = DirichletBC
     variable = temperature
-    boundary = 'top' # This must match a named boundary in the mesh file
-    value = 0
+    boundary = 'right'
+    value = 1
   [../]
 []
 
