@@ -1,4 +1,5 @@
 [Mesh]
+  # in this folder run ../../thunderbird-opt -i thunderbird.i
   file = rectangle.msh
 []
 
@@ -11,24 +12,30 @@
 
 [Kernels]
   [./diff]
-    type = NtDiffusion
+    type = Diffusion
     variable = flux
-    diffcoef = 1.0
   [../]
 
-  [./abs]
-    type = NtSigmaA
+  [./conv]
+    type = Convection
     variable = flux
-    xsa = -1.0
+    velocity = '0.0 1.0 0.0'
   [../]
 []
 
 [BCs]
+  [./bottom]
+    type = DirichletBC
+    variable = flux
+    boundary = 'bottom'
+    value = 0
+  [../]
+
   [./left]
     type = DirichletBC
     variable = flux
     boundary = 'left'
-    value = 0
+    value = 1
   [../]
 
   [./right]

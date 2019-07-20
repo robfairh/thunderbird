@@ -13,13 +13,13 @@
   [./diff]
     type = NtDiffusion
     variable = flux
-    diffcoef = 1.0
+    diffcoef = 2.0
   [../]
 
-  [./abs]
-    type = NtSigmaA
+  [./source]
+    type = NtSource
     variable = flux
-    xsa = -1.0
+    src = 1.0
   [../]
 []
 
@@ -35,7 +35,7 @@
     type = DirichletBC
     variable = flux
     boundary = 'right'
-    value = 1
+    value = 0
   [../]
 []
 
