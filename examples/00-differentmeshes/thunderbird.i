@@ -3,7 +3,7 @@
 []
 
 [Variables]
-  [./flux]
+  [./temperature]
     order = FIRST
     family = LAGRANGE
   [../]
@@ -11,29 +11,22 @@
 
 [Kernels]
   [./diff]
-    type = NtDiffusion
-    variable = flux
-    diffcoef = 1.0
-  [../]
-
-  [./abs]
-    type = NtSigmaA
-    variable = flux
-    xsa = -1.0
+    type = Diffusion
+    variable = temperature
   [../]
 []
 
 [BCs]
   [./left]
     type = DirichletBC
-    variable = flux
+    variable = temperature
     boundary = 'left'
     value = 0
   [../]
 
   [./right]
     type = DirichletBC
-    variable = flux
+    variable = temperature
     boundary = 'right'
     value = 1
   [../]
