@@ -223,7 +223,50 @@ The results are presented in Figure \ref{fig:exa05}.
 	\label{fig:exa05}
 \end{figure*}
 
+\newpage
+\section{Example 06}
 
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+    \item[] InScatter
+    \item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D_{1}\nabla \phi_{1})-S=0
+\end{equation}
+\begin{equation}
+-\nabla.(D_{2}\nabla \phi_{2})-\Sigma_{S 1-2}\phi_{1}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$, and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$, and $\phi_{2}('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa06}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{06/flux1.png} 
+		\caption{$\phi_{1}$.}
+		\label{fig:exa06-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{06/flux2.png} 
+		\caption{$\phi_{2}$.}
+		\label{fig:exa06-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa06}
+\end{figure*}
 
 %\section{Example 01}
 %
