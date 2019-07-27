@@ -4,7 +4,7 @@
 []
 
 [Variables]
-  [./flux]
+  [./temperature]
     order = FIRST
     family = LAGRANGE
   [../]
@@ -13,12 +13,12 @@
 [Kernels]
   [./diff]
     type = Diffusion
-    variable = flux
+    variable = temperature
   [../]
 
   [./conv]
     type = Convection
-    variable = flux
+    variable = temperature
     velocity = '0.0 1.0 0.0'
   [../]
 []
@@ -26,21 +26,21 @@
 [BCs]
   [./bottom]
     type = DirichletBC
-    variable = flux
+    variable = temperature
     boundary = 'bottom'
     value = 0
   [../]
 
   [./left]
     type = DirichletBC
-    variable = flux
+    variable = temperature
     boundary = 'left'
     value = 1
   [../]
 
   [./right]
     type = DirichletBC
-    variable = flux
+    variable = temperature
     boundary = 'right'
     value = 1
   [../]
