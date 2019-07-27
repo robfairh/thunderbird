@@ -47,6 +47,184 @@ fill=blue!30]
 	
 \section{Example 00}
 
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/Diffusion
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.\nabla T=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('left')=0$ and $T('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa00}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{00/rectangularmesh.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ex00}
+\end{figure*}
+
+\newpage
+\section{Example 01}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/Diffusion
+	\item[] Convection
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.\nabla T + \vec{v}\nabla T=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('bottom')=0$, $T('left')=1$, and $T('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa01}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{01/temperature.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:exa01}
+\end{figure*}
+
+\newpage
+\section{Example 02}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+	\item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla \phi) - S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('left')=0$, and $\phi('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa02}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{02/constantsource.png} 
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa02}
+\end{figure*}
+
+\newpage
+\section{Example 03}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+	\item[] NtSigmaA
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla \phi) + \Sigma_{A}\phi =0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('left')=0$, and $\phi('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa03}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{03/absorption.png} 
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa03}
+\end{figure*}
+
+\newpage
+\section{Example 04}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+	\item[] NtSigmaF
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla \phi) - \nu\Sigma_{F}\phi =0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('left')=0$, and $\phi('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa04}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{04/fission.png} 
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa04}
+\end{figure*}
+
+\newpage
+\section{Example 05}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtTimeDerivative
+	\item[] NtDiffusion
+\end{description}
+
+Equations involved:
+\begin{equation}
+a\frac{\partial\phi}{\partial t}-\nabla.(D\nabla \phi)=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('bottom')=0$, and $\phi('top')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa05}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{05/timederivative_t=0.png} 
+		\caption{$\phi$ at t=0.}
+		\label{fig:exa01-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{05/timederivative_t=50.png} 
+		\caption{$\phi$ at t=50.}
+		\label{fig:exa01-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa05}
+\end{figure*}
+
+
+
 %\section{Example 01}
 %
 %This example can be found in:
@@ -200,7 +378,13 @@ fill=blue!30]
 %		\includegraphics[width=\linewidth]{03/flux2.png} 
 %		\caption{$\phi_{2}$.}
 %		\label{fig:exa03-flux2}
-%	\end{subfigure}
+%	\end{sub%\begin{figure*}[!h]
+%	\centering
+%	\includegraphics[width=\linewidth]{05/temperature.png} 
+%	\hfill
+%	\caption{Temperature.}
+%	\label{fig:exa05}
+%\end{figure*}figure}
 %	\hfill
 %	\caption{Flux.}
 %	\label{fig:exa03}
