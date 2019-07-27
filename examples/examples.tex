@@ -229,8 +229,8 @@ The results are presented in Figure \ref{fig:exa05}.
 Kernels involved:
 \begin{description}[font=$\bullet$\scshape\bfseries]
 	\item[] NtDiffusion
-    \item[] InScatter
-    \item[] NtSource
+	\item[] InScatter
+	\item[] NtSource
 \end{description}
 
 Equations involved:
@@ -238,7 +238,7 @@ Equations involved:
 -\nabla.(D_{1}\nabla \phi_{1})-S=0
 \end{equation}
 \begin{equation}
--\nabla.(D_{2}\nabla \phi_{2})-\Sigma_{S 1-2}\phi_{1}=0
+-\nabla.(D_{2}\nabla \phi_{2})-\Sigma_{S1-2}\phi_{1}=0
 \end{equation}
 
 Boundary conditions:
@@ -268,171 +268,85 @@ The results are presented in Figure \ref{fig:exa06}.
 	\label{fig:exa06}
 \end{figure*}
 
-%\section{Example 01}
-%
-%This example can be found in:
-%
-%$https://github.com/robfairh/mymoltres/tree/new_kernels/examples/01/$\\
-%
-%Kernels involved:
-%\begin{description}[font=$\bullet$\scshape\bfseries]
-%	\item[] GroupDiffusion
-%\end{description}
-%
-%This is case is to see if the App was working.
-%It calculates two variables: flux1 ($\phi_{1}$) and flux2 ($\phi_{2}$). 
-%
-%Equations involved:
-%\begin{equation}
-%\nabla.(D_{1}\nabla\phi_{1})=0
-%\end{equation}
-%\begin{equation}
-%\nabla.(D_{2}\nabla\phi_{2})=0
-%\end{equation}
-%
-%Boundary conditions:
-%\begin{description}[]
-%	\item[] $\phi_{1}('left')=1$ and $\phi_{1}('right')=0$
-%	\item[] $\phi_{2}('left')=2$ and $\phi_{2}('right')=1$
-%\end{description}
-%
-%The user defines $D_{1}=1.$ and $D_{2}=1.$ for the kernels manually.
-%The results are presented in Figure \ref{fig:exa01}.
-%
-%\begin{figure*}[!h]
-%	\centering
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{01/Flux1.png} 
-%		\caption{$\phi_{1}$.}
-%		\label{fig:exa01-flux1}
-%	\end{subfigure}
-%	\vspace{1cm}
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{01/Flux2.png} 
-%		\caption{$\phi_{2}$.}
-%		\label{fig:exa01-flux2}
-%	\end{subfigure}
-%	\hfill
-%	\caption{Flux.}
-%	\label{fig:exa01}
-%\end{figure*}
-%
-%\newpage
-%\section{Example 02}
-%This example can be found in:
-%
-%$https://github.com/robfairh/mymoltres/tree/new_kernels/examples/02/$\\
-%
-%Kernels involved:
-%\begin{description}[font=$\bullet$\scshape\bfseries]
-%    \item[] NtTimeDerivative
-%	\item[] GroupDiffusion
-%\end{description}
-%
-%This is case adds the time derivative in one of the equations.
-%It calculates two variables: flux1 ($\phi_{1}$) and flux2 ($\phi_{2}$). 
-%
-%Equations involved:
-%\begin{equation}
-%\frac{1}{v_{1}}\frac{\partial\phi_{1}}{\partial t}-\nabla.(D_{1}\nabla\phi_{1})=0
-%\end{equation}
-%\begin{equation}
-%\nabla.(D_{2}\nabla\phi_{2})=0
-%\end{equation}
-%
-%Boundary conditions:
-%\begin{description}[]
-%	\item[] $\phi_{1}('left')=1$ and $\phi_{1}('right')=0$
-%	\item[] $\phi_{2}('left')=1$ and $\phi_{2}('right')=0$
-%\end{description}
-%
-%The user defines $\frac{1}{v_{1}}=1$, $D_{1}=1$ and $D_{2}=1$ for the kernels manually.
-%The results are presented in Figure \ref{fig:exa02}.
-%
-%\begin{figure*}[!h]
-%	\centering
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{02/flux1-t=0.png} 
-%		\caption{$\phi_{1}$ at $t=0$.}
-%		\label{fig:exa02-flux1t0}
-%	\end{subfigure}
-%	\vspace{1cm}
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{02/flux1-t=50.png} 
-%		\caption{$\phi_{1}$ at $t=50$.}
-%		\label{fig:exa02-flux1t50}
-%	\end{subfigure}
-%	\hfill
-%	\caption{Flux.}
-%	\label{fig:exa02}
-%\end{figure*}
-%
-%\newpage
-%\section{Example 03}
-%
-%This example can be found in:
-%
-%$https://github.com/robfairh/mymoltres/tree/new_kernels/examples/03/$\\
-%
-%Kernels involved:
-%\begin{description}[font=$\bullet$\scshape\bfseries]
-%	\item[] GroupDiffusion
-%	\item[] SigmaR
-%	\item[] InScatter
-%	\item[] NtSource
-%\end{description}
-%
-%This is case adds the a few more terms of the diffusion equations. This time the equations are coupled. I am not completely sure that the function
-%\textit{InScatter::computeQpResidual()} works 100$\%$ properly.
-%It calculates two variables: flux1 ($\phi_{1}$) and flux2 ($\phi_{2}$).
-%
-%Equations involved:
-%\begin{equation}
-%-\nabla.(D_{1}\nabla\phi_{1})+\Sigma^{r}_{1}\phi_{1}-S=0
-%\end{equation}
-%\begin{equation}
-%-\nabla.(D_{2}\nabla\phi_{2})-\Sigma^{s}_{1-2}\phi_{1}=0
-%\end{equation}
-%
-%Boundary conditions:
-%\begin{description}[]
-%	\item[] $\phi_{1}('left')=0$ and $\phi_{1}('right')=0$
-%	\item[] $\phi_{2}('left')=0$ and $\phi_{2}('right')=0$
-%\end{description}
-%
-%The user defines $D_{1}=1$, $D_{2}=1$, $\Sigma^{r}_{1}=1$, and $\Sigma^{s}_{1-2}=1$ for the kernels manually.
-%The results are presented in Figure \ref{fig:exa03}.
-%
-%\begin{figure*}[!h]
-%	\centering
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{03/flux2.png} 
-%		\caption{$\phi_{1}$.}
-%		\label{fig:exa03-flux1}
-%	\end{subfigure}
-%	\vspace{1cm}
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{03/flux2.png} 
-%		\caption{$\phi_{2}$.}
-%		\label{fig:exa03-flux2}
-%	\end{sub%\begin{figure*}[!h]
-%	\centering
-%	\includegraphics[width=\linewidth]{05/temperature.png} 
-%	\hfill
-%	\caption{Temperature.}
-%	\label{fig:exa05}
-%\end{figure*}figure}
-%	\hfill
-%	\caption{Flux.}
-%	\label{fig:exa03}
-%\end{figure*}
-%
+\newpage
+\section{Moltres - Example 01}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] GroupDiffusion
+	\item[] SigmaR
+	\item[] InScatter
+	\item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D_{1}\nabla\phi_{1})+\Sigma^{R}_{1}\phi_{1}-S=0
+\end{equation}
+\begin{equation}
+-\nabla.(D_{2}\nabla\phi_{2})-\Sigma^{S}_{1-2}\phi_{1}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$ and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$ and $\phi_{2}('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m01}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres01/flux1.png} 
+		\caption{$\phi_{1}$.}
+		\label{fig:m01-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres01/flux2.png} 
+		\caption{$\phi_{2}$.}
+		\label{fig:m01-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:m01}
+\end{figure*}
+
+\newpage
+\section{Moltres - Example 02}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] TempDiffusion
+	\item[]	ConservativeTemperatureAdvection
+	\item[] TemperatureOutflowBC (it is defined by the 2nd BC)
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho c_{p}\vec{v}\nabla T-\nabla.(k\nabla T)=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('bottom')=0$, $T('left')=1$, and $T('right')=1$
+	\item[] $\check{n}\cdot\vec{\Gamma}=\rho c_{p}(\check{n}\cdot\vec{v})T$ if $\check{n}\cdot\vec{v}>0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=0$ if $\check{n}\cdot\vec{v}<=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m02}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{moltres02/temperature.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:m02}
+\end{figure*}
+
+
+
 %\newpage
 %\section{Example 04}
 %
@@ -481,44 +395,6 @@ The results are presented in Figure \ref{fig:exa06}.
 %	\label{fig:exa04}
 %\end{figure*}
 %
-%\newpage
-%\section{Example 05}
-%
-%This example can be found in:
-%
-%$https://github.com/robfairh/mymoltres/tree/new_kernels/examples/05/$\\
-%
-%Kernels involved:
-%\begin{description}[font=$\bullet$\scshape\bfseries]
-%	\item[] TempDiffusion
-%	\item[]	ConservativeTemperatureAdvection
-%	\item[] TemperatureOutflowBC (it is defined by the 2nd BC)
-%\end{description}
-%
-%This case calculates the temperature ($T$).
-%
-%Equations involved:
-%\begin{equation}
-%\rho c_{p}\vec{v}\nabla T-\nabla.(k\nabla T)=0
-%\end{equation}
-%
-%Boundary conditions:
-%\begin{description}[]
-%	\item[] $T('bottom')=0$, $T('left')=1$, and $T('right')=1$
-%	\item[] $\check{n}\cdot\vec{\Gamma}=\rho c_{p}(\check{n}\cdot\vec{v})T$ if $\check{n}\cdot\vec{v}>0$
-%	\item[] $\check{n}\cdot\vec{\Gamma}=0$ if $\check{n}\cdot\vec{v}<=0$
-%\end{description}
-%
-%The user defines $\rho=1$, $c_{p}=1$, and $k=1$ for the kernels manually.
-%The results are presented in Figure \ref{fig:exa05}.
-%
-%\begin{figure*}[!h]
-%	\centering
-%	\includegraphics[width=\linewidth]{05/temperature.png} 
-%	\hfill
-%	\caption{Temperature.}
-%	\label{fig:exa05}
-%\end{figure*}
 %
 %\newpage
 %\section{Example 06}
