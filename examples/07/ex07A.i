@@ -15,6 +15,10 @@
     type = TempDiffusion
     variable = temperature
   [../]
+  [./temp_source]
+    type = TempSource
+    variable = temperature
+  [../]
 []
 
 
@@ -23,7 +27,7 @@
     type = DirichletBC
     variable = temperature
     boundary = 'left'
-    value = 1
+    value = 0
   [../]
   [./right]
     type = DirichletBC
@@ -38,8 +42,8 @@
   [./example]
     type = ExampleMaterial
     block = 'fuel'
-    independent_vals = '0 0.25 0.5 0.75 1.0'
-    dependent_vals = '1e-2 5e-3 1e-3 5e-3 1e-2'
+    independent_vals = '0 20.0'
+    dependent_vals = '1. 1.'
   [../]
 []
 

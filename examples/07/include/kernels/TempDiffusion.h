@@ -18,7 +18,7 @@ protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
 
-  Real _tempdiffcoef;
+  const MaterialProperty<Real> & _diffusivity;
 };
 
 #endif // TEMPDIFFUSION_H

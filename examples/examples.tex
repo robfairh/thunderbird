@@ -345,7 +345,57 @@ The results are presented in Figure \ref{fig:m02}.
 	\label{fig:m02}
 \end{figure*}
 
+\newpage
+\section{Example 07}
 
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] TempDiffusion
+	\item[] TempSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla T)-S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('left')=0$, and $T('right')=0$
+\end{description}
+
+\begin{table}[]
+	\centering
+	\caption{Different values of K.}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		x  & \multicolumn{1}{c|}{yA} & yB \\ \hline
+		0  & 1                       & 1  \\ \hline
+		20 & 1                       & 10 \\ \hline
+	\end{tabular}
+	\label{tab:ex07}
+\end{table}
+
+The results are presented in Figure \ref{fig:exa07}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{07/ex07A.png} 
+		\caption{$T$ K in the list A.}
+		\label{fig:exa07-temp1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{07/ex07B.png} 
+		\caption{$T$ K in the list B.}
+		\label{fig:exa07-temp2}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:exa07}
+\end{figure*}
 
 %\newpage
 %\section{Example 04}

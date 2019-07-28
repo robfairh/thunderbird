@@ -7,24 +7,23 @@ InputParameters
 validParams<TempDiffusion>()
 {
   InputParameters params = validParams<Diffusion>();
-  params.addParam<Real>("tempdiffcoef", 1.0, "Thermal conductivity");
   return params;
 }
 
 TempDiffusion::TempDiffusion(const InputParameters & parameters)
   : Diffusion(parameters),
-    _tempdiffcoef(getParam<Real>("tempdiffcoef"))
+    _diffusivity(getMaterialProperty<Real>("diffusivity"))
 {
 }
 
 Real
 TempDiffusion::computeQpResidual()
 {
-  return _tempdiffcoef * Diffusion::computeQpResidual();
+  return _diffusivity[_qp] * Diffusion::computeQpResidual();
 }
 
 Real
 TempDiffusion::computeQpJacobian()
 {
-  return _tempdiffcoef * Diffusion::computeQpJacobian();
+  return _diffusivity[_qp] * Diffusion::computeQpJacobian();
 }
