@@ -397,102 +397,39 @@ The results are presented in Figure \ref{fig:exa07}.
 	\label{fig:exa07}
 \end{figure*}
 
-%\newpage
-%\section{Example 04}
-%
-%This example can be found in:
-%
-%$https://github.com/robfairh/mymoltres/tree/new_kernels/examples/04/$\\
-%
-%Kernels involved:
-%\begin{description}[font=$\bullet$\scshape\bfseries]
-%	\item[] MatINSTemperatureTimeDerivative
-%	\item[] TempDiffusion
-%\end{description}
-%
-%This case calculates the temperature ($T$).
-%
-%Equations involved:
-%\begin{equation}
-%\rho c_{p}\frac{\partial T}{\partial t}-\nabla.(k\nabla T)=0
-%\end{equation}
-%
-%Boundary conditions:
-%\begin{description}[]
-%	\item[] $T('left')=0$ and $T('right')=1$
-%\end{description}
-%
-%The user defines $\rho=1$, $c_{p}=1$, and $k=1$ for the kernels manually.
-%The results are presented in Figure \ref{fig:exa04}.
-%
-%\begin{figure*}[!h]
-%	\centering
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{04/temperature-t=0.png} 
-%		\caption{$T$ at $t=0$.}
-%		\label{fig:exa04-temp0}
-%	\end{subfigure}
-%	\vspace{1cm}
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{04/temperature-t=50.png} 
-%		\caption{$T$ at $t=50$.}
-%		\label{fig:exa04-temp50}
-%	\end{subfigure}
-%	\hfill
-%	\caption{Temperature.}
-%	\label{fig:exa04}
-%\end{figure*}
-%
-%
-%\newpage
-%\section{Example 06}
-%
-%This example can be found in:
-%
-%$https://github.com/robfairh/mymoltres/tree/new_kernels/examples/06/$\\
-%
-%Kernels involved:
-%\begin{description}[font=$\bullet$\scshape\bfseries]
-%	\item[] MatINSTemperatureTimeDerivative
-%	\item[] TempDiffusion
-%\end{description}
-%
-%This case calculates the temperature ($T$).
-%
-%Equations involved:
-%\begin{equation}
-%\rho c_{p}\frac{\partial T}{\partial t}-\nabla.(k\nabla T)=0
-%\end{equation}
-%
-%Boundary conditions:
-%\begin{description}[]
-%	\item[] $T('left')=0$ and $T('right')=1$
-%\end{description}
-%
-%The user defines $\rho=1$, $c_{p}=1$, and $k=1$ for the kernels manually.
-%The results are presented in Figure \ref{fig:exa06}.
-%
-%\begin{figure*}[!h]
-%	\centering
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{04/temperature-t=0.png} 
-%		\caption{$T$ at $t=0$.}
-%		\label{fig:exa06-temp0}
-%	\end{subfigure}
-%	\vspace{1cm}
-%	\begin{subfigure}[t]{0.4\textwidth}
-%		\centering
-%		\includegraphics[width=\linewidth]{04/temperature-t=50.png} 
-%		\caption{$T$ at $t=50$.}
-%		\label{fig:exa06-temp50}
-%	\end{subfigure}
-%	\hfill
-%	\caption{Temperature.}
-%	\label{fig:exa06}
-%\end{figure*}
+\newpage
+\section{Moltres - Example 03}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] MatDiffusion
+	\item[]	ConservativeTemperatureAdvection
+	\item[] TempSource
+	\item[] TemperatureOutflowBC (it is defined by the 2nd BC)
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho c_{p}\vec{v}\nabla T-\nabla.(k\nabla T)-S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('bottom')=0$, $T('left')=0$, and $T('right')=0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=\rho c_{p}(\check{n}\cdot\vec{v})T$ if $\check{n}\cdot\vec{v}>0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=0$ if $\check{n}\cdot\vec{v}<=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m03}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{moltres03/k_cp_rho=1.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:m03}
+\end{figure*}
+
+
 
 \pagebreak 
 \bibliographystyle{plain}
