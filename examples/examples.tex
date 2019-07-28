@@ -68,7 +68,7 @@ The results are presented in Figure \ref{fig:exa00}.
 	\includegraphics[width=\linewidth]{00/rectangularmesh.png} 
 	\hfill
 	\caption{Temperature.}
-	\label{fig:ex00}
+	\label{fig:exa00}
 \end{figure*}
 
 \newpage
@@ -402,7 +402,7 @@ The results are presented in Figure \ref{fig:exa07}.
 
 Kernels involved:
 \begin{description}[font=$\bullet$\scshape\bfseries]
-	\item[] MatDiffusion
+	\item[] moose/MatDiffusion
 	\item[]	ConservativeTemperatureAdvection
 	\item[] TempSource
 	\item[] TemperatureOutflowBC (it is defined by the 2nd BC)
@@ -429,7 +429,153 @@ The results are presented in Figure \ref{fig:m03}.
 	\label{fig:m03}
 \end{figure*}
 
+\newpage
+\section{Moltres - Example 04}
 
+This example uses \textit{GenericMoltresMaterial} to the define the properties of the fuel.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] GroupDiffusion
+	\item[]	SigmaR
+	\item[] InScatter
+	\item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D_{1}\nabla\phi_{1})+\Sigma^{R}_{1}\phi_{1}-S=0
+\end{equation}
+\begin{equation}
+-\nabla.(D_{2}\nabla\phi_{2})-\Sigma^{S}_{1-2}\phi_{1}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$ and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$ and $\phi_{2}('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m04}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres04/flux1.png} 
+		\caption{$\phi_{1}$.}
+		\label{fig:m04-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres04/flux2.png} 
+		\caption{$\phi_{2}$.}
+		\label{fig:m04-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:m04}
+\end{figure*}
+
+\section{Moltres - Example 05}
+
+This example uses \textit{GenericMoltresMaterial} to the define the properties of the fuel.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+    \item[] NtTimeDerivative
+	\item[] GroupDiffusion
+	\item[]	SigmaR
+	\item[] InScatter
+	\item[] CoupledFissionKernel
+	\item[] NtSource
+	\item[] MatINSTemperatureTimeDerivative
+	\item[]	MatDiffusion
+	\item[] ConservativeTemperatureAdvection
+	\item[] TransientFissionHeatSource
+    \item[]	TemperatureOutflowBC 
+\end{description}
+
+Equations involved:
+\begin{equation}
+\frac{1}{v_{1}}\frac{\partial \phi_{1}}{\partial t}-\nabla.(D_{1}\nabla\phi_{1})+\Sigma^{R}_{1}\phi_{1}-\Sigma^{S}_{2-1}\phi_{2}-\chi_{1}\sum_{g}\nu\Sigma^{F}_{g}\phi_{g}-S=0
+\end{equation}
+\begin{equation}
+\frac{1}{v_{2}}\frac{\partial \phi_{2}}{\partial t}-\nabla.(D_{2}\nabla\phi_{2})+\Sigma^{R}_{2}\phi_{2}-\Sigma^{S}_{1-2}\phi_{1}-\chi_{2}\sum_{g}\nu\Sigma^{F}_{g}\phi_{g}=0
+\end{equation}
+\begin{equation}
+-\nabla.(k\nabla T)+\rho c_{p} (\frac{\partial T}{\partial t} + \vec{v} \nabla T)-\sum_{g}\epsilon_{g}\Sigma^{F}_{g}\phi_{g}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$ and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$ and $\phi_{2}('right')=0$
+	\item[] $T('bottom')=0$, $T('left')=0$, and $T('right')=0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=\rho c_{p}(\check{n}\cdot\vec{v})T$ if $\check{n}\cdot\vec{v}>0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=0$ if $\check{n}\cdot\vec{v}<=0$
+\end{description}
+
+The results are presented in Figures \ref{fig:m05A}, \ref{fig:m05B}, and \ref{fig:m05C}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux1-t=0.png} 
+		\caption{$\phi_{1}$ at t=0.}
+		\label{fig:m05-flux1-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux1-t=4.png} 
+		\caption{$\phi_{1}$ at t=4.}
+		\label{fig:m05-flux1-5}
+	\end{subfigure}
+	\hfill
+	\caption{Flux1.}
+	\label{fig:m05A}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux2-t=0.png} 
+		\caption{$\phi_{2}$ at t=0.}
+		\label{fig:m05-flux2-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux2-t=4.png} 
+		\caption{$\phi_{2}$ at t=4.}
+		\label{fig:m05-flux2-5}
+	\end{subfigure}
+	\hfill
+	\caption{Flux2.}
+	\label{fig:m05B}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/temp-t=0.png} 
+		\caption{$T$ at t=0.}
+		\label{fig:m05-temp-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/temp-t=4.png} 
+		\caption{$T$ at t=4.}
+		\label{fig:m05-temp-5}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:m05C}
+\end{figure*}
 
 \pagebreak 
 \bibliographystyle{plain}
