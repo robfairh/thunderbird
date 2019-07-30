@@ -577,6 +577,109 @@ The results are presented in Figures \ref{fig:m05A}, \ref{fig:m05B}, and \ref{fi
 	\label{fig:m05C}
 \end{figure*}
 
+\newpage
+\section{Example 08}
+
+This example defines two blocks in the mesh: \textbf{fuel} and \textbf{reflector}.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] TempDiffusion
+	\item[] TempSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla T)-S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('left')=0$, and $T('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa08}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{08/temp.png}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:exa08}
+\end{figure*}
+
+\section{N-S: Example 01}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v} . \nabla)\vec{v}+\nabla p - \mu \nabla^{2}\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('top')=0$ and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0, v_{y}('top')=0$, and $v_{y}('bottom')=0$
+	\item[] $p('left')=1$ and $p('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns01}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns01/velocity.png} 
+	\hfill
+	\caption{Velocity.}
+	\label{fig:ns01}
+\end{figure*}
+
+\section{N-S: Example 02}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+	\item[] moose/navier\_stokes/INSMomentumTimeDerivative
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\frac{\partial \vec{v}}{\partial t}-(\vec{v} . \nabla)\vec{v})+\nabla p - \mu \nabla^{2}\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('top')=0$ and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0, v_{y}('top')=0$, and $v_{y}('bottom')=0$
+	\item[] $p('left')=1$ and $p('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns02}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns02/vel-t=0.png} 
+		\caption{$|\vec{v}|$ at t=0.}
+		\label{fig:ns02-v-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns02/vel-t=4.png}
+		\caption{$|\vec{v}|$ at t=4.}
+		\label{fig:ns02-v-5}
+	\end{subfigure}
+	\hfill
+	\caption{Flux2.}
+	\label{fig:ns02}
+\end{figure*}
+
+
+
 \pagebreak 
 \bibliographystyle{plain}
 \bibliography{bibliography}
