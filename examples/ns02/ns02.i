@@ -19,10 +19,18 @@
   [./vel_x]
     order = SECOND
     family = LAGRANGE
+    [./InitialCondition]
+      type = ExampleIC
+      coefficient = 0.0
+    [../]
   [../]
   [./vel_y]
     order = SECOND
     family = LAGRANGE
+    [./InitialCondition]
+      type = ExampleIC
+      coefficient = 0.0
+    [../]
   [../]
   [./p]
     order = FIRST
@@ -65,19 +73,6 @@
     integrate_p_by_parts = false
   [../]
 []
-
-#[IC]
-#  [./vel_x_IC]
-#    type = ExampleIC
-#    variable = vel_x
-#    coefficient = 0.0
-#  [../]
-#  [./vel_y_IC]
-#    type = ExampleIC
-#    variable = vel_y
-#    coefficient = 0.0
-#  [../]
-#[]
 
 [BCs]
   [./x_no_slip]
