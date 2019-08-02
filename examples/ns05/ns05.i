@@ -5,9 +5,9 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  xmax = .05
+  xmax = .03
   ymax = .05
-  nx = 20
+  nx = 10
   ny = 20
   elem_type = QUAD9
 []
@@ -119,12 +119,6 @@
     boundary = corner
     variable = p
     value = 0
-  [../]
-  [./temp_insulate]
-    type = NeumannBC
-    variable = temp
-    value = 0 # no conduction through side walls
-    boundary = 'top bottom right' # not top
   [../]
   [./coldOnTop]
     type = DirichletBC
