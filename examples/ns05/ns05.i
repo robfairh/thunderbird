@@ -1,4 +1,3 @@
-# This input file tests Dirichlet pressure in/outflow boundary conditions for the incompressible NS equations.
 [GlobalParams]
   gravity = '0 -9.81 0'
 []
@@ -6,21 +5,27 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  xmin = 0
-  xmax = 2.0
-  ymin = 0
-  ymax = 2.0
+  xmax = .05
+  ymax = .05
   nx = 20
   ny = 20
   elem_type = QUAD9
 []
 
+[MeshModifiers]
+  [./bottom_left]
+    type = AddExtraNodeset
+    new_boundary = corner
+    coord = '0 0'
+  [../]
+[]
+
 [Variables]
-  [./vel_x]
+  [./ux]
     order = SECOND
     family = LAGRANGE
   [../]
-  [./vel_y]
+  [./uy]
     order = SECOND
     family = LAGRANGE
   [../]
@@ -31,10 +36,8 @@
   [./temp]
     order = SECOND
     family = LAGRANGE
-  [../]
-  [./deltaT]
-    family = LAGRANGE
-    order = SECOND
+    initial_condition = 200
+    scaling = 1e-4
   [../]
 []
 
@@ -42,143 +45,134 @@
   [./mass]
     type = INSMass
     variable = p
-    u = vel_x
-    v = vel_y
+    u = ux
+    v = uy
     p = p
   [../]
   [./x_time_deriv]
     type = INSMomentumTimeDerivative
-    variable = vel_x
+    variable = ux
   [../]
   [./y_time_deriv]
     type = INSMomentumTimeDerivative
-    variable = vel_y
+    variable = uy
   [../]
   [./x_momentum_space]
     type = INSMomentumLaplaceForm
-    variable = vel_x
-    u = vel_x
-    v = vel_y
+    variable = ux
+    u = ux
+    v = uy
     p = p
     component = 0
     integrate_p_by_parts = false
   [../]
   [./y_momentum_space]
     type = INSMomentumLaplaceForm
-    variable = vel_y
-    u = vel_x
-    v = vel_y
+    variable = uy
+    u = ux
+    v = uy
     p = p
     component = 1
     integrate_p_by_parts = false
   [../]
   [./buoyancy_x]
     type = INSBoussinesqBodyForce
-    variable = vel_x
-    dT = deltaT
+    variable = ux
     component = 0
     temperature = temp
+    constant = 900
   [../]
   [./buoyancy_y]
     type = INSBoussinesqBodyForce
-    variable = vel_x
-    dT = deltaT
+    variable = uy
     component = 1
     temperature = temp
+    constant = 200
   [../]
-  [./temp_time]
+  [./tempTimeDeriv]
     type = MatINSTemperatureTimeDerivative
     variable = temp
   [../]
-  #[./temp_diffusion]
-  #  type = MatDiffusion
-  #  D_name = 'k'
-  #  variable = temp
-  #[../]
-  [./temp_advection]
+  [./tempAdvectionDiffusion]
     type = INSTemperature
     variable = temp
-    u = vel_x
-    v = vel_y
-  [../]
-  [./deltaTCalc]
-    type =  ConstantDifferenceAux
-    variable = deltaT
-    compareVar = temp
-    constant = 900.0
+    u = ux
+    v = uy
   [../]
 []
 
 [BCs]
-  [./x_no_slip]
+  [./ux_dirichlet]
     type = DirichletBC
-    variable = vel_x
-    boundary = 'left right top bottom'
-    value = 0.0
+    variable = ux
+    boundary = 'left right bottom top'
+    value = 0
   [../]
-  [./y_no_slip]
+  [./uy_dirichlet]
     type = DirichletBC
-    variable = vel_y
-    boundary = 'left right top bottom'
-    value = 0.0
+    variable = uy
+    boundary = 'left right bottom top'
+    value = 0
   [../]
-  [./inlet_p]
+  [./p_zero]
     type = DirichletBC
+    boundary = corner
     variable = p
-    boundary = 'left right top bottom'
-    value = 0.0
+    value = 0
   [../]
-  [./outlet_p]
-    type = DirichletBC
-    variable = p
-    boundary = top
-    value = 0.0
+  [./temp_insulate]
+    type = NeumannBC
+    variable = temp
+    value = 0 # no conduction through side walls
+    boundary = 'top bottom right' # not top
   [../]
-  [./T_top]
+  [./coldOnTop]
     type = DirichletBC
     variable = temp
-    boundary = top
-    value = 800.0
-  [../]
-  [./T_bottom]
-    type = DirichletBC
-    variable = temp
-    boundary = bottom
-    value = 900.0
+    boundary = left
+    value = 300
   [../]
 []
 
 [Materials]
   [./const]
     type = GenericConstantMaterial
-    block = 0
-    prop_names = 'rho mu k cp alpha'
-    prop_values = '1e-1 1e-5 1e-2 1e3 1e-3'
+    # alpha = coefficient of thermal expansion where rho  = rho0 -alpha * rho0 * delta T
+    prop_names = 'mu rho alpha k cp'
+    prop_values = '30.74e-6 .5757 2.9e-3 46.38e-3 1054'
   [../]
 []
 
 [Preconditioning]
-  [./SMP_PJFNK]
+  [./Newton_SMP]
     type = SMP
     full = true
-    solve_type = PJFNK
+    solve_type = 'NEWTON'
   [../]
 []
 
 [Executioner]
   type = Transient
-  petsc_options_iname = '-ksp_gmres_restart -pc_type -sub_pc_type -sub_pc_factor_levels'
-  petsc_options_value = '300                bjacobi  ilu          4'
-  line_search = none
+  num_steps = 5
+  dt = 0.01
+  petsc_options = '-snes_converged_reason -ksp_converged_reason -snes_test_display'
+  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  petsc_options_value = 'lu	  NONZERO		1e-10'
+  line_search = 'none'
   nl_rel_tol = 1e-12
-  nl_max_its = 6
+  nl_max_its = 20
   l_tol = 1e-6
   l_max_its = 300
-  num_steps = 5
-  dt = 1
+  dtmin = 1e-5
 []
 
 [Outputs]
   execute_on = 'timestep_end'
   exodus = true
 []
+
+
+
+
+
+
