@@ -1,0 +1,806 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} % for table captions
+\usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage{xspace}
+\usepackage{verbatim} % for block comments
+\usepackage{subcaption} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcommand{\deploy}{\texttt{d3ploy}\xspace}%
+\newcommand{\Deploy}{\texttt{D3ploy}\xspace}%
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+\newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
+\usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=1cm, minimum height=1cm,text centered, draw=black, 
+fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\graphicspath{}
+\title{An Introduction to Moltres}
+\author{Roberto E. Fairhurst Agosta}
+
+\begin{document}
+	\begin{titlepage}
+		\maketitle
+		\thispagestyle{empty}
+	\end{titlepage}
+	
+\section{Example 00}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/Diffusion
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.\nabla T=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('left')=0$ and $T('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa00}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{00/rectangularmesh.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:exa00}
+\end{figure*}
+
+\newpage
+\section{Example 01}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/Diffusion
+	\item[] Convection
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.\nabla T + \vec{v}\nabla T=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('bottom')=0$, $T('left')=1$, and $T('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa01}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{01/temperature.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:exa01}
+\end{figure*}
+
+\newpage
+\section{Example 02}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+	\item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla \phi) - S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('left')=0$, and $\phi('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa02}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{02/constantsource.png} 
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa02}
+\end{figure*}
+
+\newpage
+\section{Example 03}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+	\item[] NtSigmaA
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla \phi) + \Sigma_{A}\phi =0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('left')=0$, and $\phi('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa03}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{03/absorption.png} 
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa03}
+\end{figure*}
+
+\newpage
+\section{Example 04}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+	\item[] NtSigmaF
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla \phi) - \nu\Sigma_{F}\phi =0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('left')=0$, and $\phi('right')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa04}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{04/fission.png} 
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa04}
+\end{figure*}
+
+\newpage
+\section{Example 05}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtTimeDerivative
+	\item[] NtDiffusion
+\end{description}
+
+Equations involved:
+\begin{equation}
+a\frac{\partial\phi}{\partial t}-\nabla.(D\nabla \phi)=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi('bottom')=0$, and $\phi('top')=1$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa05}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{05/timederivative_t=0.png} 
+		\caption{$\phi$ at t=0.}
+		\label{fig:exa01-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{05/timederivative_t=50.png} 
+		\caption{$\phi$ at t=50.}
+		\label{fig:exa01-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa05}
+\end{figure*}
+
+\newpage
+\section{Example 06}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NtDiffusion
+	\item[] InScatter
+	\item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D_{1}\nabla \phi_{1})-S=0
+\end{equation}
+\begin{equation}
+-\nabla.(D_{2}\nabla \phi_{2})-\Sigma_{S1-2}\phi_{1}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$, and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$, and $\phi_{2}('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa06}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{06/flux1.png} 
+		\caption{$\phi_{1}$.}
+		\label{fig:exa06-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{06/flux2.png} 
+		\caption{$\phi_{2}$.}
+		\label{fig:exa06-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:exa06}
+\end{figure*}
+
+\newpage
+\section{Moltres - Example 01}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] GroupDiffusion
+	\item[] SigmaR
+	\item[] InScatter
+	\item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D_{1}\nabla\phi_{1})+\Sigma^{R}_{1}\phi_{1}-S=0
+\end{equation}
+\begin{equation}
+-\nabla.(D_{2}\nabla\phi_{2})-\Sigma^{S}_{1-2}\phi_{1}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$ and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$ and $\phi_{2}('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m01}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres01/flux1.png} 
+		\caption{$\phi_{1}$.}
+		\label{fig:m01-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres01/flux2.png} 
+		\caption{$\phi_{2}$.}
+		\label{fig:m01-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:m01}
+\end{figure*}
+
+\newpage
+\section{Moltres - Example 02}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] TempDiffusion
+	\item[]	ConservativeTemperatureAdvection
+	\item[] TemperatureOutflowBC (it is defined by the 2nd BC)
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho c_{p}\vec{v}\nabla T-\nabla.(k\nabla T)=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('bottom')=0$, $T('left')=1$, and $T('right')=1$
+	\item[] $\check{n}\cdot\vec{\Gamma}=\rho c_{p}(\check{n}\cdot\vec{v})T$ if $\check{n}\cdot\vec{v}>0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=0$ if $\check{n}\cdot\vec{v}<=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m02}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{moltres02/temperature.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:m02}
+\end{figure*}
+
+\newpage
+\section{Example 07}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] TempDiffusion
+	\item[] TempSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla T)-S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('left')=0$, and $T('right')=0$
+\end{description}
+
+\begin{table}[]
+	\centering
+	\caption{Different values of K.}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		x  & \multicolumn{1}{c|}{yA} & yB \\ \hline
+		0  & 1                       & 1  \\ \hline
+		20 & 1                       & 10 \\ \hline
+	\end{tabular}
+	\label{tab:ex07}
+\end{table}
+
+The results are presented in Figure \ref{fig:exa07}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{07/ex07A.png} 
+		\caption{$T$ K in the list A.}
+		\label{fig:exa07-temp1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{07/ex07B.png} 
+		\caption{$T$ K in the list B.}
+		\label{fig:exa07-temp2}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:exa07}
+\end{figure*}
+
+\newpage
+\section{Moltres - Example 03}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/MatDiffusion
+	\item[]	ConservativeTemperatureAdvection
+	\item[] TempSource
+	\item[] TemperatureOutflowBC (it is defined by the 2nd BC)
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho c_{p}\vec{v}\nabla T-\nabla.(k\nabla T)-S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('bottom')=0$, $T('left')=0$, and $T('right')=0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=\rho c_{p}(\check{n}\cdot\vec{v})T$ if $\check{n}\cdot\vec{v}>0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=0$ if $\check{n}\cdot\vec{v}<=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m03}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{moltres03/k_cp_rho=1.png} 
+	\hfill
+	\caption{Temperature.}
+	\label{fig:m03}
+\end{figure*}
+
+\newpage
+\section{Moltres - Example 04}
+
+This example uses \textit{GenericMoltresMaterial} to the define the properties of the fuel.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] GroupDiffusion
+	\item[]	SigmaR
+	\item[] InScatter
+	\item[] NtSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D_{1}\nabla\phi_{1})+\Sigma^{R}_{1}\phi_{1}-S=0
+\end{equation}
+\begin{equation}
+-\nabla.(D_{2}\nabla\phi_{2})-\Sigma^{S}_{1-2}\phi_{1}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$ and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$ and $\phi_{2}('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:m04}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres04/flux1.png} 
+		\caption{$\phi_{1}$.}
+		\label{fig:m04-flux1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres04/flux2.png} 
+		\caption{$\phi_{2}$.}
+		\label{fig:m04-flux2}
+	\end{subfigure}
+	\hfill
+	\caption{Flux.}
+	\label{fig:m04}
+\end{figure*}
+
+\newpage
+\section{Moltres - Example 05}
+
+This example uses \textit{GenericMoltresMaterial} to the define the properties of the fuel.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+    \item[] NtTimeDerivative
+	\item[] GroupDiffusion
+	\item[]	SigmaR
+	\item[] InScatter
+	\item[] CoupledFissionKernel
+	\item[] NtSource
+	\item[] MatINSTemperatureTimeDerivative
+	\item[]	MatDiffusion
+	\item[] ConservativeTemperatureAdvection
+	\item[] TransientFissionHeatSource
+    \item[]	TemperatureOutflowBC 
+\end{description}
+
+Equations involved:
+\begin{equation}
+\frac{1}{v_{1}}\frac{\partial \phi_{1}}{\partial t}-\nabla.(D_{1}\nabla\phi_{1})+\Sigma^{R}_{1}\phi_{1}-\Sigma^{S}_{2-1}\phi_{2}-\chi_{1}\sum_{g}\nu\Sigma^{F}_{g}\phi_{g}-S=0
+\end{equation}
+\begin{equation}
+\frac{1}{v_{2}}\frac{\partial \phi_{2}}{\partial t}-\nabla.(D_{2}\nabla\phi_{2})+\Sigma^{R}_{2}\phi_{2}-\Sigma^{S}_{1-2}\phi_{1}-\chi_{2}\sum_{g}\nu\Sigma^{F}_{g}\phi_{g}=0
+\end{equation}
+\begin{equation}
+-\nabla.(k\nabla T)+\rho c_{p} (\frac{\partial T}{\partial t} + \vec{v} \nabla T)-\sum_{g}\epsilon_{g}\Sigma^{F}_{g}\phi_{g}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $\phi_{1}('left')=0$ and $\phi_{1}('right')=0$
+	\item[] $\phi_{2}('left')=0$ and $\phi_{2}('right')=0$
+	\item[] $T('bottom')=0$, $T('left')=0$, and $T('right')=0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=\rho c_{p}(\check{n}\cdot\vec{v})T$ if $\check{n}\cdot\vec{v}>0$
+	\item[] $\check{n}\cdot\vec{\Gamma}=0$ if $\check{n}\cdot\vec{v}<=0$
+\end{description}
+
+The results are presented in Figures \ref{fig:m05A}, \ref{fig:m05B}, and \ref{fig:m05C}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux1-t=0.png} 
+		\caption{$\phi_{1}$ at t=0.}
+		\label{fig:m05-flux1-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux1-t=4.png} 
+		\caption{$\phi_{1}$ at t=4.}
+		\label{fig:m05-flux1-5}
+	\end{subfigure}
+	\hfill
+	\caption{Flux1.}
+	\label{fig:m05A}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux2-t=0.png} 
+		\caption{$\phi_{2}$ at t=0.}
+		\label{fig:m05-flux2-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/flux2-t=4.png} 
+		\caption{$\phi_{2}$ at t=4.}
+		\label{fig:m05-flux2-5}
+	\end{subfigure}
+	\hfill
+	\caption{Flux2.}
+	\label{fig:m05B}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/temp-t=0.png} 
+		\caption{$T$ at t=0.}
+		\label{fig:m05-temp-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{moltres05/temp-t=4.png} 
+		\caption{$T$ at t=4.}
+		\label{fig:m05-temp-5}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:m05C}
+\end{figure*}
+
+\newpage
+\section{Example 08}
+
+This example defines two blocks in the mesh: \textbf{fuel} and \textbf{reflector}.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] TempDiffusion
+	\item[] TempSource
+\end{description}
+
+Equations involved:
+\begin{equation}
+-\nabla.(D\nabla T)-S=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $T('left')=0$, and $T('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:exa08}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{08/temp.png}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:exa08}
+\end{figure*}
+
+\section{N-S: Example 01}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v} . \nabla)\vec{v}+\nabla p - \mu \nabla^{2}\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('top')=0$ and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0, v_{y}('top')=0$, and $v_{y}('bottom')=0$
+	\item[] $p('left')=1$ and $p('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns01}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns01/velocity.png} 
+	\hfill
+	\caption{Velocity.}
+	\label{fig:ns01}
+\end{figure*}
+
+\section{N-S: Example 02}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+	\item[] moose/navier\_stokes/INSMomentumTimeDerivative
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\frac{\partial \vec{v}}{\partial t}+(\vec{v} . \nabla)\vec{v})+\nabla p - \mu \nabla^{2}\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('top')=0$ and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0, v_{y}('top')=0$, and $v_{y}('bottom')=0$
+	\item[] $p('left')=1$ and $p('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns02}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns02/vel-t=0.png} 
+		\caption{$|\vec{v}|$ at t=0.}
+		\label{fig:ns02-v-1}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns02/vel-t=4.png}
+		\caption{$|\vec{v}|$ at t=4.}
+		\label{fig:ns02-v-5}
+	\end{subfigure}
+	\hfill
+	\caption{Flux2.}
+	\label{fig:ns02}
+\end{figure*}
+
+\section{N-S: Example 03}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+	\item[] moose/MatDiffusion
+	\item[] moose/navier\_stokes/INSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v} . \nabla)\vec{v}+\nabla p - \mu \nabla^{2}\vec{v}=0
+\end{equation}
+\begin{equation}
+-\nabla(k \nabla . T)+\rho c_{p}(\vec{v} . \nabla)T =0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('top')=0$ and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0, v_{y}('top')=0$, and $v_{y}('bottom')=0$
+	\item[] $p('left')=0.5$ and $p('right')=0$
+	\item[] $T('left')=0$, $T('top')=100$, and $T('bottom')=100$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns03}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns03/temp.png} 
+		\caption{Temperature.}
+		\label{fig:ns03-temp}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns03/vel.png}
+		\caption{Velocity.}
+		\label{fig:ns03-vel}
+	\end{subfigure}
+	\hfill
+	\caption{Flux2.}
+	\label{fig:ns03}
+\end{figure*}
+
+\section{N-S: Example 04}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/
+	INSMomentumTimeDerivative
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+	\item[] moose/navier\_stokes/MatINSTemperatureTimeDerivative
+	\item[] moose/MatDiffusion
+	\item[] moose/navier\_stokes/INSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\frac{\partial \vec{v}}{\partial t}+\vec{v} . \nabla\vec{v})+\nabla p - \mu \nabla^{2}\vec{v}=0
+\end{equation}
+\begin{equation}
+-\nabla(k \nabla . T)+\rho c_{p}(\frac{\partial T}{\partial t}+\vec{v} . \nabla T)=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('top')=0$ and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0$, and $v_{y}('right')=0$
+	\item[] $p('bottom')=0.5$ and $p('top')=0$
+	\item[] $T('bottom')=0$, $q''('left')=1$, and $q''('right')=-1$
+	(Here the BC are positive in one side and negative on the other side, the input file defines them as both positive.)
+\end{description}
+
+The results are presented in Figures \ref{fig:ns04a} and \ref{fig:ns04b}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns04/temp-t=0.png} 
+		\caption{Temperature t=0.}
+		\label{fig:ns04-temp-t=0}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns04/temp-t=4.png}
+		\caption{Temperature t=4.}
+		\label{fig:ns04-temp-t=4}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns04a}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns04/axial-t=0.png} 
+		\caption{Axial temperature at t=0.}
+		\label{fig:ns04-axial}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns04/tempx-t=0.png}
+		\caption{Temperature in x-direction at t=0.}
+		\label{fig:ns04-tempx}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns04b}
+\end{figure*}
+
+
+
+\pagebreak 
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
