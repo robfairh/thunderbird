@@ -797,7 +797,56 @@ The results are presented in Figures \ref{fig:ns04a} and \ref{fig:ns04b}.
 	\label{fig:ns04b}
 \end{figure*}
 
+\section{N-S: Example 05}
 
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/
+	INSMomentumTimeDerivative
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+	\item[] INSBoussinesqBodyForce
+	\item[] moose/navier\_stokes/MatINSTemperatureTimeDerivative
+	\item[] moose/navier\_stokes/INSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\frac{\partial \vec{v}}{\partial t}+\vec{v} . \nabla\vec{v})+\nabla p - \mu \nabla^{2}\vec{v} + \alpha g (T - T_{o})\check{k} = 0
+\end{equation}
+\begin{equation}
+-\nabla(k \nabla . T)+\rho c_{p}(\frac{\partial T}{\partial t}+\vec{v} . \nabla T)=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('top')=0$, and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0$, $v_{y}('right')=0$, $v_{y}('top')=0$,
+	and $v_{y}('bottom')=0$
+	\item[] $p(0,0)=0$
+	\item[] $T('left')=300$, $T_{o}=200$
+\end{description}
+
+The results are presented in Figures \ref{fig:ns05}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns05/ux.png} 
+		\caption{ux.}
+		\label{fig:ns05-ux}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns05/uy.png}
+		\caption{uy.}
+		\label{fig:ns05-uy}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns05}
+\end{figure*}
 
 \pagebreak 
 \bibliographystyle{plain}
