@@ -848,6 +848,38 @@ The results are presented in Figures \ref{fig:ns05}.
 	\label{fig:ns05}
 \end{figure*}
 
+\section{N-S: Example 06}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+\end{description}
+
+Equations involved:
+\begin{equation}
+\nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('top')=0$, and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0$, $v_{y}('right')=0$, $v_{y}('bottom')=0$, and $v_{y}('top')=0$
+	\item[] $p('left')=1$ and $p('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns06}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns06/velocity.png} 
+	\hfill
+	\caption{Velocity.}
+	\label{fig:ns06}
+\end{figure*}
+
 \pagebreak 
 \bibliographystyle{plain}
 \bibliography{bibliography}
