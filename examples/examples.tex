@@ -728,6 +728,8 @@ The results are presented in Figure \ref{fig:ns03}.
 
 \section{N-S: Example 04}
 
+This example has an error. It uses the MatDiffusion Kernel, and the kernel INSTemperature has both the effects of diffusion and convection.
+
 Kernels involved:
 \begin{description}[font=$\bullet$\scshape\bfseries]
 	\item[] moose/navier\_stokes/INSMass
@@ -812,7 +814,7 @@ Kernels involved:
 
 Equations involved:
 \begin{equation}
-\rho (\frac{\partial \vec{v}}{\partial t}+\vec{v} . \nabla\vec{v})+\nabla p - \mu \nabla^{2}\vec{v} + \alpha g (T - T_{o})\check{k} = 0
+\rho (\frac{\partial \vec{v}}{\partial t}+\vec{v} . \nabla\vec{v})+\nabla p - \mu \nabla^{2}\vec{v} + \alpha g (T - T_{o})\check{j} = 0
 \end{equation}
 \begin{equation}
 -\nabla(k \nabla . T)+\rho c_{p}(\frac{\partial T}{\partial t}+\vec{v} . \nabla T)=0
@@ -880,6 +882,91 @@ The results are presented in Figure \ref{fig:ns06}.
 	\hfill
 	\caption{Velocity.}
 	\label{fig:ns06}
+\end{figure*}
+
+\section{N-S: Example 07}
+
+This is still a simplified version of moose's INS kernels, but this time it includes everything for Incompressible N-S.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$
+	\item[] $p('bottom')=1$ and $p('top')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns07}. We can see that the gravity term overcomes the pressure gradient.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns07/vel_y.png} 
+	\hfill
+	\caption{Velocity.}
+	\label{fig:ns07}
+\end{figure*}
+
+\section{N-S: Example 08}
+
+This is still a simplified version of moose's INS kernels, but this time it includes everything for Incompressible N-S and also INSTemperature slightly modified.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=0$ and $p('top')=1$.
+	\item[] $p('left')=10$, $p('right')=10$, and $p('top')=5$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns08}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns08/vel_y.png} 
+		\caption{ux.}
+		\label{fig:ns08-vel}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns08/temp.png}
+		\caption{uy.}
+		\label{fig:ns08-temp}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns08}
 \end{figure*}
 
 \pagebreak 
