@@ -945,7 +945,7 @@ Boundary conditions:
 	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
 	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
 	\item[] $p('bottom')=0$ and $p('top')=1$.
-	\item[] $p('left')=10$, $p('right')=10$, and $p('top')=5$.
+	\item[] $T('left')=10$, $T('right')=10$, and $T('top')=5$.
 \end{description}
 
 The results are presented in Figure \ref{fig:ns08}.
@@ -968,6 +968,55 @@ The results are presented in Figure \ref{fig:ns08}.
 	\caption{Temperature.}
 	\label{fig:ns08}
 \end{figure*}
+
+\section{N-S: Example 09}
+
+This is still a simplified version of moose's INS kernels, but this time it includes everything for Incompressible N-S and also INSTemperature slightly modified.
+I am not completely sure that the Jacobian off diagonal for the TemperatureVD (Viscous Dissipation) is 100$\%$ right.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentumTimeDerivative
+	\item[] NSMomentum
+	\item[] MatINSTemperatureTimeDerivative
+	\item[] NSTemperature
+	\item[] NSTemperatureVD
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) - \Phi = 0
+\end{equation}
+\begin{equation}
+\Phi = 2\mu((\frac{du}{dx})^2+(\frac{dv}{dy})^2+(\frac{dw}{dz})^2)+
+\mu ((\frac{du}{dy}+\frac{dv}{dx})^2+(\frac{du}{dz}+\frac{dw}{dx})^2+(\frac{dv}{dz}+\frac{dw}{dy})^2)
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=0$ and $p('top')=2000$.
+	\item[] $T('left')=100$, $T('right')=100$, and $T('top')=0$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns09}. The blue line it the case that takes into account the viscous dissipation.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns09/temp.png} 
+	\hfill
+	\caption{Temperature ignoring and taking into account the viscous dissipation.}
+	\label{fig:ns09}
+\end{figure*}
+
+
 
 \pagebreak 
 \bibliographystyle{plain}
