@@ -5,24 +5,28 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  xmax = 2.
-  ymax = 1.
-  nx = 20
-  ny = 10
+  xmax = 1.
+  ymax = 2.
+  nx = 10
+  ny = 20
   elem_type = QUAD9
 []
 
 [Variables]
-  [./p]
-    order = FIRST
-    family = LAGRANGE
-  [../]
   [./ux]
     order = SECOND
     family = LAGRANGE
   [../]
-  [./rho]
+  [./uy]
     order = SECOND
+    family = LAGRANGE
+  [../]
+  [./p]
+    order = FIRST
+    family = LAGRANGE
+  [../]
+  [./rho]
+    order = FIRST
     family = LAGRANGE
   [../]
   [./temp]
@@ -36,6 +40,7 @@
     type = NSMass
     variable = p
     u = ux
+    v = uy
     rho = rho
   [../]
 
@@ -43,56 +48,77 @@
     type = NSMomentum
     variable = ux
     u = ux
-    rho = rho
+    v = uy
     p = p
+    rho = rho
     component = 0
   [../]
 
-  [./k_density]
+  [./momentum_y]
+    type = NSMomentum
+    variable = uy
+    u = ux
+    v = uy
+    p = p
+    rho = rho
+    component = 1
+  [../]
+
+  [./density]
     type = NSDensity
     variable = rho
-    temp = temp
-    temp_ref = 50
-    beta = 1e-1
+    p = p
+    bulk_m = 1e3
+    p_ref = 100
   [../]
 
   [./temp_advection]
     type = NSTemperature
     variable = temp
-    u = 0
-    v = 0
+    u = ux
+    v = uy
     rho = rho
+    p = p
   [../]
 []
 
 [BCs]
-  [./p_left]
-    type = DirichletBC
-    variable = p
-    boundary = 'left'
-    value = 100
-  [../]
-  [./p_right]
-    type = DirichletBC
-    variable = p
-    boundary = 'right'
-    value = 0
-  [../]
-
   [./ux_dirichlet]
     type = DirichletBC
     variable = ux
-    boundary = 'bottom top'
+    boundary = 'left bottom top'
     value = 0
   [../]
 
-  [./T_dirichlet1]
+  [./uy_dirichlet]
+    type = DirichletBC
+    variable = uy
+    boundary = 'left right'
+    value = 0
+  [../]
+
+  [./p_left]
+    type = DirichletBC
+    variable = p
+    boundary = 'bottom'
+    value = 1
+  [../]
+
+  [./p_right]
+    type = DirichletBC
+    variable = p
+    boundary = 'top'
+    value = 0
+  [../]
+
+  [./T_top]
     type = DirichletBC
     variable = temp
     boundary = top
     value = 50
   [../]
-  [./T_dirichlet2]
+
+  [./T_bottom]
     type = DirichletBC
     variable = temp
     boundary = bottom
@@ -103,8 +129,8 @@
 [Materials]
   [./const]
     type = GenericConstantMaterial
-    prop_names = 'rho_ref k cp mu'
-    prop_values = '10. 1. 1. 1.'
+    prop_names = 'rho_ref mu k cp'
+    prop_values = '1. 1. 1. 1.'
   [../]
 []
 
@@ -125,12 +151,15 @@
   nl_max_its = 6
   l_tol = 1e-6
   l_max_its = 300
-  #num_steps = 5
-  #dt = 1
-  #solve_type = 'PJFNK'
 []
 
 [Outputs]
   execute_on = 'timestep_end'
   exodus = true
 []
+
+
+
+
+
+

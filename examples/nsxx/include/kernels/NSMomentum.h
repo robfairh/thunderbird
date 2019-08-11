@@ -27,8 +27,8 @@ protected:
   const VariableValue & _u_vel;
   const VariableValue & _v_vel;
   const VariableValue & _w_vel;
-  const VariableValue & _rho;
   const VariableValue & _p;
+  const VariableValue & _rho;
 
   const VariableGradient & _grad_u_vel;
   const VariableGradient & _grad_v_vel;
@@ -38,14 +38,14 @@ protected:
   unsigned _u_vel_var_number;
   unsigned _v_vel_var_number;
   unsigned _w_vel_var_number;
-  unsigned _rho_var_number;
   unsigned _p_var_number;
+  unsigned _rho_var_number;
 
   unsigned _component;
   
   // Material properties
   const MaterialProperty<Real> & _mu;
-  const MaterialProperty<Real> & _rho_ref;
+  //const MaterialProperty<Real> & _rho;
 
   RealVectorValue _gravity;
 };
