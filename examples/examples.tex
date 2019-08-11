@@ -1016,7 +1016,67 @@ The results are presented in Figure \ref{fig:ns09}. The blue line it the case th
 	\label{fig:ns09}
 \end{figure*}
 
+\section{N-S: Example 10}
 
+This example is very similar to example NS8, it is just to get some plots to contrast against once the compressibility effects have been implemented.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentumTimeDerivative
+	\item[] NSMomentum
+	\item[] MatINSTemperatureTimeDerivative
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=0$ and $p('top')=100$.
+	\item[] $T('left')=100$, $T('right')=100$, and $T('top')=0$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns10}. Figure \ref{fig:ns10B} shows a comparison between ns10 and ns04 (now called ns10B.i). The match is almost perfect I should see why it is not perfect. It is probably something with the Jacobians.
+
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns10/vel.png} 
+		\caption{uy.}
+		\label{fig:ns10-vel}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns10/temp.png}
+		\caption{Temperature.}
+		\label{fig:ns10-temp}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns10}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns10/comparison.png} 
+	\hfill
+	\caption{Comparison between INS and my model.}
+	\label{fig:ns10B}
+\end{figure*}
 
 \pagebreak 
 \bibliographystyle{plain}
