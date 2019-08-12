@@ -26,6 +26,7 @@ protected:
   const VariableGradient & _grad_u_vel;
   const VariableGradient & _grad_v_vel;
   const VariableGradient & _grad_w_vel;
+  const VariableGradient & _grad_rho;
 
   unsigned _u_vel_var_number;
   unsigned _v_vel_var_number;

@@ -1,14 +1,4 @@
-//* This file is part of the MOOSE framework
-//* https://www.mooseframework.org
-//*
-//* All rights reserved, see COPYRIGHT for full restrictions
-//* https://github.com/idaholab/moose/blob/master/COPYRIGHT
-//*
-//* Licensed under LGPL 2.1, please see LICENSE for details
-//* https://www.gnu.org/licenses/lgpl-2.1.html
-
 #include "NSTemperature.h"
-#include "MooseMesh.h"
 
 registerMooseObject("ExampleApp", NSTemperature);
 
@@ -24,6 +14,7 @@ validParams<NSTemperature>()
   params.addRequiredCoupledVar("u", "x-velocity");
   params.addCoupledVar("v", 0, "y-velocity"); // only required in 2D and 3D
   params.addCoupledVar("w", 0, "z-velocity"); // only required in 3D
+  params.addRequiredCoupledVar("p", "pressure");
   params.addRequiredCoupledVar("rho", "density");
 
   // Optional parameters
@@ -40,12 +31,18 @@ NSTemperature::NSTemperature(const InputParameters & parameters)
     _u_vel(coupledValue("u")),
     _v_vel(coupledValue("v")),
     _w_vel(coupledValue("w")),
+    _p(coupledValue("p")),
     _rho(coupledValue("rho")),
+
+    _grad_u_vel(coupledGradient("u")),
+    _grad_v_vel(coupledGradient("v")),
+    _grad_w_vel(coupledGradient("w")),
 
     // Variable numberings
     _u_vel_var_number(coupled("u")),
     _v_vel_var_number(coupled("v")),
     _w_vel_var_number(coupled("w")),
+    _p_var_number(coupled("p")),
     _rho_var_number(coupled("rho")),
 
     // Material Properties
@@ -67,7 +64,10 @@ NSTemperature::computeQpResidual()
   // Thermal conduction part, k * grad(T) * grad(v)
   Real conduction_part = _k[_qp] * _grad_u[_qp] * _grad_test[_i][_qp];
 
-  return convective_part + conduction_part;
+  // Compressible flow
+  Real compress_part = _p[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2));
+
+  return convective_part + conduction_part + compress_part;
 }
 
 Real
@@ -107,8 +107,7 @@ NSTemperature::computeQpOffDiagJacobian(unsigned jvar)
     Real convective_part = _phi[_j][_qp] * _cp[_qp] *
                            (_u_vel[_qp] * _grad_u[_qp](0) + _v_vel[_qp] * _grad_u[_qp](1) +
                            _w_vel[_qp] * _grad_u[_qp](2)) * _test[_i][_qp];
-    //return convective_part;
-    return 0;
+    return convective_part;
   }
 
   else
