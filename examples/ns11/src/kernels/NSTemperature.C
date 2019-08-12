@@ -54,7 +54,6 @@ NSTemperature::NSTemperature(const InputParameters & parameters)
 Real
 NSTemperature::computeQpResidual()
 {
-  // The convection part, rho * cp u.grad(T) * v.
   // Note: _u is the temperature variable, _grad_u is its gradient.
   Real convective_part = _rho[_qp] * _cp[_qp] *
                          (_u_vel[_qp] * _grad_u[_qp](0) + _v_vel[_qp] * _grad_u[_qp](1) +
@@ -102,7 +101,13 @@ NSTemperature::computeQpOffDiagJacobian(unsigned jvar)
     return convective_part;
   }
 
-    else if (jvar == _rho_var_number)
+  else if (jvar == _p_var_number)
+  {
+    Real compress_part = _phi[_j][_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2));
+    return compress_part;
+  }
+
+  else if (jvar == _rho_var_number)
   {
     Real convective_part = _phi[_j][_qp] * _cp[_qp] *
                            (_u_vel[_qp] * _grad_u[_qp](0) + _v_vel[_qp] * _grad_u[_qp](1) +

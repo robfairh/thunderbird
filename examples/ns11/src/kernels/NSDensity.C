@@ -46,7 +46,7 @@ NSDensity::computeQpResidual()
   Real res = 0;
 
   res += (_u[_qp] - _rho_ref[_qp]) * _test[_i][_qp];
-  //res += _rho_ref[_qp] * _beta * (_temp[_qp]-_temp_ref) * _test[_i][_qp];
+  res += _rho_ref[_qp] * _beta * (_temp[_qp]-_temp_ref) * _test[_i][_qp];
   res += -_rho_ref[_qp]/_bulk_m * (_p[_qp]-_p_ref) * _test[_i][_qp];
 
   return res;
@@ -69,15 +69,13 @@ NSDensity::computeQpOffDiagJacobian(unsigned jvar)
   //I think this is correct
   Real jac = 0;
 
-  /*
   if (jvar == _p_var_number){
     jac += -_rho_ref[_qp]/_bulk_m * _phi[_j][_qp] * _test[_i][_qp];
   }
-  */
-
-  //if (jvar == _temp_var_number){
-  //  jac += _rho_ref[_qp] * _beta * _phi[_j][_qp] * _test[_i][_qp];
-  //}
+  
+  if (jvar == _temp_var_number){
+    jac += _rho_ref[_qp] * _beta * _phi[_j][_qp] * _test[_i][_qp];
+  }
 
   return jac;
 }

@@ -16,7 +16,6 @@ validParams<NSMomentum>()
   params.addRequiredCoupledVar("rho", "density");
   params.addRequiredParam<unsigned>("component", "The velocity component that this is applied to.");
   params.addParam<MaterialPropertyName>("mu_name", "mu", "Dynamic viscosity");
-  //params.addParam<MaterialPropertyName>("rho_name", "rho", "Density");
   params.addParam<RealVectorValue>("gravity", RealVectorValue(0, 0, 0), "Gravity vector");
   return params;
 }
@@ -63,7 +62,7 @@ NSMomentum::computeQpResidual()
   r += _test[_i][_qp] * _rho[_qp] * convec(_component);
   
   // viscous term from compressible flow
-  //r += 1/3 * _mu[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2)) * _grad_test[_i][_qp](_component);
+  r += 1/3 * _mu[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2)) * _grad_test[_i][_qp](_component);
   // missing BCs
   
   return r;
@@ -77,6 +76,9 @@ NSMomentum::computeQpJacobian()
   jac += _mu[_qp] * (_grad_phi[_j][_qp] * _grad_test[_i][_qp]);
   // convective term
   jac += _test[_i][_qp] * dConvecDUComp(_component)(_component);
+
+  // viscous term from compressible flow
+  jac += 1/3 * _mu[_qp] * _grad_phi[_j][_qp](_component) * _grad_test[_i][_qp](_component);
 
   return jac;
 }
@@ -115,6 +117,7 @@ NSMomentum::computeQpOffDiagJacobian(unsigned jvar)
   else if (jvar == _p_var_number)
   {
     jac += _test[_i][_qp] * _grad_phi[_j][_qp](_component);
+
     return jac;
   }
   else if (jvar == _rho_var_number)
@@ -123,11 +126,11 @@ NSMomentum::computeQpOffDiagJacobian(unsigned jvar)
     // viscous term
     jac += 0.;
     // body force term
-    //jac += -_test[_i][_qp] * _phi[_j][_qp] * _gravity(_component);
+    jac += -_test[_i][_qp] * _phi[_j][_qp] * _gravity(_component);
     // convective term
     RealVectorValue U(_u_vel[_qp], _v_vel[_qp], _w_vel[_qp]);
     RealVectorValue convec(U * _grad_u_vel[_qp], U * _grad_v_vel[_qp], U * _grad_w_vel[_qp]);
-    //jac += _test[_i][_qp] * _phi[_j][_qp] * convec(_component);
+    jac += _test[_i][_qp] * _phi[_j][_qp] * convec(_component);
 
     return jac;
   }

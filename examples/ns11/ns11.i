@@ -36,6 +36,10 @@
 []
 
 [Kernels]
+  [./rho_time_deriv]
+    type = NSTimeDensity
+    variable = rho
+  [../]
   [./mass]
     type = NSMass
     variable = p
@@ -44,6 +48,11 @@
     rho = rho
   [../]
 
+  [./x_time_deriv]
+    type = NSTimeMomentum
+    variable = ux
+    rho = rho
+  [../]
   [./momentum_x]
     type = NSMomentum
     variable = ux
@@ -54,6 +63,11 @@
     component = 0
   [../]
 
+  [./y_time_deriv]
+    type = NSTimeMomentum
+    variable = uy
+    rho = rho
+  [../]
   [./momentum_y]
     type = NSMomentum
     variable = uy
@@ -75,6 +89,11 @@
     beta = 1e-3
   [../]
 
+  [./temp_time]
+    type = NSTimeTemperature
+    variable = temp
+    rho = rho
+  [../]
   [./temp_advection]
     type = NSTemperature
     variable = temp
@@ -146,14 +165,16 @@
 []
 
 [Executioner]
-  type = Steady
+  type = Transient
   petsc_options_iname = '-ksp_gmres_restart -pc_type -sub_pc_type -sub_pc_factor_levels'
   petsc_options_value = '300                bjacobi  ilu          4'
   line_search = none
-  nl_rel_tol = 1e-12
+  nl_rel_tol = 1e-10
   nl_max_its = 6
   l_tol = 1e-6
   l_max_its = 300
+  num_steps = 3
+  dt = 1
 []
 
 [Outputs]

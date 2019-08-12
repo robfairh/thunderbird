@@ -41,7 +41,7 @@ NSMass::computeQpResidual()
   res += _rho[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2)) * _test[_i][_qp];
   
   RealVectorValue U(_u_vel[_qp], _v_vel[_qp], _w_vel[_qp]);
-  //res += _grad_rho[_qp] * U * _test[_i][_qp];
+  res += _grad_rho[_qp] * U * _test[_i][_qp];
   
   return res;
 }
@@ -59,25 +59,34 @@ NSMass::computeQpOffDiagJacobian(unsigned jvar)
   if (jvar == _u_vel_var_number)
   {
     Real jac = _grad_phi[_j][_qp](0) * _test[_i][_qp];
+    //Real jac = _rho[_qp] * _grad_phi[_j][_qp](0) * _test[_i][_qp];
+    //jac += _grad_rho[_qp](0) * _phi[_j][_qp] * _test[_i][_qp];
     return jac;
   }
 
   else if (jvar == _v_vel_var_number)
   {
     Real jac = _grad_phi[_j][_qp](1) * _test[_i][_qp];
+    //Real jac = _rho[_qp] * _grad_phi[_j][_qp](1) * _test[_i][_qp];
+    //jac += _grad_rho[_qp](1) * _phi[_j][_qp] * _test[_i][_qp];
     return jac;
   }
 
   else if (jvar == _w_vel_var_number)
   {
-    Real jac = _grad_phi[_j][_qp](2) * _test[_i][_qp];
+    //Real jac = _grad_phi[_j][_qp](2) * _test[_i][_qp];
+    Real jac = _rho[_qp] * _grad_phi[_j][_qp](2) * _test[_i][_qp];
+    jac += _grad_rho[_qp](2) * _phi[_j][_qp] * _test[_i][_qp];
     return jac;
   }
 
   else if (jvar == _rho_var_number)
   {
     Real jac = 0;
-    //Real jac = _phi[_j][_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2)) * _test[_i][_qp];
+    jac += _phi[_j][_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2)) * _test[_i][_qp];
+
+    RealVectorValue U(_u_vel[_qp], _v_vel[_qp], _w_vel[_qp]);
+    jac += _grad_phi[_j][_qp] * U * _test[_i][_qp];
     return jac;
   }
 
