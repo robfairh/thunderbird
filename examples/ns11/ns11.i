@@ -108,8 +108,17 @@
   [./ux_dirichlet]
     type = DirichletBC
     variable = ux
-    boundary = 'left bottom top'
+    boundary = 'bottom top'
     value = 0
+  [../]
+
+  [./ux_div]
+    type = OutflowBC
+    variable = ux
+    boundary = 'right'
+    u = ux
+    v = uy
+    component = 0
   [../]
 
   [./uy_dirichlet]
@@ -117,6 +126,15 @@
     variable = uy
     boundary = 'left right'
     value = 0
+  [../]
+
+  [./uy_div]
+    type = OutflowBC
+    variable = uy
+    boundary = 'bottom'
+    u = ux
+    v = uy
+    component = 1
   [../]
 
   [./p_left]
