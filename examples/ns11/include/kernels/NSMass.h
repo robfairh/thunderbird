@@ -15,8 +15,8 @@ public:
 
 protected:
   virtual Real computeQpResidual();
-  virtual Real computeQpJacobian();
-  virtual Real computeQpOffDiagJacobian(unsigned jvar);
+//  virtual Real computeQpJacobian();
+//  virtual Real computeQpOffDiagJacobian(unsigned jvar);
 
   const VariableValue & _u_vel;
   const VariableValue & _v_vel;

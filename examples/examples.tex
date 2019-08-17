@@ -1079,6 +1079,47 @@ The results are presented in Figure \ref{fig:ns10}. Figure \ref{fig:ns10B} shows
 \end{figure*}
 
 
+\section{N-S: Example 11}
+
+Simple case using compressible N-S.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p_{ref}-p_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=1$ and $p('top')=0$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns11}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns11/uy.png}
+	\hfill
+	\caption{Velocity for changes in the density due to pressure gradient.}
+	\label{fig:ns11}
+\end{figure*}
+
+
 
 \pagebreak 
 \bibliographystyle{plain}
