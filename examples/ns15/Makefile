@@ -26,11 +26,11 @@ ADDITIONAL_CPPFLAGS += -Wall -Wextra
 include $(FRAMEWORK_DIR)/build.mk
 include $(FRAMEWORK_DIR)/moose.mk
 
-APPLICATION_NAME := ns12
+APPLICATION_NAME := ns15
 
 # dep apps
 APPLICATION_DIR    := $(shell pwd)
-APPLICATION_NAME   := ns12
+APPLICATION_NAME   := ns15
 BUILD_EXEC         := yes
 include            $(FRAMEWORK_DIR)/app.mk
 
@@ -43,4 +43,4 @@ ex_deps     := $(patsubst %.C, %.$(obj-suffix).d, $(ex_srcfiles))
 # Additional special case targets should be added here
 
 test: all
-	$(call TEST_exodiff,ns12.i,ns12_out.e)
+	$(call TEST_exodiff,ns15.i,ns15_out.e)

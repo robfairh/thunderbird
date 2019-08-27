@@ -47,7 +47,7 @@ NSDensity::computeQpResidual()
 
   res += (_u[_qp] - _rho_ref[_qp]) * _test[_i][_qp];
   res += _rho_ref[_qp] * _beta * (_temp[_qp]-_temp_ref) * _test[_i][_qp];
-  //res += -_rho_ref[_qp]/_bulk_m * (_p[_qp]-_p_ref) * _test[_i][_qp];
+  res += -_rho_ref[_qp]/_bulk_m * (_p[_qp]-_p_ref) * _test[_i][_qp];
 
   return res;
 }

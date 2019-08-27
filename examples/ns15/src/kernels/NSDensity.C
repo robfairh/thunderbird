@@ -10,7 +10,7 @@ validParams<NSDensity>()
   params.addClassDescription("This class computes the density equation residual and Jacobian "
                              "contributions for the Navier-Stokes momentum equation.");
 
-  params.addRequiredCoupledVar("p", "pressure");
+  params.addRequiredCoupledVar("rho", "density");
   params.addRequiredCoupledVar("temp", "temperature variable");
 
   params.addParam<Real>("p_ref", 1.0, "reference pressure");
@@ -25,10 +25,10 @@ validParams<NSDensity>()
 NSDensity::NSDensity(const InputParameters & parameters)
   : Kernel(parameters),
 
-    _p(coupledValue("p")),
+    _rho(coupledValue("rho")),
     _temp(coupledValue("temp")),
 
-    _p_var_number(coupled("p")),
+    _rho_var_number(coupled("rho")),
     _temp_var_number(coupled("temp")),
 
     _p_ref(getParam<Real>("p_ref")),
@@ -45,9 +45,9 @@ NSDensity::computeQpResidual()
 {
   Real res = 0;
 
-  res += (_u[_qp] - _rho_ref[_qp]) * _test[_i][_qp];
-  res += _rho_ref[_qp] * _beta * (_temp[_qp]-_temp_ref) * _test[_i][_qp];
-  //res += -_rho_ref[_qp]/_bulk_m * (_p[_qp]-_p_ref) * _test[_i][_qp];
+  res += _rho_ref[_qp]/_bulk_m * (_u[_qp]-_p_ref) * _test[_i][_qp];
+  res += -(_rho[_qp] - _rho_ref[_qp]) * _test[_i][_qp];
+  res += -_rho_ref[_qp] * _beta * (_temp[_qp]-_temp_ref) * _test[_i][_qp];
 
   return res;
 }

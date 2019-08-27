@@ -1081,7 +1081,7 @@ The results are presented in Figure \ref{fig:ns10}. Figure \ref{fig:ns10B} shows
 
 \section{N-S: Example 11}
 
-Simple case using compressible N-S.
+Simple case using compressible N-S. For a fluid.
 This case run with the solver JNFK as the jacobians present some issues.
 I am not sure about the bc for the Laplacian in the momentum eq.
 
@@ -1100,7 +1100,7 @@ Equations involved:
 \vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
 \end{equation}
 \begin{equation}
-\rho = \rho_{0} + \frac{\rho_{0}}{K}(p_{ref}-p_{0})
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0})
 \end{equation}
 
 Boundary conditions:
@@ -1119,7 +1119,164 @@ The results are presented in Figure \ref{fig:ns11}.
 	\label{fig:ns11}
 \end{figure*}
 
+\section{N-S: Example 12}
 
+Simple case using compressible N-S. For a fluid.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+In this case, it doesn't matter much if I am using $c_{p}$ or $c_{v}$ as it is a fluid.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=1$ and $p('top')=0$.
+	\item[] $T('bottom')=40$ and $T('top')=60$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns12a} and \ref{fig:ns12b}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns12/rho.png}
+	\hfill
+	\caption{Density.}
+	\label{fig:ns12a}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns12/uy.png}
+	\hfill
+	\caption{Velocity for changes in the density due to temperature gradient.}
+	\label{fig:ns12b}
+\end{figure*}
+
+\section{N-S: Example 13}
+
+Simple case using compressible N-S. For a fluid.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+In this case, it doesn't matter much if I am using $c_{p}$ or $c_{v}$ as it is a fluid.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=1$ and $p('top')=0$.
+	\item[] $T('top')=40$, $T('left')=60$, and $T('right')=60$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns13a} and \ref{fig:ns13b}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns13/rho.png}
+	\hfill
+	\caption{Density.}
+	\label{fig:ns13a}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns13/uy.png}
+	\hfill
+	\caption{Velocity for changes in the density due to temperature gradient.}
+	\label{fig:ns13b}
+\end{figure*}
+
+\section{N-S: Example 14}
+
+Simple case using compressible N-S. For a fluid.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+The eq. of energy has several variants.
+This example adds the term $p(\nabla.\vec(v))$ and shows the difference between the model with and without it.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\vec{v}.\nabla)T - \nabla .(k\nabla T) + p (\nabla . \vec{v})= 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=20$ and $p('top')=10$.
+	\item[] $T('top')=20$, $T('left')=200$, and $T('right')=200$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns14}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns14/temp.png}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns14}
+\end{figure*}
+
+\section{N-S: Example 15}
+
+Adds time kernels. It doesn't work.
 
 \pagebreak 
 \bibliographystyle{plain}

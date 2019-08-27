@@ -16,10 +16,12 @@
   [./ux]
     order = SECOND
     family = LAGRANGE
+    #initial_condition = 0
   [../]
   [./uy]
     order = SECOND
     family = LAGRANGE
+    #initial_condition = -1.
   [../]
   [./p]
     order = FIRST
@@ -28,17 +30,34 @@
   [./rho]
     order = FIRST
     family = LAGRANGE
+    #initial_condition = 1.
+  [../]
+  [./temp]
+    order = SECOND
+    family = LAGRANGE
+    #initial_condition = 20.
   [../]
 []
 
 [Kernels]
-  [./mass1]
+  #[./mass_time]
+  #  type = NSTimeMass
+  #  variable = rho
+  #[../]
+
+  [./mass]
     type = NSMass
-    variable = p
+    variable = rho
     u = ux
     v = uy
-    rho = rho
   [../]
+
+  #[./x_momentum_time]
+  #  type = NSTimeMomentum
+  #  variable = ux
+  #  rho = rho
+  #  component = 0
+  #[../]
 
   [./momentum_x]
     type = NSMomentum
@@ -49,6 +68,13 @@
     rho = rho
     component = 0
   [../]
+
+  #[./y_momentum_time]
+  #  type = NSTimeMomentum
+  #  variable = uy
+  #  rho = rho
+  #  component = 1
+  #[../]
 
   [./momentum_y]
     type = NSMomentum
@@ -62,13 +88,28 @@
 
   [./density]
     type = NSDensity
-    variable = rho
-    p = p
+    variable = p
+    rho = rho
     temp = temp
     bulk_m = 1e3
     p_ref = 100
     temp_ref = 100
     beta = 1e-3
+  [../]
+
+  #[./temperature_time]
+  #  type = NSTimeTemperature
+  #  variable = temp
+  #  rho = rho
+  #[../]
+
+  [./temperature]
+    type = NSTemperature
+    variable = temp
+    u = ux
+    v = uy
+    p = p
+    rho = rho
   [../]
 []
 
@@ -90,15 +131,36 @@
   [./p_left]
     type = DirichletBC
     variable = p
-    boundary = 'bottom'
-    value = 1
+    boundary = 'top'
+    value = 20
   [../]
 
-  [./p_right]
+  [./rho_right]
     type = DirichletBC
-    variable = p
+    variable = rho
     boundary = 'top'
-    value = 0
+    value = 1.
+  [../]
+
+  #[./p_right]
+  #  type = DirichletBC
+  #  variable = p
+  #  boundary = 'bottom'
+  #  value = 10
+  #[../]
+
+  [./temp_right]
+    type = DirichletBC
+    variable = temp
+    boundary = top
+    value = 20
+  [../]
+
+  [./temp_left]
+    type = DirichletBC
+    variable = temp
+    boundary = 'left right'
+    value = 200
   [../]
 []
 
@@ -127,15 +189,11 @@
   nl_max_its = 6
   l_tol = 1e-6
   l_max_its = 300
+  #num_steps = 5
+  #dt = 0.01
 []
 
 [Outputs]
   execute_on = 'timestep_end'
   exodus = true
 []
-
-
-
-
-
-

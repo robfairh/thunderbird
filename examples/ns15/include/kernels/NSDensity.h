@@ -18,10 +18,10 @@ protected:
 //  virtual Real computeQpJacobian();
 //  virtual Real computeQpOffDiagJacobian(unsigned jvar);
 
-  const VariableValue & _p;
+  const VariableValue & _rho;
   const VariableValue & _temp;
 
-  unsigned _p_var_number;
+  unsigned _rho_var_number;
   unsigned _temp_var_number;
   
   const Real & _p_ref;
