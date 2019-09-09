@@ -1276,7 +1276,134 @@ The results are presented in Figure \ref{fig:ns14}.
 
 \section{N-S: Example 15}
 
-Adds time kernels. It doesn't work.
+It adds time kernels but it doesn't work.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the BC for the Laplacian in the momentum eq.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSTimeMass
+	\item[] NSMass
+	\item[] NSTimeMomentum
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTimeTemperature
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\frac{d\vec{v}}{dt} + \vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\frac{d\rho}{dt} + \vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\frac{d\vec{v}}{dt} + \vec{v}.\nabla T) - \nabla .(k\nabla T) + p (\nabla . \vec{v})= 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+\section{N-S: Example 16}
+
+Try writing steady compressible NS for a perfect gas. It doesn't work. I think it is something with the BCs.
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\vec{v}.\nabla) T - \nabla .(k\nabla T) + p (\nabla . \vec{v})= 0
+\end{equation}
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+The last equation is a constraint. Replacing it into the other equations:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \rho R \nabla T + R T \nabla \rho - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\vec{v}.\nabla) T - \nabla .(k\nabla T) + \rho R T (\nabla . \vec{v})= 0
+\end{equation}
+
+\section{Simple: Example 1}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+u \frac{\partial \rho}{\partial x} + \rho \frac{\partial u}{\partial x}=0
+\end{equation}
+
+The last equation is a constraint. Solving it yields:
+\begin{equation}
+\rho u = constant = K
+\end{equation}
+
+Using that $\frac{\partial p}{\partial x}=-10$ The equation becomes:
+\begin{equation}
+K\frac{\partial u}{\partial x} -10 - \mu \nabla^{2}u = 0
+\end{equation}
+
+Case A:
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMomentum
+	\item[] INSMomentumNoBCBCLaplaceForm
+\end{description} 
+
+BCs:
+Boundary conditions:
+\begin{description}[]
+	\item[] $u('left')=1$, $u('right')=1.2$
+	\item[] $u('bottom')=0$, $u('top')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:simple1A}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{simple1/caseA.png}
+	\hfill
+	\caption{u.}
+	\label{fig:simple1A}
+\end{figure*}
+
+Case B:
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMomentum
+	\item[] INSMomentumNoBCBCLaplaceForm
+\end{description} 
+
+BCs:
+Boundary conditions:
+\begin{description}[]
+	\item[] $u('left')=1$
+	\item[] $u('bottom')=0$, $u('top')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:simple1B}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{simple1/caseB.png}
+	\hfill
+	\caption{u.}
+	\label{fig:simple1B}
+\end{figure*}
 
 \pagebreak 
 \bibliographystyle{plain}
