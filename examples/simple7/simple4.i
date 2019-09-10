@@ -22,18 +22,16 @@
     family = LAGRANGE
   [../]
 
+  [./v]
+    order = SECOND
+    family = LAGRANGE
+  [../]
+
   [./rho]
     order = FIRST
     family = LAGRANGE
   [../]
 
-  [./temp]
-    order = FIRST
-    family = LAGRANGE
-  [../]
-[]
-
-[AuxVariables]
   [./p]
     order = SECOND
     family = LAGRANGE
@@ -44,35 +42,53 @@
   [./momentum_x]
     type = NSMomentum
     variable = u
+    u = u
+    v = v
     rho = rho
     p = p
+    component = 0
+  [../]
+
+  [./momentum_y]
+    type = NSMomentum
+    variable = v
+    u = u
+    v = v
+    rho = rho
+    p = p
+    component = 1
   [../]
  
   [./mass]
     type = NSMass
     variable = rho
     u = u
+    v = v
   [../]
 
-  [./temperature]
-    type = NSTemperature
-    variable = temp
-    u = u
-    p = p
-    rho = rho
-  [../]
-[]
-
-[AuxKernels]
   [./pressure]
     type = NSPressure
     variable = p
     rho = rho
-    temp = temp
+  [../]
+
+[]
+
+[Functions]
+  [./outflowBC]
+    type = ParsedFunction
+    value = '4 * y * (1 - y)'
   [../]
 []
 
 [BCs]
+  [./uy_dirichlet]
+    type = DirichletBC
+    variable = v
+    boundary = 'left right top bottom'
+    value = 0
+  [../]
+
   [./ux_dirichlet_x1]
     type = DirichletBC
     variable = u
@@ -87,32 +103,25 @@
     value = 0
   [../]
 
-  [./temp_x1]
-    type = DirichletBC
-    variable = temp
-    boundary = 'left'
-    value = 40
-  [../]
-
-  [./temp_y]
-    type = DirichletBC
-    variable = temp
-    boundary = 'top bottom'
-    value = 50
-  [../]
+  #[./ux_outflow]
+  #  type = FunctionDirichletBC
+  #  function = outflowBC
+  #  variable = u
+  #  boundary = 'right'
+  #[../]
 
   [./rho_x1]
     type = DirichletBC
-    variable = p
-    boundary = 'corner'
+    variable = rho
+    boundary = 'left'
     value = 1.
   [../]
 
-  [./laplacian]
-    type = INSMomentumNoBCBCLaplaceForm
-    variable = u
-    boundary = 'bottom top'
-  [../]
+  #[./laplacian]
+  #  type = INSMomentumNoBCBCLaplaceForm
+  #  variable = u
+  #  boundary = 'bottom top'
+  #[../]
 []
 
 [Materials]
