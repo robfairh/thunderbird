@@ -1354,7 +1354,7 @@ The last equation is a constraint. Solving it yields:
 \rho u = constant = K
 \end{equation}
 
-Using that $\frac{\partial p}{\partial x}=-10$ The equation becomes:
+Using that $\frac{\partial p}{\partial x}=-10$ the equation becomes:
 \begin{equation}
 K\frac{\partial u}{\partial x} -10 - \mu \nabla^{2}u = 0
 \end{equation}
@@ -1404,6 +1404,142 @@ The results are presented in Figure \ref{fig:simple1B}.
 	\caption{u.}
 	\label{fig:simple1B}
 \end{figure*}
+
+\section{Simple: Example 2}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+u \frac{\partial \rho}{\partial x} + \rho \frac{\partial u}{\partial x}=0
+\end{equation}
+
+$\frac{\partial p}{\partial x}=-10$
+
+Case A:
+Integrates the continuity eq.
+\begin{equation}
+\rho u = constant = K
+\end{equation}
+
+The integrated continuity eq. is implemented as an auxiliary kernel.
+This one doesn't run.
+
+Case B:
+Uses the equations presented before.
+
+\section{Simple: Example 3}
+
+Based on case NS13. And then changes the eq for p.
+It doesn't work.
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+This last eq was implemented as a kernel for the density
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\section{Simple: Example 4}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+u \frac{\partial \rho}{\partial x} + \rho \frac{\partial u}{\partial x}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} u \frac{\partial T}{\partial x} - \nabla .(k\nabla T) + p \frac{\partial u}{\partial x} = 0
+\end{equation}
+Last eq implemented as an aux kernel for the density:
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\section{Simple: Example 5}
+
+NS with the mass equation:
+
+Equations involved:
+
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+This last eq was implemented as an aux kernel.
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\section{Simple: Example 6}
+
+Based on case NS13. Changes the kernel for \rho for an aux kernel
+It doesn't work??
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+This last eq was implemented as a aux kernel for the density.
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+\section{Simple: Example 7}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} u \frac{\partial T}{\partial x} - \nabla .(k\nabla T) + p \frac{\partial u}{\partial x} = 0
+\end{equation}
+This last eq was implemented as a kernel.
+\begin{equation}
+p = \rho R T
+\end{equation}
 
 \pagebreak 
 \bibliographystyle{plain}
