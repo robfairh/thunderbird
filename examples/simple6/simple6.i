@@ -83,6 +83,11 @@
     variable = rho
     p = p
     temp = temp
+    bulk_m = 1e3
+    p_ref = 100
+    temp_ref = 100
+    beta = 1e-3
+    rho_ref = 1.
   [../]
 []
 
@@ -101,13 +106,6 @@
     value = 0
   [../]
 
-  [./uy_dirichlet]
-    type = DirichletBC
-    variable = uy
-    boundary = 'bottom'
-    value = 1
-  [../]
-
   [./p_left]
     type = DirichletBC
     variable = p
@@ -119,14 +117,14 @@
     type = DirichletBC
     variable = p
     boundary = 'bottom'
-    value = 15
+    value = 20
   [../]
 
   [./temp_right]
     type = DirichletBC
     variable = temp
-    boundary = bottom
-    value = 180
+    boundary = top
+    value = 20
   [../]
 
   [./temp_left]
