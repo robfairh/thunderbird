@@ -29,8 +29,8 @@ NSMomentum::computeQpResidual()
 {
   Real r = 0;
 
-  r += _test[_i][_qp] * _rho[_qp] * _u[_qp] * _grad_u[_qp] (0);
-  //r += _test[_i][_qp] * _u[_qp] * _grad_u[_qp] (0);
+  //r += _test[_i][_qp] * _rho[_qp] * _u[_qp] * _grad_u[_qp] (0);
+  r += _test[_i][_qp] * _u[_qp] * _grad_u[_qp] (0);
   r += - _grad_p[_qp](0) * _test[_i][_qp];
   r += _mu[_qp] * (_grad_u[_qp] * _grad_test[_i][_qp]);
 

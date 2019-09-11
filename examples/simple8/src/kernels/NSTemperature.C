@@ -42,8 +42,8 @@ Real
 NSTemperature::computeQpResidual()
 {
   // Note: _u is the temperature variable, _grad_u is its gradient.
-  Real convective_part = _rho[_qp] * _cp[_qp] * (_u_vel[_qp] * _grad_u[_qp](0)) * _test[_i][_qp];
-  //Real convective_part = _cp[_qp] * (_u_vel[_qp] * _grad_u[_qp](0)) * _test[_i][_qp];
+  //Real convective_part = _rho[_qp] * _cp[_qp] * (_u_vel[_qp] * _grad_u[_qp](0)) * _test[_i][_qp];
+  Real convective_part = _cp[_qp] * (_u_vel[_qp] * _grad_u[_qp](0)) * _test[_i][_qp];
 
   // Thermal conduction part, k * grad(T) * grad(v)
   Real conduction_part = _k[_qp] * _grad_u[_qp] * _grad_test[_i][_qp];

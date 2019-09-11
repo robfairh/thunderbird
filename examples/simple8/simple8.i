@@ -58,7 +58,7 @@
     type = NSTemperature
     variable = temp
     u = u
-    p = p
+    #p = p
     #rho = rho
   [../]
 []
