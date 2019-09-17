@@ -1560,6 +1560,135 @@ BCs:
 	\label{fig:st00}
 \end{figure*}
 
+\section{ST01}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}(\sigma_x)
+\end{equation}
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{st01/strain_x.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st01}
+\end{figure*}
+
+\section{ST02}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}(\sigma_x)
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 1700 kg/m3, E = 10 GPa, \nu = 0.14$
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{st02/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st02}
+\end{figure*}
+
+There is a problem here. If I try to define the following BCs it works.
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 500 kg/m3, E = 10 GPa, \nu = 0.14$
+
+Results:
+$ \sigma_x (L) = -9.81e3$
+$ u(L) = -9.81e-7$
+
+Then if I try the following BCs, it doesn't run.
+\begin{equation}
+\sigma_x (L) = -9.81e3
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+\section{ST03}
+
+Adds components to the previous case, just for the deformation equation.
+
+\section{ST04}
+
+1-D case.
+
+Deformation eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + G_x = 0
+\end{equation}
+Constitutive eq:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} \sigma_x
+\end{equation}
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+Combining the eqs:
+\begin{equation}
+\frac{\partial}{\partial x}(E \frac{\partial u}{\partial x}) + G_x = 0
+\end{equation}
+
+In kernel form:
+\begin{equation}
+\left< E \frac{\partial u}{\partial x}, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+Which is equal to:
+\begin{equation}
+-\left< -\sigma_x, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+The last equation adds two minus signs to the BC term, as the Neumann BC adds a minus sign.
+
+BCs: $u(0)=0, \sigma_x(L)=-9.81e3$
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{st04/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st04}
+\end{figure*}
+
+\section{ST05}
+
 \pagebreak 
 \bibliographystyle{plain}
 \bibliography{bibliography}
