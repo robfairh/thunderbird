@@ -19,7 +19,7 @@ validParams<NSTemperature>()
 
   // Optional parameters
   params.addParam<MaterialPropertyName>("k_name", "k", "thermal conductivity name");
-  params.addParam<MaterialPropertyName>("cp_name", "cp", "specific heat name");
+  params.addParam<MaterialPropertyName>("cv_name", "cv", "specific heat name");
 
   return params;
 }
@@ -47,7 +47,7 @@ NSTemperature::NSTemperature(const InputParameters & parameters)
 
     // Material Properties
     _k(getMaterialProperty<Real>("k_name")),
-    _cp(getMaterialProperty<Real>("cp_name"))
+    _cv(getMaterialProperty<Real>("cv_name"))
 {
 }
 
@@ -55,7 +55,7 @@ Real
 NSTemperature::computeQpResidual()
 {
   // Note: _u is the temperature variable, _grad_u is its gradient.
-  Real convective_part = _rho[_qp] * _cp[_qp] *
+  Real convective_part = _rho[_qp] * _cv[_qp] *
                          (_u_vel[_qp] * _grad_u[_qp](0) + _v_vel[_qp] * _grad_u[_qp](1) +
                           _w_vel[_qp] * _grad_u[_qp](2)) *
                          _test[_i][_qp];
@@ -64,12 +64,13 @@ NSTemperature::computeQpResidual()
   Real conduction_part = _k[_qp] * _grad_u[_qp] * _grad_test[_i][_qp];
 
   // Compressible flow
-  Real compress_part = _p[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2));
+  Real compress_part = 0;
+  compress_part += _p[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2));
 
   return convective_part + conduction_part + compress_part;
-  //return convective_part + conduction_part;
 }
 
+/*
 Real
 NSTemperature::computeQpJacobian()
 {
@@ -119,3 +120,4 @@ NSTemperature::computeQpOffDiagJacobian(unsigned jvar)
   else
     return 0;
 }
+*/

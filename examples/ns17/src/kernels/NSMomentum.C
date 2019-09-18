@@ -62,8 +62,8 @@ NSMomentum::computeQpResidual()
   r += _test[_i][_qp] * _rho[_qp] * convec(_component);
   
   // viscous term from compressible flow
-  r += 1/3 * _mu[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2)) * _grad_test[_i][_qp](_component);
-  // missing BCs
+   r += 1/3 * _mu[_qp] * (_grad_u_vel[_qp](0) + _grad_v_vel[_qp](1) + _grad_w_vel[_qp](2)) * _grad_test[_i][_qp](_component);
+  // Neumann BCs ??
   
   return r;
 }
