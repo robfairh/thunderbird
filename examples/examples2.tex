@@ -1,0 +1,216 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} % for table captions
+\usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage{xspace}
+\usepackage{verbatim} % for block comments
+\usepackage{subcaption} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcommand{\deploy}{\texttt{d3ploy}\xspace}%
+\newcommand{\Deploy}{\texttt{D3ploy}\xspace}%
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{float} 
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+\newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
+\usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=1cm, minimum height=1cm,text centered, draw=black, 
+fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\graphicspath{}
+
+\begin{document}
+
+\section{Equations}
+
+\noindent
+Conservation of Mass:
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \nabla (\rho \vec{v})=0
+\end{equation}
+Navier-Stokes:
+\begin{equation}
+\rho (\frac{\partial \vec{v}}{\partial t} + \vec{v}.\nabla)\vec{v} = - \nabla p + \rho g \check{j} + \mu \nabla^{2}\vec{v} + \frac{\mu}{3} \vec{\nabla}.(\nabla . \vec{v})
+\end{equation}
+Conservation of Energy:
+\begin{equation}
+\rho c_{v} (\frac{\partial T}{\partial t}+(\vec{v}.\nabla)T) = \nabla .(k\nabla T) - p (\nabla . \vec{v})
+\end{equation}
+
+\noindent
+For a liquid:
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) - \rho_{0}\beta(T-T_{0})
+\end{equation}
+\noindent
+For a perfect gas:
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\noindent
+\textbf{Stationary case:}\\
+Conservation of Mass:
+\begin{equation}
+\nabla (\rho \vec{v})=0
+\end{equation}
+Navier-Stokes:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} = - \nabla p + \rho g \check{j} + \mu \nabla^{2}\vec{v} + \frac{\mu}{3} \vec{\nabla}.(\nabla . \vec{v})
+\end{equation}
+Conservation of Energy:
+\begin{equation}
+\rho c_{v} (\vec{v}.\nabla)T = \nabla .(k\nabla T) - p (\nabla . \vec{v})
+\end{equation}
+
+\section{Kernels}
+\noindent
+NSMass:
+\begin{equation}
+\left< \vec{v} . \nabla \rho, \phi \right> + \left< \rho (\nabla . \vec{v}), \phi \right> = 0
+\end{equation}
+NSMomentum:
+\begin{equation}
+\left< \rho (\vec{v}.\nabla)\vec{v}, \phi \right> + \left< \nabla p, \phi \right> - \left< \rho g \check{j}, \phi \right> + \left< \mu \nabla\vec{v}, \nabla \phi \right> + \left< \frac{\mu}{3} (\nabla . \vec{v}), \nabla \phi \right> = 0
+\end{equation}
+NSTemperature:
+\begin{equation}
+\left< \rho c_{v} (\vec{v}.\nabla)T, \phi \right> + \left< k \nabla T,\nabla \phi \right> + \left< p (\nabla . \vec{v}), \phi \right> = 0
+\end{equation}
+
+\noindent
+For a liquid:
+\begin{equation}
+\left< \rho - \rho_{0}, \phi \right> - \left< \frac{\rho_{0}}{K}(p-p_{0}), \phi \right> + \left< \rho_{0}\beta(T-T_{0}), \phi \right> = 0
+\end{equation}
+\noindent
+For a perfect gas:
+\begin{equation}
+\left< p, \phi \right> = \left< \rho R T, \phi \right>
+\end{equation}
+
+\section{Residuals in moose}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{ns17/mass.png}
+	\hfill
+	\caption{NSMass.}
+	\label{fig:mass}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{ns17/momen.png}
+	\hfill
+	\caption{NSMomentum.}
+	\label{fig:momen}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{ns17/tempk.png}
+	\hfill
+	\caption{NSTemperature.}
+	\label{fig:temp}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{ns17/dens.png}
+	\hfill
+	\caption{NSDensity for a liquid.}
+	\label{fig:densl}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{ns18/dens.png}
+	\hfill
+	\caption{NSDensity for a gas.}
+	\label{fig:densg}
+\end{figure}
+
+\section{Results for a Liquid}
+The domain is a rectangle of dimensions [0,1] x [0,2].
+
+The BCs are:
+$u = 0$ in $\partial \Omega$, $v('left') = v('right') = 0$, $w = 0$ everywhere.
+$T('left')=T('right')=200$ and $T('bottom')=20$.
+$p('bottom')=20$ and $p('top')=10$.
+
+\noindent
+Data (Arbitrary values):
+'bulk\_m': $K = 1e3$, 'p\_ref': $p_{0} = 100$, 'temp\_ref': $T_{0} = 100$, 'beta': $\beta = 1e-3$.
+$\rho_{ref} = 1$, $k = 1$, $\mu = 1$, and $c_{v}=1$.
+
+This are the results obtained:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{ns17/uy.png}
+	\hfill
+	\caption{v(0.5,y), velocity in the y-direction in the center line.}
+	\label{fig:u}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{ns17/rho.png}
+	\hfill
+	\caption{rho(0.5,y), density in the center line.}
+	\label{fig:rho}
+\end{figure}
+
+\section{Results for a Gas}
+The domain is a rectangle of dimensions [0,1] x [0,2].
+
+The BCs are:
+$u = 0$ in $\partial \Omega$, $v('left') = v('right') = 0$, $w = 0$ everywhere.
+$T('left')=T('right')=200$.
+$\rho('bottom')=1$ and $rho('top')=0.9$.
+
+\noindent
+Data (Arbitrary values):
+$R = 10$, $k = 1$, $\mu = 1$, and $c_{v}=1$.
+
+This problem runs but the solution that I get is 0 for the pressure, velocity and density.
+The plot for density is:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{ns18/rho.png}
+	\hfill
+	\caption{rho(0.5,y), density in the center line.}
+	\label{fig:rho_g}
+\end{figure}
+
+\section{Comments}
+For the liquid it seems to be working. The problem is how to implement this for the transient problem. The Kernel that solves the pressure is NSMass, where the variable that changes with respect to time is the density, and not the pressure.
+Where can I find analytical solutions to this problem or finite element analysis about this problem?
+
+For the gas, I don't think the solution is correct. I will have the same issue as for the fluid in the non-stationary case.
+If I change the variables for the kernels it won't converge. Now, the kernel NSMass is the mass equation, but it solves the pressure, and the kernel NSDensity is the equation of state, and it solves the density. If I swap them, it doesn't work.
+Also where can I find analytical/finite element analysis solutions to this problem?
+
+\pagebreak 
+\bibliographystyle{plain}
+
+\end{document}

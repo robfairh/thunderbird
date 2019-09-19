@@ -8,7 +8,7 @@
   xmax = 1.
   ymax = 2.
   nx = 10
-  ny = 20
+  ny = 30
   elem_type = QUAD9
 []
 
@@ -69,10 +69,7 @@
     variable = rho
     p = p
     temp = temp
-    bulk_m = 1e3
-    p_ref = 100
-    temp_ref = 100
-    beta = 1e-3
+    R = 10
   [../]
 
   [./temperature]
@@ -100,26 +97,33 @@
     value = 0
   [../]
 
+  [./uy_dirichlet2]
+    type = DirichletBC
+    variable = uy
+    boundary = 'bottom'
+    value = 1
+  [../]
+
   [./p_left]
     type = DirichletBC
-    variable = p
+    variable = rho
     boundary = 'bottom'
-    value = 20
+    value = 1
   [../]
 
   [./p_right]
     type = DirichletBC
-    variable = p
+    variable = rho
     boundary = 'top'
-    value = 10
+    value = 0.9
   [../]
 
-  [./temp_right]
-    type = DirichletBC
-    variable = temp
-    boundary = bottom
-    value = 20
-  [../]
+  #[./temp_right]
+  #  type = DirichletBC
+  #  variable = temp
+  #  boundary = top
+  #  value = 20
+  #[../]
 
   [./temp_left]
     type = DirichletBC

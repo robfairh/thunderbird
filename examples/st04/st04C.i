@@ -15,6 +15,12 @@
   [../]
 []
 
+[AuxVariables]
+  [./sigma]
+    order = SECOND
+    family = LAGRANGE
+  [../]
+[]
 
 [Kernels]
   [./def1]
@@ -26,6 +32,14 @@
     type = Volumetric
     variable = u
     value = 4905
+  [../]
+[]
+
+[AuxKernels]
+  [./consti]
+    type = AuxConstitutive
+    variable = sigma
+    u_def = u
   [../]
 []
 

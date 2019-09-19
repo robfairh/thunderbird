@@ -1,55 +1,61 @@
+[GlobalParams]
+  #gravity = '0 -9.81 0'
+[]
+
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  xmax = 2.
+  xmax = 1.
   ymax = 2.
-  nx = 20
+  nx = 10
   ny = 20
   elem_type = QUAD9
 []
 
 [Variables]
-  [./u]
+  [./T]
+    order = SECOND
+    family = LAGRANGE
+    initial_condition = 1
+  [../]
+
+  [./rho]
     order = SECOND
     family = LAGRANGE
   [../]
 []
 
-
 [Kernels]
-  [./def1]
-    type = Deformation
-    variable = u
+  [./mass_time]
+    type = NSTimeMass
+    variable = T
+    rho = rho
   [../]
 
-  [./def2]
-    type = Volumetric
-    variable = u
-    value = 4905
+  [./mass_diff]
+    type = Diffusion
+    variable = T
+  [../]
+
+  [./rho_diff]
+    type = Diffusion
+    variable = rho
   [../]
 []
 
 [BCs]
-  [./left]
+  [./T_dirichlet]
     type = DirichletBC
-    variable = u
-    boundary = 'left'
+    variable = T
+    boundary = 'left right'
     value = 0
   [../]
 
-  [./right] #value takes the value of sigma_x
-    type = NeumannBC
-    variable = u
-    boundary = 'right'
-    value = 9.81e3
-  [../]
-[]
-
-[Materials]
-  [./const]
-    type = GenericConstantMaterial
-    prop_names = 'rho E nu'
-    prop_values = '1700 10e9 0.14'
+  [./rho_dirichlet]
+    type = DirichletBC
+    variable = rho
+    boundary = 'left right'
+    value = 0
   [../]
 []
 
@@ -62,14 +68,16 @@
 []
 
 [Executioner]
-  type = Steady
+  type = Transient
   petsc_options_iname = '-ksp_gmres_restart -pc_type -sub_pc_type -sub_pc_factor_levels'
   petsc_options_value = '300                bjacobi  ilu          4'
   line_search = none
-  nl_rel_tol = 1e-12
+  nl_rel_tol = 1e-10
   nl_max_its = 6
   l_tol = 1e-6
   l_max_its = 300
+  num_steps = 5
+  dt = 0.01
 []
 
 [Outputs]

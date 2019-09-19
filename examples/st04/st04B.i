@@ -13,6 +13,11 @@
     order = SECOND
     family = LAGRANGE
   [../]
+
+  [./sigma]
+    order = SECOND
+    family = LAGRANGE
+  [../]
 []
 
 
@@ -26,6 +31,12 @@
     type = Volumetric
     variable = u
     value = 4905
+  [../]
+
+  [./consti]
+    type = Consti
+    variable = sigma
+    u_def = u
   [../]
 []
 
