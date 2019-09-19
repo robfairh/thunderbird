@@ -13,12 +13,18 @@
     order = FIRST
     family = LAGRANGE
   [../]
+
+  [./v]
+    order = FIRST
+    family = LAGRANGE
+  [../]
 []
 
 [Kernels]
   [./def1]
-    type = Deformation
+    type = Deformation_x
     variable = u
+    v_def = v
   [../]
 
   [./def2]

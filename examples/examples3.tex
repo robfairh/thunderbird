@@ -1,0 +1,283 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} % for table captions
+\usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage{xspace}
+\usepackage{float} 
+\usepackage{verbatim} % for block comments
+\usepackage{subcaption} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcommand{\deploy}{\texttt{d3ploy}\xspace}%
+\newcommand{\Deploy}{\texttt{D3ploy}\xspace}%
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+\newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
+\usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=1cm, minimum height=1cm,text centered, draw=black, 
+fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\graphicspath{}
+%\title{Thermo-Mechanical MOOSE-based solver}
+%\author{Roberto E. Fairhurst Agosta}
+
+\begin{document}
+	%\begin{titlepage}
+		%\maketitle
+		%\thispagestyle{empty}
+	%\end{titlepage}
+	
+\section{ST00}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{st00/sigma_x.png}
+	\hfill
+	\caption{$\sigma_x$.}
+	\label{fig:st00}
+\end{figure}
+
+\section{ST01}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}\sigma_x
+\end{equation}
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{st01/strain_x.png}
+	\hfill
+	\caption{$\varepsilon_x$.}
+	\label{fig:st01}
+\end{figure}
+
+\section{ST02}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}\sigma_x
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 1700 kg/m3, E = 10 GPa, \nu = 0.14$
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{st02/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st02}
+\end{figure}
+
+There is a problem here. If I try to define the following BCs it works.
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 500 kg/m3, E = 10 GPa, \nu = 0.14$
+
+Results:
+$ \sigma_x (L) = -9.81e3$
+$ u(L) = -9.81e-7$
+
+Then if I try the following BCs, it doesn't run.
+\begin{equation}
+\sigma_x (L) = -9.81e3
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+\section{ST03}
+
+Adds components to the previous case, just for the deformation equation.
+
+\section{ST04}
+
+1-D case.
+
+Equilibrium eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + G_x = 0
+\end{equation}
+Constitutive eq:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} \sigma_x
+\end{equation}
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+Combining the eqs:
+\begin{equation}
+\frac{\partial}{\partial x}(E \frac{\partial u}{\partial x}) + G_x = 0
+\end{equation}
+
+In kernel form:
+\begin{equation}
+\left< E \frac{\partial u}{\partial x}, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+Which is equal to:
+\begin{equation}
+-\left< -\sigma_x, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+The last equation adds two minus signs to the BC term, as the Neumann BC adds a minus sign.
+
+BCs: $u(0)=0, \sigma_x(L)=-9.81e3$
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{st04/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st04}
+\end{figure}
+
+I am not sure if the BC are properly implemented. A way to check is looking at the stress $\sigma_x$.
+I was trying to implement an auxkernel that computes $E \frac{\partial u}{\partial x}$, but it throws an error.
+
+\section{ST05}
+
+2-D case.
+Equilibrium eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \frac{\partial \tau_{xy}}{\partial y} + G_x = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \tau_{xy}}{\partial x} + \frac{\partial \sigma_y}{\partial y} + G_y = 0
+\end{equation}
+Constitutive eqs:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
+\end{equation}
+Deformation eqs:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
+\end{equation}
+
+Combining the eqs:
+\begin{equation}
+\frac{\partial}{\partial x}(c \frac{\partial u}{\partial x} + d \frac{\partial v}{\partial y}) + \frac{\partial}{\partial y}(G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}) + G_x = 0
+\end{equation}
+\begin{equation}
+\frac{\partial}{\partial y}(G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}) + \frac{\partial}{\partial y}(d \frac{\partial u}{\partial x} + c \frac{\partial v}{\partial y}) + G_y = 0
+\end{equation}
+where $c = \frac{E}{1-\nu^2}$, $d = \frac{\nu E}{1-\nu^2}$, and $G = \frac{E}{2(1+\nu)}$.
+
+In kernel form:
+\begin{equation}
+\left< c \frac{\partial u}{\partial x} + d \frac{\partial v}{\partial y}, \phi \right>_{BC_x} - \left< c \frac{\partial u}{\partial x} + d \frac{\partial v}{\partial y}, \frac{\partial \phi}{\partial x} \right> + \left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \phi \right>_{BC_y} - \left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \frac{\partial \phi}{\partial y} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \phi \right>_{BC_x} - \left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \frac{\partial \phi}{\partial x} \right> +
+\left< d \frac{\partial u}{\partial x} + c \frac{\partial v}{\partial y}, \phi \right>_{BC_y} - \left< d \frac{\partial u}{\partial x} + c \frac{\partial v}{\partial y}, \frac{\partial \phi}{\partial y} \right>
++ \left< G_y , \phi \right> = 0
+\end{equation}
+
+\section{Meeting 09/19}
+
+2-D case.
+Equilibrium eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \frac{\partial \tau_{xy}}{\partial y} + G_x = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \tau_{xy}}{\partial x} + \frac{\partial \sigma_y}{\partial y} + G_y = 0
+\end{equation}
+Constitutive eqs:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y) + \alpha (T-T_{ref}) + \varepsilon_{Rad-Induced}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x) + \alpha (T-T_{ref}) + \varepsilon_{Rad-Induced}
+\end{equation}
+
+\begin{equation}
+\varepsilon_{Rad-Induced} = A \Phi^2 + B \Phi
+\end{equation}
+
+Deformation eqs:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
+\end{equation}
+
+\pagebreak 
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
