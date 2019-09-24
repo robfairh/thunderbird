@@ -8,7 +8,7 @@ validParams<Shear_y>()
 {
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Shear_y equation 2");
-  params.addRequiredCoupledVar("u", "x-deformation");
+  params.addRequiredCoupledVar("v_def", "x-deformation");
   params.addParam<MaterialPropertyName>("E_name", "E", "Young's Modulus");
   params.addParam<MaterialPropertyName>("nu_name", "nu", "Poisson's ratio");
   return params;
@@ -16,8 +16,8 @@ validParams<Shear_y>()
 
 Shear_y::Shear_y(const InputParameters & parameters)
   : Kernel(parameters),
-    _u_def(coupledValue("u")),
-    _grad_u_def(coupledGradient("u")),
+    _v_def(coupledValue("v_def")),
+    _grad_v_def(coupledGradient("v_def")),
     _E(getMaterialProperty<Real>("E_name")),
     _nu(getMaterialProperty<Real>("nu_name"))
 {

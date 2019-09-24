@@ -14,7 +14,7 @@ validParams<Shear_x>()
   return params;
 }
 
-Deformation_x::Deformation_x(const InputParameters & parameters)
+Shear_x::Shear_x(const InputParameters & parameters)
   : Kernel(parameters),
     _v_def(coupledValue("v")),
     _grad_v_def(coupledGradient("v")),
@@ -24,7 +24,7 @@ Deformation_x::Deformation_x(const InputParameters & parameters)
 }
 
 Real
-Deformation_x::computeQpResidual()
+Shear_x::computeQpResidual()
 {
   Real G = _E[_qp]/2;
   return - G * (_grad_u[_qp](1) + _grad_v_def[_qp](0)) * _grad_test[_i][_qp](1);

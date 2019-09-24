@@ -1,5 +1,5 @@
 [GlobalParams]
-  gravity = '0 9.81 0'
+  gravity = '0 -9.81 0'
 []
 
 [Mesh]
@@ -10,6 +10,14 @@
   nx = 20
   ny = 20
   elem_type = QUAD9
+[]
+
+[MeshModifiers]
+  [./bottom_left]
+    type = AddExtraNodeset
+    new_boundary = center
+    coord = '1 1'
+  [../]
 []
 
 [Variables]
@@ -83,6 +91,7 @@
     sigma_x = stress_x
     sigma_y = stress_y
     E = 10e9
+    nu = 0.14
     component = 0
   [../]
 
@@ -92,17 +101,18 @@
     sigma_x = stress_x
     sigma_y = stress_y
     E = 10e9
+    nu = 0.14
     component = 1
   [../]
 []
 
 [BCs]
-  [./left1]
-    type = DirichletBC
-    variable = stress_x
-    boundary = 'left'
-    value = 0
-  [../]
+  #[./left1]
+  #  type = DirichletBC
+  #  variable = stress_x
+  #  boundary = 'center'
+  #  value = 0
+  #[../]
 
   [./top1]
     type = DirichletBC
@@ -111,17 +121,17 @@
     value = 0
   [../]
 
-  [./left2]
-    type = DirichletBC
-    variable = u
-    boundary = 'left'
-    value = 0
-  [../]
+  #[./left2]
+  #  type = DirichletBC
+  #  variable = u
+  #  boundary = 'center'
+  #  value = 0
+  #[../]
 
   [./top2]
     type = DirichletBC
     variable = v
-    boundary = 'top'
+    boundary = 'bottom'
     value = 0
   [../]
 []
@@ -147,8 +157,8 @@
   petsc_options_iname = '-ksp_gmres_restart -pc_type -sub_pc_type -sub_pc_factor_levels'
   petsc_options_value = '300                bjacobi  ilu          4'
   line_search = none
-  nl_rel_tol = 1e-12
-  nl_max_its = 6
+  nl_rel_tol = 1e-10
+  nl_max_its = 12
   l_tol = 1e-6
   l_max_its = 300
 []

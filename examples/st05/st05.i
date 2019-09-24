@@ -21,16 +21,40 @@
 []
 
 [Kernels]
-  [./def1]
+  [./defx1]
     type = Deformation_x
     variable = u
     v_def = v
   [../]
 
-  [./def2]
+  [./defx2]
+    type = Shear_x
+    variable = u
+    v_def = v
+  [../]
+
+  [./defx3]
     type = Volumetric
     variable = u
     value = 4905
+  [../]
+
+  [./defy1]
+    type = Deformation_y
+    variable = v
+    u_def = u
+  [../]
+
+  [./defy2]
+    type = Shear_y
+    variable = v
+    u_def = u
+  [../]
+
+  [./defy3]
+    type = Volumetric
+    variable = v
+    value = 0
   [../]
 []
 

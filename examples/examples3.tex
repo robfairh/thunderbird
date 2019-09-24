@@ -146,7 +146,46 @@ u (0) = 0
 
 \section{ST03}
 
-Adds components to the previous case, just for the deformation equation.
+2-D case. See Hooke's Law. $\sigma_x$ and $\sigma_y$ are independent.
+
+Equilibrium eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \sigma_y}{\partial y} + \rho * g = 0
+\end{equation}
+
+Hooke's Law:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} \sigma_x
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} \sigma_y
+\end{equation}
+
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x (0, y) = 0
+\end{equation}
+\begin{equation}
+\sigma_y (x, 0) = 0
+\end{equation}
+
+\begin{equation}
+u (0, y) = 0
+\end{equation}
+\begin{equation}
+v (x, 0) = 0
+\end{equation}
 
 \section{ST04}
 
@@ -243,6 +282,9 @@ In kernel form:
 + \left< G_y , \phi \right> = 0
 \end{equation}
 
+I don't know how to impose the boundary condition here. Let's go back to the case ST03.
+$\sigma_x = c\frac{\partial u}{\partial x} + d\frac{\partial v}{\partial y}$
+
 \section{Meeting 09/19}
 
 2-D case.
@@ -275,6 +317,53 @@ Deformation eqs:
 \begin{equation}
 \gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
 \end{equation}
+
+\section{ST06}
+
+2-D case.
+
+Equilibrium eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \sigma_y}{\partial y} + \rho * g = 0
+\end{equation}
+
+Constitutive eq:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} \sigma_x
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} \sigma_y
+\end{equation}
+
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x ('center', y) = 0
+\end{equation}
+\begin{equation}
+\sigma_y (x, 'top') = 0
+\end{equation}
+
+\begin{equation}
+u ('center', y) = 0
+\end{equation}
+\begin{equation}
+v (x, 'bottom') = 0
+\end{equation}
+
+Doesn't work, idk why.
+
+
 
 \pagebreak 
 \bibliographystyle{plain}

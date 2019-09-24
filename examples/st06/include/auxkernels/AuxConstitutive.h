@@ -21,8 +21,7 @@ protected:
   unsigned _component;
 
   const Real & _E;
-  //const MaterialProperty<Real> & _E;
-  //const MaterialProperty<Real> & _nu;
+  const Real & _nu;
 
 };
 
