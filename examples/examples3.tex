@@ -284,6 +284,7 @@ In kernel form:
 
 I don't know how to impose the boundary condition here. Let's go back to the case ST03.
 $\sigma_x = c\frac{\partial u}{\partial x} + d\frac{\partial v}{\partial y}$
+Try with Neumann, couple the variables u and v and replace value by my $\sigma_x$.
 
 \section{Meeting 09/19}
 
@@ -361,7 +362,42 @@ u ('center', y) = 0
 v (x, 'bottom') = 0
 \end{equation}
 
-Doesn't work, idk why.
+Doesn't work, idk why. It does something weird with the BCs.
+
+\section{ST07}
+
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho * g_x = 0
+\end{equation}
+
+Multiply by $\phi$:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} \phi + \rho g_x \phi = 0
+\end{equation}
+Using $\frac{\partial \sigma_x \phi}{\partial x}=\frac{\partial \sigma_x}{\partial x} \phi + \sigma_x \frac{\partial \phi}{\partial x}$
+\begin{equation}
+\frac{\partial \sigma_x \phi}{\partial x} - \sigma_x \frac{\partial \phi}{\partial x} + \rho g_x \phi = 0
+\end{equation}
+Integrating over the Volume:
+\begin{equation}
+\left< \frac{\partial \sigma_x \phi}{\partial x} \right> - \left< \sigma_x,\frac{\partial \phi}{\partial x} \right> + \left< \rho g_x,\phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \sigma_x \phi \right>_{BC} - \left< \sigma_x,\frac{\partial \phi}{\partial x} \right> + \left< \rho g_x,\phi \right> = 0
+\end{equation}
+It doesn't work. Super weird ...
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{st07/sigma_y.png}
+	\hfill
+	\caption{$\sigma_y$.}
+	\label{fig:st07}
+\end{figure}
+
+\section{ST08}
+
+Try to implement the module: Tensor-mechanics from Moose.
 
 
 
