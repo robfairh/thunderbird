@@ -18,21 +18,21 @@
 #include "libmesh/string_to_enum.h"
 #include <algorithm>
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "meta_action");
+registerMooseAction("ExampleApp", LineElementAction, "meta_action");
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "setup_mesh_complete");
+registerMooseAction("ExampleApp", LineElementAction, "setup_mesh_complete");
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "add_variable");
+registerMooseAction("ExampleApp", LineElementAction, "add_variable");
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "add_aux_variable");
+registerMooseAction("ExampleApp", LineElementAction, "add_aux_variable");
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "add_kernel");
+registerMooseAction("ExampleApp", LineElementAction, "add_kernel");
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "add_aux_kernel");
+registerMooseAction("ExampleApp", LineElementAction, "add_aux_kernel");
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "add_nodal_kernel");
+registerMooseAction("ExampleApp", LineElementAction, "add_nodal_kernel");
 
-registerMooseAction("TensorMechanicsApp", LineElementAction, "add_material");
+registerMooseAction("ExampleApp", LineElementAction, "add_material");
 
 template <>
 InputParameters

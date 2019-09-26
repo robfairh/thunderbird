@@ -17,21 +17,21 @@
 #include "libmesh/string_to_enum.h"
 #include <algorithm>
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "meta_action");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "meta_action");
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "setup_mesh_complete");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "setup_mesh_complete");
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "validate_coordinate_systems");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "validate_coordinate_systems");
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "add_variable");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "add_variable");
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "add_aux_variable");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "add_aux_variable");
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "add_kernel");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "add_kernel");
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "add_aux_kernel");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "add_aux_kernel");
 
-registerMooseAction("TensorMechanicsApp", TensorMechanicsAction, "add_material");
+registerMooseAction("ExampleApp", TensorMechanicsAction, "add_material");
 
 template <>
 InputParameters

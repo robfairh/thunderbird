@@ -328,15 +328,15 @@ Equilibrium eq:
 \frac{\partial \sigma_x}{\partial x} = 0
 \end{equation}
 \begin{equation}
-\frac{\partial \sigma_y}{\partial y} + \rho * g = 0
+\frac{\partial \sigma_y}{\partial y} + \rho g = 0
 \end{equation}
 
 Constitutive eq:
 \begin{equation}
-\varepsilon_x = \frac{1}{E} \sigma_x
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
 \end{equation}
 \begin{equation}
-\varepsilon_y = \frac{1}{E} \sigma_y
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
 \end{equation}
 
 Deformation equation:
@@ -398,8 +398,6 @@ It doesn't work. Super weird ...
 \section{ST08}
 
 Try to implement the module: Tensor-mechanics from Moose.
-
-
 
 \pagebreak 
 \bibliographystyle{plain}

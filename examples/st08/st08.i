@@ -18,7 +18,7 @@
   [../]
 []
 
-[Master]
+[Modules/TensorMechanics/Master]
   [./block1]
     strain = FINITE
     add_variables = true

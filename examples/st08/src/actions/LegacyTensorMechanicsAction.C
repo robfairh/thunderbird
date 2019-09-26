@@ -9,13 +9,13 @@
 
 #include "LegacyTensorMechanicsAction.h"
 
-registerMooseAction("TensorMechanicsApp", LegacyTensorMechanicsAction, "setup_mesh_complete");
+registerMooseAction("ExampleApp", LegacyTensorMechanicsAction, "setup_mesh_complete");
 
-registerMooseAction("TensorMechanicsApp",
+registerMooseAction("ExampleApp",
                     LegacyTensorMechanicsAction,
                     "validate_coordinate_systems");
 
-registerMooseAction("TensorMechanicsApp", LegacyTensorMechanicsAction, "add_kernel");
+registerMooseAction("ExampleApp", LegacyTensorMechanicsAction, "add_kernel");
 
 template <>
 InputParameters
