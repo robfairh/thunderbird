@@ -398,6 +398,151 @@ It doesn't work. Super weird ...
 \section{ST08}
 
 Try to implement the module: Tensor-mechanics from Moose.
+I do not know how to choose the actions. I started using the tensor-mechanics module from moose.
+
+\section{ST09}
+
+2-D case. Plane Stress. It assumes that $\sigma_z = 0$, $\tau_{xz} = 0$, $\tau_{yz} = 0$.
+
+Equilibrium eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \frac{\partial \tau_{xy}}{\partial y} = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \tau_{xy}}{\partial x} + \frac{\partial \sigma_y}{\partial y} + \rho g = 0
+\end{equation}
+
+Hooke's Law:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{2(1+\nu)}{E} \tau_{xy}
+\end{equation}
+
+Deformation eqs:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
+\end{equation}
+
+Putting together \ref{eq1} and \ref{eq2}:
+\begin{equation}
+\tau_{xy} = \frac{E}{2(1+\nu)} (\frac{\partial v}{\partial x} + \frac{\partial u}{\partial y})
+\label{eq:eq3}
+\end{equation}
+
+The equilibrium eqs and the deformation equations take the \textit{Kernel} form:
+\begin{equation}
+\left< \frac{\partial \sigma_x}{\partial x}, \phi \right> + \left< \frac{\partial \tau_{xy}}{\partial y}, \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \frac{\partial \tau_{xy}}{\partial x}, \phi \right> + \left< \frac{\partial \sigma_{y}}{\partial y}, \phi \right> + \left< \rho g , \phi \right>= 0
+\end{equation}
+\begin{equation}
+\left< \varepsilon_x, \phi \right> - \left< \frac{\partial u}{\partial x}, \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \varepsilon_y, \phi \right> - \left< \frac{\partial v}{\partial y}, \phi \right> = 0
+\end{equation}
+
+The hooke's equations and equation \ref{eq:eq3} take the form of \textit{AuxKernels}.
+
+\section{TENS}
+
+\subsection{ST10}
+
+Defines Strain with the action: [Modules/TensorMechanics/Master]
+Defines the Elasticity Tensor in the materials section: ComputeIsotropicElasticityTensor
+Defines the stress in the materials section: ComputeFiniteStrainElasticStress
+
+The BCs are $u('bottom')$ and $v('bottom') = 0$. $v('top')=A*t$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st10-u.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:st10}
+\end{figure}
+
+\subsection{ST013}
+
+Defines Strain with in the materials section: ComputeSmallStrain
+Defines the Elasticity Tensor in the materials section: ComputeIsotropicElasticityTensor
+Defines the stress in the materials section: ComputeLinearElasticStress
+
+Considers gravity with the Kernel Gravity.
+It defines a Kernel that is:
+[./TensorMechanics]\\
+ displacements = 'disp\_x disp\_y'\\
+
+The BCs are $u('bottom')$ and $v('bottom') = 0$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st013-u.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:st13}
+\end{figure}
+
+\subsection{ST014A}
+
+Addition of the thermal strain. Temperature is uniform in the body.
+In order to solve the temperature distribution, we have to use the combined solver instead of the tensor-mechanics.
+
+Defines Strain in the materials section: ComputeSmallStrain
+Defines the Elasticity Tensor in the materials section: ComputeIsotropicElasticityTensor
+Defines the stress in the materials section: ComputeLinearElasticStress
+
+It defines a Kernel that is:
+[./TensorMechanics]\\
+displacements = 'disp\_x disp\_y'\\
+
+To account for the thermal strain it defines this in materials: ComputeThermalExpansionEigenstrain
+
+The BCs are $u('bottom')$ and $v('bottom') = 0$, $\Delta T=50$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st014-u.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:st14}
+\end{figure}
+
+\subsection{ST014B}
+
+Same as previous case but $\Delta T=5$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st014B-v.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:st14B}
+\end{figure}
+
+\subsection{ST015}
+
+$\Delta T=5$. Adds gravity.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st015-v.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:st15}
+\end{figure}
 
 \pagebreak 
 \bibliographystyle{plain}
