@@ -489,10 +489,20 @@ The BCs are $u('bottom')$ and $v('bottom') = 0$.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{tens/st013-u.png}
+	\includegraphics[width=0.6\linewidth]{tens/st013-v.png}
 	\hfill
-	\caption{$u$.}
+	\caption{$v$.}
 	\label{fig:st13}
+\end{figure}
+
+Comparison against ABAQUS:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/abaqus/ab-13-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st13ab}
 \end{figure}
 
 \subsection{ST014A}
@@ -514,10 +524,20 @@ The BCs are $u('bottom')$ and $v('bottom') = 0$, $\Delta T=50$.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{tens/st014-u.png}
+	\includegraphics[width=0.6\linewidth]{tens/st014-v.png}
 	\hfill
-	\caption{$u$.}
+	\caption{$v$.}
 	\label{fig:st14}
+\end{figure}
+
+Comparison against ABAQUS:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/abaqus/ab-14-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st14ab}
 \end{figure}
 
 \subsection{ST014B}
@@ -528,7 +548,7 @@ Same as previous case but $\Delta T=5$.
 	\centering
 	\includegraphics[width=0.6\linewidth]{tens/st014B-v.png}
 	\hfill
-	\caption{$u$.}
+	\caption{$v$.}
 	\label{fig:st14B}
 \end{figure}
 
@@ -540,9 +560,47 @@ $\Delta T=5$. Adds gravity.
 	\centering
 	\includegraphics[width=0.6\linewidth]{tens/st015-v.png}
 	\hfill
-	\caption{$u$.}
+	\caption{$v$.}
 	\label{fig:st15}
 \end{figure}
+
+Comparison against ABAQUS:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/abaqus/ab-15-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st15ab}
+\end{figure}
+
+Comparison of the last cases:
+- Red: ST013 (Just Gravity)
+- Green: ST014B (Just thermal expansion)
+- Blue: ST15 (Both effects)
+
+We see that the effects add to each other linearly (as the theory predicts).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/comp1-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:comp1v}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/comp1-u.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:comp1u}
+\end{figure}
+
+\subsection{ST016}
+
+Try to add an input file with a temperature distribution. Then calculate stress based on those values.
+
 
 \pagebreak 
 \bibliographystyle{plain}
