@@ -52,7 +52,7 @@ NSMomentum::computeQpResidual()
   // viscous term
   r += _mu[_qp] * (_grad_u[_qp] * _grad_test[_i][_qp]);
   // pressure term
-  r += _test[_i][_qp] * _grad_p[_qp](_component);
+  //r += _test[_i][_qp] * _grad_p[_qp](_component);
   // body force term
   r += -_test[_i][_qp] * _rho[_qp] * _gravity(_component);
   // convective term

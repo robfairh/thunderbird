@@ -101,12 +101,12 @@
     value = 50
   [../]
 
-  [./rho_x1]
-    type = DirichletBC
-    variable = p
-    boundary = 'corner'
-    value = 1.
-  [../]
+  #[./rho_x1]
+  #  type = DirichletBC
+  #  variable = p
+  #  boundary = 'corner'
+  #  value = 1.
+  #[../]
 
   [./laplacian]
     type = INSMomentumNoBCBCLaplaceForm
