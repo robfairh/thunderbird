@@ -49,7 +49,7 @@ INSMomentumBase::computeQpResidual()
     r += _test[_i][_qp] * strongPressureTerm()(_component);
 
   // body force term
-  r += _test[_i][_qp] * (gravityTerm()(_component));
+  //r += _test[_i][_qp] * (gravityTerm()(_component));
 
   // convective term
   if (_convective_term)
