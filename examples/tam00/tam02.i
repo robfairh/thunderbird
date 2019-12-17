@@ -170,7 +170,7 @@
 
 [Executioner]
   type = Transient
-  end_time = 5
+  end_time = 50
 
   nl_rel_tol = 1e-6
   nl_abs_tol = 1e-6
