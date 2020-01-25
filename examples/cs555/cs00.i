@@ -1,81 +1,66 @@
-[GlobalParams]
-  gravity = '0 -9.8 0'
-[]
-
 [Mesh]
-  type = GeneratedMesh
-  dim = 2
-  xmin = 0
-  xmax = 1.0
-  ymin = 0
-  ymax = 1.0
-  nx = 20
-  ny = 20
-  elem_type = QUAD9
+  file = two-chan.msh
 []
 
 [Variables]
   [./temp]
-    order = SECOND
+    order = FIRST
     family = LAGRANGE
   [../]
 []
 
 [Kernels]
-  [./tempTimeDeriv]
-    type = MatINSTemperatureTimeDerivative
+  # Fuel
+  [./TempDiffusionFuel]
+    type = TempDiffusion
     variable = temp
+    diffcoef = 0.0553
+    #diffcoef = 1.0
+    block = 'Fuel'
   [../]
-  [./tempAdvectionDiffusion]
-    type = INSTemperature
+  [./TempAdvectionFuel]
+    type = TempConvection
     variable = temp
-    u = vel_x
-    v = vel_y
+    rho = 2.146e-3
+    #rho = 1.
+    cp = 1967
+    #cp = 1
+    #velocity = '0 21.7 0'
+    velocity = '0 21.7 0'
+    block = 'Fuel'
+  [../]
+  [./TempSourceFuel]
+    type = TempSource
+    variable = temp
+    src = 28
+    #src = 1
+    block = 'Fuel'
   [../]
 
+  # Moderator
+  [./TempDiffusionModerator]
+    type = TempDiffusion
+    variable = temp
+    diffcoef = 0.312
+    #diffcoef = 0.5
+    block = 'Moderator'
+  [../]
+  [./TempSourceModerator]
+    type = TempSource
+    variable = temp
+    src = 0.4032
+    #src = 0.4
+    block = 'Moderator'
+  [../]
 []
 
 [BCs]
-  [./x_no_slip]
-    type = DirichletBC
-    variable = vel_x
-    boundary = 'top bottom left right'
-    value = 0.0
-  [../]
-  [./y_no_slip]
-    type = DirichletBC
-    variable = vel_y
-    boundary = 'left right'
-    value = 0.0
-  [../]
-  
-  [./inlet_p]
-    type = DirichletBC
-    variable = p
-    boundary = bottom
-    value = 1.0
-  [../]
-  [./outlet_p]
-    type = DirichletBC
-    variable = p
-    boundary = top
-    value = 0.0
-  [../]
 
-  [./tempbc]
+  [./tempbottom]
     type = DirichletBC
     variable = temp
-    boundary = 'left right'
-    value = 10
-  [../]
-[]
-
-[Materials]
-  [./const]
-    type = GenericConstantMaterial
-    block = 0
-    prop_names = 'rho mu    k     cp  alpha'
-    prop_values = '1  1e-1  1e-3  1   1e-2'
+    boundary = 'Bottom r_R'
+    value = 900.0
   [../]
 []
 
@@ -88,8 +73,7 @@
 []
 
 [Executioner]
-  type = Transient
-  end_time = 100
+  type = Steady
 
   nl_rel_tol = 1e-6
   nl_abs_tol = 1e-6
@@ -101,18 +85,8 @@
   line_search = 'none'
   nl_max_its = 30
   l_max_its = 100
-
-  dtmin = 1e-5
-  [./TimeStepper]
-    type = IterationAdaptiveDT
-    dt = 1e-3
-    cutback_factor = 0.4
-    growth_factor = 1.2
-    optimal_iterations = 20
-  [../]
 []
 
 [Outputs]
-  #execute_on = 'timestep_end'
   exodus = true
 []
