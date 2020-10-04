@@ -1,0 +1,609 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} % for table captions
+\usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage{xspace}
+\usepackage{float} 
+\usepackage{verbatim} % for block comments
+\usepackage{subcaption} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcommand{\deploy}{\texttt{d3ploy}\xspace}%
+\newcommand{\Deploy}{\texttt{D3ploy}\xspace}%
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+\newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
+\usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=1cm, minimum height=1cm,text centered, draw=black, 
+fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\graphicspath{}
+%\title{Thermo-Mechanical MOOSE-based solver}
+%\author{Roberto E. Fairhurst Agosta}
+
+\begin{document}
+	%\begin{titlepage}
+		%\maketitle
+		%\thispagestyle{empty}
+	%\end{titlepage}
+	
+\section{ST00}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{st00/sigma_x.png}
+	\hfill
+	\caption{$\sigma_x$.}
+	\label{fig:st00}
+\end{figure}
+
+\section{ST01}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}\sigma_x
+\end{equation}
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{st01/strain_x.png}
+	\hfill
+	\caption{$\varepsilon_x$.}
+	\label{fig:st01}
+\end{figure}
+
+\section{ST02}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}\sigma_x
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 1700 kg/m3, E = 10 GPa, \nu = 0.14$
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{st02/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st02}
+\end{figure}
+
+There is a problem here. If I try to define the following BCs it works.
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 500 kg/m3, E = 10 GPa, \nu = 0.14$
+
+Results:
+$ \sigma_x (L) = -9.81e3$
+$ u(L) = -9.81e-7$
+
+Then if I try the following BCs, it doesn't run.
+\begin{equation}
+\sigma_x (L) = -9.81e3
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+\section{ST03}
+
+2-D case. See Hooke's Law. $\sigma_x$ and $\sigma_y$ are independent.
+
+Equilibrium eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \sigma_y}{\partial y} + \rho * g = 0
+\end{equation}
+
+Hooke's Law:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} \sigma_x
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} \sigma_y
+\end{equation}
+
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x (0, y) = 0
+\end{equation}
+\begin{equation}
+\sigma_y (x, 0) = 0
+\end{equation}
+
+\begin{equation}
+u (0, y) = 0
+\end{equation}
+\begin{equation}
+v (x, 0) = 0
+\end{equation}
+
+\section{ST04}
+
+1-D case.
+
+Equilibrium eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + G_x = 0
+\end{equation}
+Constitutive eq:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} \sigma_x
+\end{equation}
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+Combining the eqs:
+\begin{equation}
+\frac{\partial}{\partial x}(E \frac{\partial u}{\partial x}) + G_x = 0
+\end{equation}
+
+In kernel form:
+\begin{equation}
+\left< E \frac{\partial u}{\partial x}, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+Which is equal to:
+\begin{equation}
+-\left< -\sigma_x, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+The last equation adds two minus signs to the BC term, as the Neumann BC adds a minus sign.
+
+BCs: $u(0)=0, \sigma_x(L)=-9.81e3$
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{st04/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st04}
+\end{figure}
+
+I am not sure if the BC are properly implemented. A way to check is looking at the stress $\sigma_x$.
+I was trying to implement an auxkernel that computes $E \frac{\partial u}{\partial x}$, but it throws an error.
+
+\section{ST05}
+
+2-D case.
+Equilibrium eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \frac{\partial \tau_{xy}}{\partial y} + G_x = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \tau_{xy}}{\partial x} + \frac{\partial \sigma_y}{\partial y} + G_y = 0
+\end{equation}
+Constitutive eqs:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
+\end{equation}
+Deformation eqs:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
+\end{equation}
+
+Combining the eqs:
+\begin{equation}
+\frac{\partial}{\partial x}(c \frac{\partial u}{\partial x} + d \frac{\partial v}{\partial y}) + \frac{\partial}{\partial y}(G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}) + G_x = 0
+\end{equation}
+\begin{equation}
+\frac{\partial}{\partial y}(G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}) + \frac{\partial}{\partial y}(d \frac{\partial u}{\partial x} + c \frac{\partial v}{\partial y}) + G_y = 0
+\end{equation}
+where $c = \frac{E}{1-\nu^2}$, $d = \frac{\nu E}{1-\nu^2}$, and $G = \frac{E}{2(1+\nu)}$.
+
+In kernel form:
+\begin{equation}
+\left< c \frac{\partial u}{\partial x} + d \frac{\partial v}{\partial y}, \phi \right>_{BC_x} - \left< c \frac{\partial u}{\partial x} + d \frac{\partial v}{\partial y}, \frac{\partial \phi}{\partial x} \right> + \left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \phi \right>_{BC_y} - \left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \frac{\partial \phi}{\partial y} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \phi \right>_{BC_x} - \left< G \frac{\partial v}{\partial x} + G \frac{\partial u}{\partial y}, \frac{\partial \phi}{\partial x} \right> +
+\left< d \frac{\partial u}{\partial x} + c \frac{\partial v}{\partial y}, \phi \right>_{BC_y} - \left< d \frac{\partial u}{\partial x} + c \frac{\partial v}{\partial y}, \frac{\partial \phi}{\partial y} \right>
++ \left< G_y , \phi \right> = 0
+\end{equation}
+
+I don't know how to impose the boundary condition here. Let's go back to the case ST03.
+$\sigma_x = c\frac{\partial u}{\partial x} + d\frac{\partial v}{\partial y}$
+Try with Neumann, couple the variables u and v and replace value by my $\sigma_x$.
+
+\section{Meeting 09/19}
+
+2-D case.
+Equilibrium eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \frac{\partial \tau_{xy}}{\partial y} + G_x = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \tau_{xy}}{\partial x} + \frac{\partial \sigma_y}{\partial y} + G_y = 0
+\end{equation}
+Constitutive eqs:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y) + \alpha (T-T_{ref}) + \varepsilon_{Rad-Induced}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x) + \alpha (T-T_{ref}) + \varepsilon_{Rad-Induced}
+\end{equation}
+
+\begin{equation}
+\varepsilon_{Rad-Induced} = A \Phi^2 + B \Phi
+\end{equation}
+
+Deformation eqs:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
+\end{equation}
+
+\section{ST06}
+
+2-D case.
+
+Equilibrium eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \sigma_y}{\partial y} + \rho g = 0
+\end{equation}
+
+Constitutive eq:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
+\end{equation}
+
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x ('center', y) = 0
+\end{equation}
+\begin{equation}
+\sigma_y (x, 'top') = 0
+\end{equation}
+
+\begin{equation}
+u ('center', y) = 0
+\end{equation}
+\begin{equation}
+v (x, 'bottom') = 0
+\end{equation}
+
+Doesn't work, idk why. It does something weird with the BCs.
+
+\section{ST07}
+
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho * g_x = 0
+\end{equation}
+
+Multiply by $\phi$:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} \phi + \rho g_x \phi = 0
+\end{equation}
+Using $\frac{\partial \sigma_x \phi}{\partial x}=\frac{\partial \sigma_x}{\partial x} \phi + \sigma_x \frac{\partial \phi}{\partial x}$
+\begin{equation}
+\frac{\partial \sigma_x \phi}{\partial x} - \sigma_x \frac{\partial \phi}{\partial x} + \rho g_x \phi = 0
+\end{equation}
+Integrating over the Volume:
+\begin{equation}
+\left< \frac{\partial \sigma_x \phi}{\partial x} \right> - \left< \sigma_x,\frac{\partial \phi}{\partial x} \right> + \left< \rho g_x,\phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \sigma_x \phi \right>_{BC} - \left< \sigma_x,\frac{\partial \phi}{\partial x} \right> + \left< \rho g_x,\phi \right> = 0
+\end{equation}
+It doesn't work. Super weird ...
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{st07/sigma_y.png}
+	\hfill
+	\caption{$\sigma_y$.}
+	\label{fig:st07}
+\end{figure}
+
+\section{ST08}
+
+Try to implement the module: Tensor-mechanics from Moose.
+I do not know how to choose the actions. I started using the tensor-mechanics module from moose.
+
+\section{ST09}
+
+2-D case. Plane Stress. It assumes that $\sigma_z = 0$, $\tau_{xz} = 0$, $\tau_{yz} = 0$.
+
+Equilibrium eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \frac{\partial \tau_{xy}}{\partial y} = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \tau_{xy}}{\partial x} + \frac{\partial \sigma_y}{\partial y} + \rho g = 0
+\end{equation}
+
+Hooke's Law:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{2(1+\nu)}{E} \tau_{xy}
+\end{equation}
+
+Deformation eqs:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
+\end{equation}
+
+Putting together \ref{eq1} and \ref{eq2}:
+\begin{equation}
+\tau_{xy} = \frac{E}{2(1+\nu)} (\frac{\partial v}{\partial x} + \frac{\partial u}{\partial y})
+\label{eq:eq3}
+\end{equation}
+
+The equilibrium eqs and the deformation equations take the \textit{Kernel} form:
+\begin{equation}
+\left< \frac{\partial \sigma_x}{\partial x}, \phi \right> + \left< \frac{\partial \tau_{xy}}{\partial y}, \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \frac{\partial \tau_{xy}}{\partial x}, \phi \right> + \left< \frac{\partial \sigma_{y}}{\partial y}, \phi \right> + \left< \rho g , \phi \right>= 0
+\end{equation}
+\begin{equation}
+\left< \varepsilon_x, \phi \right> - \left< \frac{\partial u}{\partial x}, \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \varepsilon_y, \phi \right> - \left< \frac{\partial v}{\partial y}, \phi \right> = 0
+\end{equation}
+
+The hooke's equations and equation \ref{eq:eq3} take the form of \textit{AuxKernels}.
+
+\section{TENS}
+
+\subsection{ST10}
+
+Defines Strain with the action: [Modules/TensorMechanics/Master]
+Defines the Elasticity Tensor in the materials section: ComputeIsotropicElasticityTensor
+Defines the stress in the materials section: ComputeFiniteStrainElasticStress
+
+The BCs are $u('bottom')$ and $v('bottom') = 0$. $v('top')=A*t$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st10-u.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:st10}
+\end{figure}
+
+\subsection{ST013}
+
+Defines Strain with in the materials section: ComputeSmallStrain
+Defines the Elasticity Tensor in the materials section: ComputeIsotropicElasticityTensor
+Defines the stress in the materials section: ComputeLinearElasticStress
+
+Considers gravity with the Kernel Gravity.
+It defines a Kernel that is:
+[./TensorMechanics]\\
+ displacements = 'disp\_x disp\_y'\\
+
+The BCs are $u('bottom')$ and $v('bottom') = 0$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st013-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st13}
+\end{figure}
+
+Comparison against ABAQUS:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/abaqus/ab-13-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st13ab}
+\end{figure}
+
+\subsection{ST014A}
+
+Addition of the thermal strain. Temperature is uniform in the body.
+In order to solve the temperature distribution, we have to use the combined solver instead of the tensor-mechanics.
+
+Defines Strain in the materials section: ComputeSmallStrain
+Defines the Elasticity Tensor in the materials section: ComputeIsotropicElasticityTensor
+Defines the stress in the materials section: ComputeLinearElasticStress
+
+It defines a Kernel that is:
+[./TensorMechanics]\\
+displacements = 'disp\_x disp\_y'\\
+
+To account for the thermal strain it defines this in materials: ComputeThermalExpansionEigenstrain
+
+The BCs are $u('bottom')$ and $v('bottom') = 0$, $\Delta T=50$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st014-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st14}
+\end{figure}
+
+Comparison against ABAQUS:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/abaqus/ab-14-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st14ab}
+\end{figure}
+
+\subsection{ST014B}
+
+Same as previous case but $\Delta T=5$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st014B-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st14B}
+\end{figure}
+
+\subsection{ST015}
+
+$\Delta T=5$. Adds gravity.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/st015-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st15}
+\end{figure}
+
+Comparison against ABAQUS:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/abaqus/ab-15-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:st15ab}
+\end{figure}
+
+Comparison of the last cases:
+- Red: ST013 (Just Gravity)
+- Green: ST014B (Just thermal expansion)
+- Blue: ST15 (Both effects)
+
+We see that the effects add to each other linearly (as the theory predicts).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/comp1-v.png}
+	\hfill
+	\caption{$v$.}
+	\label{fig:comp1v}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{tens/comp1-u.png}
+	\hfill
+	\caption{$u$.}
+	\label{fig:comp1u}
+\end{figure}
+
+\subsection{ST016}
+
+Try to add an input file with a temperature distribution. Then calculate stress based on those values.
+
+
+\pagebreak 
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}

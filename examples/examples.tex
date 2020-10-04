@@ -728,6 +728,8 @@ The results are presented in Figure \ref{fig:ns03}.
 
 \section{N-S: Example 04}
 
+This example has an error. It uses the MatDiffusion Kernel, and the kernel INSTemperature has both the effects of diffusion and convection.
+
 Kernels involved:
 \begin{description}[font=$\bullet$\scshape\bfseries]
 	\item[] moose/navier\_stokes/INSMass
@@ -797,6 +799,904 @@ The results are presented in Figures \ref{fig:ns04a} and \ref{fig:ns04b}.
 	\label{fig:ns04b}
 \end{figure*}
 
+\section{N-S: Example 05}
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] moose/navier\_stokes/INSMass
+	\item[] moose/navier\_stokes/
+	INSMomentumTimeDerivative
+	\item[] moose/navier\_stokes/INSMomentumLaplaceForm
+	\item[] INSBoussinesqBodyForce
+	\item[] moose/navier\_stokes/MatINSTemperatureTimeDerivative
+	\item[] moose/navier\_stokes/INSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\frac{\partial \vec{v}}{\partial t}+\vec{v} . \nabla\vec{v})+\nabla p - \mu \nabla^{2}\vec{v} + \alpha g (T - T_{o})\check{j} = 0
+\end{equation}
+\begin{equation}
+-\nabla(k \nabla . T)+\rho c_{p}(\frac{\partial T}{\partial t}+\vec{v} . \nabla T)=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('top')=0$, and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0$, $v_{y}('right')=0$, $v_{y}('top')=0$,
+	and $v_{y}('bottom')=0$
+	\item[] $p(0,0)=0$
+	\item[] $T('left')=300$, $T_{o}=200$
+\end{description}
+
+The results are presented in Figures \ref{fig:ns05}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns05/ux.png} 
+		\caption{ux.}
+		\label{fig:ns05-ux}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns05/uy.png}
+		\caption{uy.}
+		\label{fig:ns05-uy}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns05}
+\end{figure*}
+
+\section{N-S: Example 06}
+
+This case presents a very simplified version of the moose's INS kernels.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+\end{description}
+
+Equations involved:
+\begin{equation}
+\nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('top')=0$, and $v_{x}('bottom')=0$
+	\item[] $v_{y}('left')=0$, $v_{y}('right')=0$, $v_{y}('bottom')=0$, and $v_{y}('top')=0$
+	\item[] $p('left')=1$ and $p('right')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns06}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns06/velocity.png} 
+	\hfill
+	\caption{Velocity.}
+	\label{fig:ns06}
+\end{figure*}
+
+\section{N-S: Example 07}
+
+This is still a simplified version of moose's INS kernels, but this time it includes everything for Incompressible N-S.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$
+	\item[] $p('bottom')=1$ and $p('top')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:ns07}. We can see that the gravity term overcomes the pressure gradient.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns07/vel_y.png} 
+	\hfill
+	\caption{Velocity.}
+	\label{fig:ns07}
+\end{figure*}
+
+\section{N-S: Example 08}
+
+This is still a simplified version of moose's INS kernels, but this time it includes everything for Incompressible N-S and also INSTemperature slightly modified.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=0$ and $p('top')=1$.
+	\item[] $T('left')=10$, $T('right')=10$, and $T('top')=5$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns08}.
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns08/vel_y.png} 
+		\caption{ux.}
+		\label{fig:ns08-vel}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns08/temp.png}
+		\caption{uy.}
+		\label{fig:ns08-temp}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns08}
+\end{figure*}
+
+\section{N-S: Example 09}
+
+This is still a simplified version of moose's INS kernels, but this time it includes everything for Incompressible N-S and also INSTemperature slightly modified.
+I am not completely sure that the Jacobian off diagonal for the TemperatureVD (Viscous Dissipation) is 100$\%$ right.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentumTimeDerivative
+	\item[] NSMomentum
+	\item[] MatINSTemperatureTimeDerivative
+	\item[] NSTemperature
+	\item[] NSTemperatureVD
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) - \Phi = 0
+\end{equation}
+\begin{equation}
+\Phi = 2\mu((\frac{du}{dx})^2+(\frac{dv}{dy})^2+(\frac{dw}{dz})^2)+
+\mu ((\frac{du}{dy}+\frac{dv}{dx})^2+(\frac{du}{dz}+\frac{dw}{dx})^2+(\frac{dv}{dz}+\frac{dw}{dy})^2)
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=0$ and $p('top')=2000$.
+	\item[] $T('left')=100$, $T('right')=100$, and $T('top')=0$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns09}. The blue line it the case that takes into account the viscous dissipation.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns09/temp.png} 
+	\hfill
+	\caption{Temperature ignoring and taking into account the viscous dissipation.}
+	\label{fig:ns09}
+\end{figure*}
+
+\section{N-S: Example 10}
+
+This example is very similar to example NS8, it is just to get some plots to contrast against once the compressibility effects have been implemented.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentumTimeDerivative
+	\item[] NSMomentum
+	\item[] MatINSTemperatureTimeDerivative
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=0$ and $p('top')=100$.
+	\item[] $T('left')=100$, $T('right')=100$, and $T('top')=0$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns10}. Figure \ref{fig:ns10B} shows a comparison between ns10 and ns04 (now called ns10B.i). The match is almost perfect I should see why it is not perfect. It is probably something with the Jacobians.
+
+\begin{figure*}[!h]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns10/vel.png} 
+		\caption{uy.}
+		\label{fig:ns10-vel}
+	\end{subfigure}
+	\vspace{1cm}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ns10/temp.png}
+		\caption{Temperature.}
+		\label{fig:ns10-temp}
+	\end{subfigure}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns10}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns10/comparison.png} 
+	\hfill
+	\caption{Comparison between INS and my model.}
+	\label{fig:ns10B}
+\end{figure*}
+
+
+\section{N-S: Example 11}
+
+Simple case using compressible N-S. For a fluid.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=1$ and $p('top')=0$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns11}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns11/uy.png}
+	\hfill
+	\caption{Velocity for changes in the density due to pressure gradient.}
+	\label{fig:ns11}
+\end{figure*}
+
+\section{N-S: Example 12}
+
+Simple case using compressible N-S. For a fluid.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+In this case, it doesn't matter much if I am using $c_{p}$ or $c_{v}$ as it is a fluid.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=1$ and $p('top')=0$.
+	\item[] $T('bottom')=40$ and $T('top')=60$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns12a} and \ref{fig:ns12b}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns12/rho.png}
+	\hfill
+	\caption{Density.}
+	\label{fig:ns12a}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns12/uy.png}
+	\hfill
+	\caption{Velocity for changes in the density due to temperature gradient.}
+	\label{fig:ns12b}
+\end{figure*}
+
+\section{N-S: Example 13}
+
+Simple case using compressible N-S. For a fluid.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+In this case, it doesn't matter much if I am using $c_{p}$ or $c_{v}$ as it is a fluid.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=1$ and $p('top')=0$.
+	\item[] $T('top')=40$, $T('left')=60$, and $T('right')=60$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns13a} and \ref{fig:ns13b}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns13/rho.png}
+	\hfill
+	\caption{Density.}
+	\label{fig:ns13a}
+\end{figure*}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns13/uy.png}
+	\hfill
+	\caption{Velocity for changes in the density due to temperature gradient.}
+	\label{fig:ns13b}
+\end{figure*}
+
+\section{N-S: Example 14}
+
+Simple case using compressible N-S. For a fluid.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the bc for the Laplacian in the momentum eq.
+The eq. of energy has several variants.
+This example adds the term $p(\nabla.\vec(v))$ and shows the difference between the model with and without it.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMass
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\vec{v}.\nabla)T - \nabla .(k\nabla T) + p (\nabla . \vec{v})= 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+Boundary conditions:
+\begin{description}[]
+	\item[] $v_{x}('left')=0$, $v_{x}('right')=0$, $v_{x}('bottom')=0$, and $v_{x}('top')=0$.
+	\item[] $v_{y}('left')=0$ and $v_{y}('right')=0$.
+	\item[] $p('bottom')=20$ and $p('top')=10$.
+	\item[] $T('top')=20$, $T('left')=200$, and $T('right')=200$.
+\end{description}
+
+The results are presented in Figure \ref{fig:ns14}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{ns14/temp.png}
+	\hfill
+	\caption{Temperature.}
+	\label{fig:ns14}
+\end{figure*}
+
+\section{N-S: Example 15}
+
+It adds time kernels but it doesn't work.
+This case run with the solver JNFK as the jacobians present some issues.
+I am not sure about the BC for the Laplacian in the momentum eq.
+
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSTimeMass
+	\item[] NSMass
+	\item[] NSTimeMomentum
+	\item[] NSMomentum
+	\item[] NSDensity
+	\item[] NSTimeTemperature
+	\item[] NSTemperature
+\end{description}
+
+Equations involved:
+\begin{equation}
+\rho (\frac{d\vec{v}}{dt} + \vec{v}.\nabla)\vec{v} + \nabla p - \rho g \check{j} - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\frac{d\rho}{dt} + \vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\frac{d\vec{v}}{dt} + \vec{v}.\nabla T) - \nabla .(k\nabla T) + p (\nabla . \vec{v})= 0
+\end{equation}
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+\section{N-S: Example 16}
+
+Try writing steady compressible NS for a perfect gas. It doesn't work. I think it is something with the BCs.
+
+Equations involved:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\vec{v}.\nabla) T - \nabla .(k\nabla T) + p (\nabla . \vec{v})= 0
+\end{equation}
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+The last equation is a constraint. Replacing it into the other equations:
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \rho R \nabla T + R T \nabla \rho - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla\rho+\rho\nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{v} (\vec{v}.\nabla) T - \nabla .(k\nabla T) + \rho R T (\nabla . \vec{v})= 0
+\end{equation}
+
+\section{Simple: Example 1}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+u \frac{\partial \rho}{\partial x} + \rho \frac{\partial u}{\partial x}=0
+\end{equation}
+
+The last equation is a constraint. Solving it yields:
+\begin{equation}
+\rho u = constant = K
+\end{equation}
+
+Using that $\frac{\partial p}{\partial x}=-10$ the equation becomes:
+\begin{equation}
+K\frac{\partial u}{\partial x} -10 - \mu \nabla^{2}u = 0
+\end{equation}
+
+Case A:
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMomentum
+	\item[] INSMomentumNoBCBCLaplaceForm
+\end{description} 
+
+BCs:
+Boundary conditions:
+\begin{description}[]
+	\item[] $u('left')=1$, $u('right')=1.2$
+	\item[] $u('bottom')=0$, $u('top')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:simple1A}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{simple1/caseA.png}
+	\hfill
+	\caption{u.}
+	\label{fig:simple1A}
+\end{figure*}
+
+Case B:
+Kernels involved:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] NSMomentum
+	\item[] INSMomentumNoBCBCLaplaceForm
+\end{description} 
+
+BCs:
+Boundary conditions:
+\begin{description}[]
+	\item[] $u('left')=1$
+	\item[] $u('bottom')=0$, $u('top')=0$
+\end{description}
+
+The results are presented in Figure \ref{fig:simple1B}.
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{simple1/caseB.png}
+	\hfill
+	\caption{u.}
+	\label{fig:simple1B}
+\end{figure*}
+
+\section{Simple: Example 2}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+u \frac{\partial \rho}{\partial x} + \rho \frac{\partial u}{\partial x}=0
+\end{equation}
+
+$\frac{\partial p}{\partial x}=-10$
+
+Case A:
+Integrates the continuity eq.
+\begin{equation}
+\rho u = constant = K
+\end{equation}
+
+The integrated continuity eq. is implemented as an auxiliary kernel.
+This one doesn't run.
+
+Case B:
+Uses the equations presented before.
+
+\section{Simple: Example 3}
+
+Based on case NS13. And then changes the eq for p.
+It doesn't work.
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+This last eq was implemented as a kernel for the density
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\section{Simple: Example 4}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+u \frac{\partial \rho}{\partial x} + \rho \frac{\partial u}{\partial x}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} u \frac{\partial T}{\partial x} - \nabla .(k\nabla T) + p \frac{\partial u}{\partial x} = 0
+\end{equation}
+Last eq implemented as an aux kernel for the density:
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\section{Simple: Example 5}
+
+NS with the mass equation:
+
+Equations involved:
+
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho u\frac{\partial u}{\partial x} + \frac{\partial p}{\partial x} - \mu \nabla^{2}u = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+This last eq was implemented as an aux kernel.
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\section{Simple: Example 6}
+
+Based on case NS13. Changes the kernel for $\rho$ for an aux kernel
+It doesn't work??
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} (\vec{v}.\nabla)T - \nabla .(k\nabla T) = 0
+\end{equation}
+This last eq was implemented as a aux kernel for the density.
+\begin{equation}
+\rho = \rho_{0} + \frac{\rho_{0}}{K}(p-p_{0}) + \rho_{0}\beta(T-T_{0})
+\end{equation}
+
+\section{Simple: Example 7}
+
+NS with the mass equation:
+
+Equations involved:
+\begin{equation}
+\vec{v}=(u,v), v = 0
+\end{equation}
+\begin{equation}
+\rho (\vec{v}.\nabla)\vec{v} + \nabla p - \mu \nabla^{2}\vec{v} = 0
+\end{equation}
+\begin{equation}
+\vec{v}.\nabla \rho + \rho \nabla.\vec{v}=0
+\end{equation}
+\begin{equation}
+\rho c_{p} u \frac{\partial T}{\partial x} - \nabla .(k\nabla T) + p \frac{\partial u}{\partial x} = 0
+\end{equation}
+This last eq was implemented as a kernel.
+\begin{equation}
+p = \rho R T
+\end{equation}
+
+\section{ST00}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{st00/sigma_x.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st00}
+\end{figure*}
+
+\section{ST01}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}(\sigma_x)
+\end{equation}
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{st01/strain_x.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st01}
+\end{figure*}
+
+\section{ST02}
+
+Eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \rho g = 0
+\end{equation}
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+AuxKernel:
+\begin{equation}
+\varepsilon_x = \frac{1}{E}(\sigma_x)
+\end{equation}
+
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 1700 kg/m3, E = 10 GPa, \nu = 0.14$
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{st02/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st02}
+\end{figure*}
+
+There is a problem here. If I try to define the following BCs it works.
+BCs:
+\begin{equation}
+\sigma_x (0) = 0
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+Data: $\rho = 500 kg/m3, E = 10 GPa, \nu = 0.14$
+
+Results:
+$ \sigma_x (L) = -9.81e3$
+$ u(L) = -9.81e-7$
+
+Then if I try the following BCs, it doesn't run.
+\begin{equation}
+\sigma_x (L) = -9.81e3
+\end{equation}
+\begin{equation}
+u (0) = 0
+\end{equation}
+
+\section{ST03}
+
+Adds components to the previous case, just for the deformation equation.
+
+\section{ST04}
+
+1-D case.
+
+Deformation eq:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + G_x = 0
+\end{equation}
+Constitutive eq:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} \sigma_x
+\end{equation}
+Deformation equation:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+
+Combining the eqs:
+\begin{equation}
+\frac{\partial}{\partial x}(E \frac{\partial u}{\partial x}) + G_x = 0
+\end{equation}
+
+In kernel form:
+\begin{equation}
+\left< E \frac{\partial u}{\partial x}, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+Which is equal to:
+\begin{equation}
+-\left< -\sigma_x, \phi \right>_{BC} - \left< E \frac{\partial u}{\partial x}, \frac{\partial \phi}{\partial x} \right>
++ \left< G_x , \phi \right> = 0
+\end{equation}
+The last equation adds two minus signs to the BC term, as the Neumann BC adds a minus sign.
+
+BCs: $u(0)=0, \sigma_x(L)=-9.81e3$
+
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{st04/u.png}
+	\hfill
+	\caption{u.}
+	\label{fig:st04}
+\end{figure*}
+
+\section{ST05}
+
+\section{NS17}
+
+Works for liquid. Problem when trying to add the temporal derivative for the density.
+Pressure must be the variable for the conservation of mass eq.
+
+\section{NS18}
+
+For gas.
 
 
 \pagebreak 

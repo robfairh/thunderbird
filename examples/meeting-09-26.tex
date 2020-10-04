@@ -1,0 +1,197 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} % for table captions
+\usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
+\usepackage{graphicx}
+\usepackage{relsize}
+\usepackage{xspace}
+\usepackage{float} 
+\usepackage{verbatim} % for block comments
+\usepackage{subcaption} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcommand{\deploy}{\texttt{d3ploy}\xspace}%
+\newcommand{\Deploy}{\texttt{D3ploy}\xspace}%
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+\newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
+\usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=1cm, minimum height=1cm,text centered, draw=black, 
+fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\graphicspath{}
+%\title{Thermo-Mechanical MOOSE-based solver}
+%\author{Roberto E. Fairhurst Agosta}
+
+\begin{document}
+	%\begin{titlepage}
+		%\maketitle
+		%\thispagestyle{empty}
+	%\end{titlepage}
+	
+\section{Meeting 09/26}
+
+References:
+\begin{description}[font=$\bullet$\scshape\bfseries]
+	\item[] $\sigma_i$: stress in $i$-direction
+	\item[] $\tau_{ij}$: shear stress normal to $i$, in $j$-direction
+	\item[] $\rho$: density
+	\item[] $g$: gravity
+	\item[] $\varepsilon_i$: strain in $i$-direction
+	\item[] $\gamma_{ij}$: shear strain
+	\item[] $E$: young's modulus
+	\item[] $\nu$: Poisson ratio
+	\item[] $u$: displacement in x-direction
+	\item[] $v$: displacement in y-direction
+\end{description}
+
+2-D case. Plane Stress. It assumes that $\sigma_z = 0$, $\tau_{xz} = 0$, $\tau_{yz} = 0$.
+
+Equilibrium eqs:
+\begin{equation}
+\frac{\partial \sigma_x}{\partial x} + \frac{\partial \tau_{xy}}{\partial y} = 0
+\end{equation}
+\begin{equation}
+\frac{\partial \tau_{xy}}{\partial x} + \frac{\partial \sigma_y}{\partial y} + \rho g = 0
+\end{equation}
+
+Hooke's Law:
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{2(1+\nu)}{E} \tau_{xy}
+\label{eq1}
+\end{equation}
+
+Deformation eqs:
+\begin{equation}
+\varepsilon_x = \frac{\partial u}{\partial x}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{\partial v}{\partial y}
+\end{equation}
+\begin{equation}
+\gamma_{xy} = \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y}
+\label{eq2}
+\end{equation}
+
+Putting together \ref{eq1} and \ref{eq2}:
+\begin{equation}
+\tau_{xy} = \frac{E}{2(1+\nu)} (\frac{\partial v}{\partial x} + \frac{\partial u}{\partial y})
+\label{eq3}
+\end{equation}
+
+The equilibrium eqs and the deformation equations take the \textit{Kernel} form:
+\begin{equation}
+\left< \frac{\partial \sigma_x}{\partial x}, \phi \right> + \left< \frac{\partial \tau_{xy}}{\partial y}, \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \frac{\partial \tau_{xy}}{\partial x}, \phi \right> + \left< \frac{\partial \sigma_{y}}{\partial y}, \phi \right> + \left< \rho g , \phi \right>= 0
+\end{equation}
+\begin{equation}
+\left< \varepsilon_x, \phi \right> - \left< \frac{\partial u}{\partial x}, \phi \right> = 0
+\end{equation}
+\begin{equation}
+\left< \varepsilon_y, \phi \right> - \left< \frac{\partial v}{\partial y}, \phi \right> = 0
+\end{equation}
+
+The hooke's equations and equation \ref{eq3} take the form of \textit{AuxKernels}.
+
+Eqs with their respective implementation in code lines:
+
+\begin{equation}
+\left< \frac{\partial \sigma_x}{\partial x}, \phi \right> + \left< \frac{\partial \tau_{xy}}{\partial y}, \phi \right> = 0
+\label{eq:eq_x}
+\end{equation}
+\begin{equation}
+\left< \frac{\partial \tau_{xy}}{\partial x}, \phi \right> + \left< \frac{\partial \sigma_{y}}{\partial y}, \phi \right> + \left< \rho g , \phi \right>= 0
+\label{eq:eq_y}
+\end{equation}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.1\linewidth]{st09/eq.png}
+	\hfill
+	\caption{Equations \ref{eq:eq_x} and \ref{eq:eq_y}.}
+	\label{fig:eq_xy}
+\end{figure}
+
+\begin{equation}
+\left< \varepsilon_x, \phi \right> - \left< \frac{\partial u}{\partial x}, \phi \right> = 0
+\label{eq:def_x}
+\end{equation}
+\begin{equation}
+\left< \varepsilon_y, \phi \right> - \left< \frac{\partial v}{\partial y}, \phi \right> = 0
+\label{eq:def_y}
+\end{equation}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.1\linewidth]{st09/def.png}
+	\hfill
+	\caption{Equations \ref{eq:def_x} and \ref{eq:def_y}.}
+	\label{fig:def_xy}
+\end{figure}
+
+\begin{equation}
+\varepsilon_x = \frac{1}{E} (\sigma_x - \nu \sigma_y)
+\label{cons1}
+\end{equation}
+\begin{equation}
+\varepsilon_y = \frac{1}{E} (\sigma_y - \nu \sigma_x)
+\label{cons2}
+\end{equation}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.1\linewidth]{st09/cons.png}
+	\hfill
+	\caption{Equations \ref{cons1} and \ref{cons2}.}
+	\label{fig:cons_xy}
+\end{figure}
+
+\begin{equation}
+\tau_{xy} = \frac{E}{2(1+\nu)} (\frac{\partial v}{\partial x} + \frac{\partial u}{\partial y})
+\end{equation}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.1\linewidth]{st09/shear.png}
+	\hfill
+	\caption{Equations \ref{eq3}.}
+	\label{fig:shear}
+\end{figure}
+
+Input file:
+
+BCs: 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{st09/bcs.png}
+	\hfill
+	\caption{BCs.}
+	\label{fig:bcs}
+\end{figure}
+
+\pagebreak 
+\bibliographystyle{plain}
+%\bibliography{bibliography}
+
+\end{document}
