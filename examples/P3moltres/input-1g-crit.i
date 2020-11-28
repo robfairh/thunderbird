@@ -2,8 +2,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 1
-  xmax = 5.
-  nx = 100
+  xmax = 200.
+  nx = 400
   elem_type = EDGE2
 []
 
@@ -37,10 +37,14 @@
     second_flux = flux2
     val = -0.007307620486767141
   [../]
-  [./source0]
-    type = BodyForce
+  [./fission_source0]
+    type = P3FissionEigenKernel
     variable = flux0
-    value = 1
+    second_flux = flux2
+    chit = 1.0
+    nsf = 0.004151858528265707
+    val1 = 1
+    val2 = -2
   [../]
 
   [./diff_flux1]
@@ -59,10 +63,14 @@
     second_flux = flux0
     val = -0.0014615240973534283
   [../]
-  [./source1]
-    type = BodyForce
+  [./fission_source1]
+    type = P3FissionEigenKernel
     variable = flux2
-    value = -0.4
+    second_flux = flux0
+    chit = 1.0
+    nsf = 0.004151858528265707
+    val1 = 0.8
+    val2 = -0.4
   [../]
 []
 
@@ -94,23 +102,45 @@
 # []
 
 [Executioner]
-  type = Steady
-  l_max_its = 100
-  nl_abs_tol = 1e-5
-  nl_max_its = 20
+  type = InversePowerMethod
+  max_power_iterations = 150
+  xdiff = 'group1diff'
+
+  bx_norm = 'bnorm'
+  k0 = 1.4
+  pfactor = 1e-4
+  l_max_its = 300
+
+  # eig_check_tol = 1e-09
+  sol_check_tol = 1e-08
 
   # solve_type = 'NEWTON'
-  # petsc_options = '-snes_converged_reason -ksp_converged_reason -snes_linesearch_monitor'
-  # petsc_options_iname = '-pc_type -sub_ksp_type -snes_linesearch_minlambda'
-  # petsc_options_value = 'lu       preonly       1e-3'
-
   solve_type = 'JFNK'
+  petsc_options = '-snes_converged_reason -ksp_converged_reason -snes_linesearch_monitor'
+  petsc_options_iname = '-pc_type -sub_pc_type'
+  petsc_options_value = 'asm lu'
+[]
+
+[Postprocessors]
+  [./bnorm]
+    type = ElmIntegTotFissNtsPostprocessor
+    execute_on = linear
+    first_flux = flux0
+    second_flux = flux2
+    nsf = 0.004151858528265707
+  [../]
+  [./group1diff]
+    type = ElementL2Diff
+    variable = flux0
+    execute_on = 'linear timestep_end'
+    use_displaced_mesh = false
+  [../]
 []
 
 [Outputs]
   perf_graph = true
   print_linear_residuals = true
-  file_base = 'input'
+  file_base = 'input-1g-crit'
   execute_on = timestep_end
   exodus = true
   csv = true
@@ -125,9 +155,9 @@
     type = LineValueSampler
     variable = 'flux0 flux2'
     start_point = '0 0 0'
-    end_point = '5 0 0'
+    end_point = '200 0 0'
     sort_by = x
-    num_points = 100
+    num_points = 300
     execute_on = timestep_end
   [../]
 []

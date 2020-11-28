@@ -43,7 +43,9 @@ def plotcsv_frommoose_temp(file, save, dire='x'):
     plt.close()
 
 
-save = 'output'
+# save = 'output'
 # file = 'input_line_0001.csv'
-file = 'input_line_0001.csv'
+
+save = 'output-1g-crit'
+file = 'input-1g-crit_line_0001.csv'
 plotcsv_frommoose_temp(file, save, dire='x')
