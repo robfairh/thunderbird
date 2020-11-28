@@ -7,17 +7,15 @@ InputParameters
 validParams<P3SigmaCoupled>()
 {
   InputParameters params = validParams<Kernel>();
-  params.addParam<Real>("val", 1.0, "Scattering Cross Section");
-
-
   params.addRequiredCoupledVar("second_flux", "Second flux");
+  params.addParam<Real>("val", 1.0, "Scattering Cross Section");
   return params;
 }
 
 P3SigmaCoupled::P3SigmaCoupled(const InputParameters & parameters)
   : Kernel(parameters),
-    _val(getParam<Real>("val")),
-    _second_flux = &coupledValue("second_flux")
+    _second_flux(coupledValue("second_flux")),
+    _val(getParam<Real>("val"))
 {
 }
 

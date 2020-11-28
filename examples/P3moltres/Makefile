@@ -26,11 +26,11 @@ ADDITIONAL_CPPFLAGS += -Wall -Wextra
 include $(FRAMEWORK_DIR)/build.mk
 include $(FRAMEWORK_DIR)/moose.mk
 
-APPLICATION_NAME := m01
+APPLICATION_NAME := p3moltres
 
 # dep apps
 APPLICATION_DIR    := $(shell pwd)
-APPLICATION_NAME   := m01
+APPLICATION_NAME   := p3moltres
 BUILD_EXEC         := yes
 include            $(FRAMEWORK_DIR)/app.mk
 
@@ -42,5 +42,5 @@ ex_deps     := $(patsubst %.C, %.$(obj-suffix).d, $(ex_srcfiles))
 ###############################################################################
 # Additional special case targets should be added here
 
-test: all
-	$(call TEST_exodiff,m01.i,m01_out.e)
+# test: all
+# 	$(call TEST_exodiff,m01.i,m01_out.e)

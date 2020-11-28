@@ -17,6 +17,7 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
 
+  const VariableValue & _second_flux;
   const Real & _val;
 
 };
