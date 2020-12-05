@@ -19,10 +19,11 @@ public:
 protected:
   virtual Real computeQpIntegral() override;
 
-  const VariableValue & _first_flux;
-  const VariableValue & _second_flux;
-
-  const Real & _nsf;
+  unsigned int _num_groups;
+  const MaterialProperty<std::vector<Real>> & _nsf;
+  // std::vector<MooseVariableFEBase *> _vars;
+  std::vector<const VariableValue *> _flux0_groups;
+  std::vector<const VariableValue *> _flux2_groups;
 };
 
 #endif
