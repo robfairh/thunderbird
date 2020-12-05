@@ -24,9 +24,17 @@ protected:
   virtual Real computeQpResidual() override;
   virtual Real computeQpJacobian() override;
 
-  const VariableValue & _second_flux;
-  const Real & _chi_t;
-  const Real & _nsf;
+  unsigned int _group;
+  unsigned int _num_groups;
+  const MaterialProperty<std::vector<Real>> & _nsf;
+  const MaterialProperty<std::vector<Real>> & _chi_t;
+
+  std::vector<const VariableValue *> _flux0_groups;
+  std::vector<unsigned int> _flux0_ids;
+
+  std::vector<const VariableValue *> _flux2_groups;
+  std::vector<unsigned int> _flux2_ids;
+  
   const Real & _val1;
   const Real & _val2;
 
