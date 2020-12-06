@@ -52,7 +52,9 @@
   [./diff_flux0_1]
     type = P3Diffusion
     variable = flux0_1
-    diffcoef = 1.83477519
+    # diffcoef = 1.83477519
+    # diffcoef = 0.69922674
+    diffcoef = 1.25180928
   [../]
   [./sigma_r0_flux0_1]
     type = P3SigmaR
@@ -84,7 +86,10 @@
   [./diff_flux0_2]
     type = P3Diffusion
     variable = flux0_2
-    diffcoef = 1.03382895
+    # diffcoef = 1.03382895
+    # diffcoef = 1.83477519
+    # diffcoef = 0.69922674
+    diffcoef = 0.75030232
   [../]
   [./sigma_r0_flux0_2]
     type = P3SigmaR
@@ -116,7 +121,9 @@
   [./diff_flux0_3]
     type = P3Diffusion
     variable = flux0_3
-    diffcoef = 0.94602475
+    # diffcoef = 0.94602475
+    # diffcoef = 1.83477519
+    diffcoef = 0.69922674
   [../]
   [./sigma_r0_flux0_3]
     type = P3SigmaR
@@ -149,6 +156,8 @@
     type = P3Diffusion
     variable = flux2_1
     diffcoef = 1.25180928
+    # diffcoef = 1.83477519
+    # diffcoef = 0.69922674
   [../]
   [./sigma_r1_flux21]
     type = P3SigmaR
@@ -180,6 +189,9 @@
     type = P3Diffusion
     variable = flux2_2
     diffcoef = 0.75030232
+    # diffcoef = 1.03382895
+    # diffcoef = 1.83477519
+    # diffcoef = 0.69922674
   [../]
   [./sigma_r1_flux22]
     type = P3SigmaR
@@ -211,6 +223,8 @@
     type = P3Diffusion
     variable = flux2_3
     diffcoef = 0.69922674
+    # diffcoef = 0.94602475
+    # diffcoef = 1.83477519
   [../]
   [./sigma_r1_flux23]
     type = P3SigmaR

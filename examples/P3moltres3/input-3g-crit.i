@@ -3,6 +3,7 @@
   num_precursor_groups = 8
   flux0_groups = 'flux0_1 flux0_2 flux0_3'
   flux2_groups = 'flux2_1 flux2_2 flux2_3'
+  temperature = 300
 []
 
 [Mesh]
@@ -52,7 +53,8 @@
   [./diff_flux0_1]
     type = P3Diffusion
     variable = flux0_1
-    diffcoef = 1.83477519
+    group_number = 1
+    EquationA = true
   [../]
   [./sigma_r0_flux0_1]
     type = P3SigmaR
@@ -84,7 +86,8 @@
   [./diff_flux0_2]
     type = P3Diffusion
     variable = flux0_2
-    diffcoef = 1.03382895
+    group_number = 2
+    EquationA = true
   [../]
   [./sigma_r0_flux0_2]
     type = P3SigmaR
@@ -116,7 +119,8 @@
   [./diff_flux0_3]
     type = P3Diffusion
     variable = flux0_3
-    diffcoef = 0.94602475
+    group_number = 3
+    EquationA = true
   [../]
   [./sigma_r0_flux0_3]
     type = P3SigmaR
@@ -148,7 +152,8 @@
   [./diff_fluxB1]
     type = P3Diffusion
     variable = flux2_1
-    diffcoef = 1.25180928
+    group_number = 1
+    EquationA = false
   [../]
   [./sigma_r1_flux21]
     type = P3SigmaR
@@ -180,7 +185,8 @@
   [./diff_fluxB2]
     type = P3Diffusion
     variable = flux2_2
-    diffcoef = 0.75030232
+    group_number = 2
+    EquationA = false
   [../]
   [./sigma_r1_flux22]
     type = P3SigmaR
@@ -212,7 +218,8 @@
   [./diff_fluxB3]
     type = P3Diffusion
     variable = flux2_3
-    diffcoef = 0.69922674
+    group_number = 3
+    EquationA = false
   [../]
   [./sigma_r1_flux23]
     type = P3SigmaR
@@ -297,7 +304,8 @@
   [./cross_sections]
     type = GenericMoltresMaterial
     property_tables_root = 'xs3g/'
-    interp_type = 'linear'
+    # interp_type = 'linear'
+    interp_type = 'none'
   [../]
 []
 

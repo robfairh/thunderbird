@@ -16,8 +16,14 @@ public:
 protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
+  virtual Real computeQpOffDiagJacobian();
 
-  const Real & _diffcoef;
+  bool _equation;
+  unsigned int _group;
+  const MaterialProperty<std::vector<Real>> & _diffcoefA;
+  const MaterialProperty<std::vector<Real>> & _d_diffcoefA_d_temp;
+  const MaterialProperty<std::vector<Real>> & _diffcoefB;
+  const MaterialProperty<std::vector<Real>> & _d_diffcoefB_d_temp;
 };
 
 #endif // P3DIFFUSION_H
