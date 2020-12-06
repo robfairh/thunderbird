@@ -299,12 +299,12 @@
   [../]
 []
 
-# [Preconditioning]
-#   [./SMP]
-#     type = SMP
-#     full = true
-#   [../]
-# []
+[Preconditioning]
+  [./SMP]
+    type = SMP
+    full = true
+  [../]
+[]
 
 [Executioner]
   type = InversePowerMethod
@@ -319,11 +319,16 @@
   # eig_check_tol = 1e-09
   sol_check_tol = 1e-08
 
-  # solve_type = 'NEWTON'
-  solve_type = 'JFNK'
+  # solve_type = 'NEWTON' # needs the Jacobians
+  # solve_type = 'JFNK' # doesn't need the Jacobians
+  solve_type = 'PJFNK' # doesn't need the Jacobians
   petsc_options = '-snes_converged_reason -ksp_converged_reason -snes_linesearch_monitor'
+
   petsc_options_iname = '-pc_type -sub_pc_type'
   petsc_options_value = 'asm lu'
+
+  # petsc_options_iname = '-pc_type -sub_ksp_type -snes_linesearch_minlambda'
+  # petsc_options_value = 'lu       preonly       1e-3'
 []
 
 [Postprocessors]
