@@ -65,8 +65,8 @@
   [./sigma_r0_flux2_1]
     type = P3SigmaCoupled
     variable = flux0_1
-    second_flux = flux2_1
-    val = -0.027806
+    group_number = 1
+    equation_number = 0
   [../]
   [./inscatter_flux1]
     type = P3InScatter
@@ -97,8 +97,8 @@
   [./sigma_r0_flux2_2]
     type = P3SigmaCoupled
     variable = flux0_2
-    second_flux = flux2_2
-    val = -0.011732
+    group_number = 2
+    equation_number = 0
   [../]
   [./inscatter_flux2]
     type = P3InScatter
@@ -129,8 +129,8 @@
   [./sigma_r0_flux2_3]
     type = P3SigmaCoupled
     variable = flux0_3
-    second_flux = flux2_3
-    val = -0.031696
+    group_number = 3
+    equation_number = 0
   [../]
   [./inscatter_flux3]
     type = P3InScatter
@@ -161,8 +161,8 @@
   [./sigma_r1_flux01]
     type = P3SigmaCoupled
     variable = flux2_1
-    second_flux = flux0_1
-    val = -0.0055612
+    group_number = 1
+    equation_number = 1
   [../]
   [./inscatter_fluxB1]
     type = P3InScatter
@@ -193,8 +193,8 @@
   [./sigma_r1_flux02]
     type = P3SigmaCoupled
     variable = flux2_2
-    second_flux = flux0_2
-    val = -0.0023464
+    group_number = 2
+    equation_number = 1
   [../]
   [./inscatter_fluxB2]
     type = P3InScatter
@@ -225,8 +225,8 @@
   [./sigma_r1_flux03]
     type = P3SigmaCoupled
     variable = flux2_3
-    second_flux = flux0_3
-    val = -0.0063392
+    group_number = 3
+    equation_number = 1
   [../]
   [./inscatter_fluxB3]
     type = P3InScatter
