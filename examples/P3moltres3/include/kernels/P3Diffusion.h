@@ -18,7 +18,7 @@ protected:
   virtual Real computeQpJacobian();
   virtual Real computeQpOffDiagJacobian();
 
-  bool _equation;
+  unsigned int _equation;
   unsigned int _group;
   const MaterialProperty<std::vector<Real>> & _diffcoefA;
   const MaterialProperty<std::vector<Real>> & _d_diffcoefA_d_temp;

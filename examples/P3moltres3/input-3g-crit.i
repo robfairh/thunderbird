@@ -54,7 +54,7 @@
     type = P3Diffusion
     variable = flux0_1
     group_number = 1
-    EquationA = true
+    equation_number = 0
   [../]
   [./sigma_r0_flux0_1]
     type = P3SigmaR
@@ -87,7 +87,7 @@
     type = P3Diffusion
     variable = flux0_2
     group_number = 2
-    EquationA = true
+    equation_number = 0
   [../]
   [./sigma_r0_flux0_2]
     type = P3SigmaR
@@ -120,7 +120,7 @@
     type = P3Diffusion
     variable = flux0_3
     group_number = 3
-    EquationA = true
+    equation_number = 0
   [../]
   [./sigma_r0_flux0_3]
     type = P3SigmaR
@@ -153,7 +153,7 @@
     type = P3Diffusion
     variable = flux2_1
     group_number = 1
-    EquationA = false
+    equation_number = 1
   [../]
   [./sigma_r1_flux21]
     type = P3SigmaR
@@ -186,7 +186,7 @@
     type = P3Diffusion
     variable = flux2_2
     group_number = 2
-    EquationA = false
+    equation_number = 1
   [../]
   [./sigma_r1_flux22]
     type = P3SigmaR
@@ -219,7 +219,7 @@
     type = P3Diffusion
     variable = flux2_3
     group_number = 3
-    EquationA = false
+    equation_number = 1
   [../]
   [./sigma_r1_flux23]
     type = P3SigmaR

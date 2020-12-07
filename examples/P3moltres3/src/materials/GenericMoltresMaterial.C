@@ -72,7 +72,7 @@ GenericMoltresMaterial::GenericMoltresMaterial(const InputParameters & parameter
 
   _file_map["REMXS"] = "REMXS";
   _file_map["NSF"] = "NSF";
-  _file_map["DIFFCOEFA"] = "DIFFCOEFB";
+  _file_map["DIFFCOEFA"] = "DIFFCOEFA";
   _file_map["DIFFCOEFB"] = "DIFFCOEFB";
   _file_map["BETA_EFF"] = "BETA_EFF";
   if (getParam<bool>("sss2_input"))
