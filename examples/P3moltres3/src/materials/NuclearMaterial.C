@@ -27,7 +27,8 @@ validParams<NuclearMaterial>()
 NuclearMaterial::NuclearMaterial(const InputParameters & parameters)
   : GenericConstantMaterial(parameters),
     _temperature(coupledValue("temperature")),
-    _remxs(declareProperty<std::vector<Real>>("remxs")),
+    _remxsA(declareProperty<std::vector<Real>>("remxsA")),
+    _remxsB(declareProperty<std::vector<Real>>("remxsB")),
     _fissxs(declareProperty<std::vector<Real>>("fissxs")),
     _nsf(declareProperty<std::vector<Real>>("nsf")),
     _fisse(declareProperty<std::vector<Real>>("fisse")),
@@ -42,7 +43,8 @@ NuclearMaterial::NuclearMaterial(const InputParameters & parameters)
     _beta(declareProperty<Real>("beta")),
     _decay_constant(declareProperty<std::vector<Real>>("decay_constant")),
 
-    _d_remxs_d_temp(declareProperty<std::vector<Real>>("d_remxs_d_temp")),
+    _d_remxsA_d_temp(declareProperty<std::vector<Real>>("d_remxsA_d_temp")),
+    _d_remxsB_d_temp(declareProperty<std::vector<Real>>("d_remxsB_d_temp")),
     _d_fissxs_d_temp(declareProperty<std::vector<Real>>("d_fissxs_d_temp")),
     _d_nsf_d_temp(declareProperty<std::vector<Real>>("d_nsf_d_temp")),
     _d_fisse_d_temp(declareProperty<std::vector<Real>>("d_fisse_d_temp")),
@@ -59,7 +61,8 @@ NuclearMaterial::NuclearMaterial(const InputParameters & parameters)
     _interp_type(getParam<MooseEnum>("interp_type"))
 
 {
-  std::vector<std::string> xsec_names{"REMXS",
+  std::vector<std::string> xsec_names{"REMXSA",
+                                      "REMXSB",
                                       "FISSXS",
                                       "NSF",
                                       "FISSE",
@@ -86,7 +89,8 @@ NuclearMaterial::NuclearMaterial(const InputParameters & parameters)
     else
       _vec_lengths[xsec_names[j]] = _num_groups;
   }
-  _file_map["REMXS"] = "REMXS";
+  _file_map["REMXSA"] = "REMXSA";
+  _file_map["REMXSB"] = "REMXSB";
   _file_map["NSF"] = "NSF";
   _file_map["DIFFCOEFA"] = "DIFFCOEFA";
   _file_map["DIFFCOEFB"] = "DIFFCOEFB";
@@ -108,7 +112,8 @@ NuclearMaterial::dummyComputeQpProperties()
   auto dummy_temp = _XsTemperature[0];
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] = _xsec_linear_interpolators["REMXS"][i].sample(dummy_temp);
+    _remxsA[_qp][i] = _xsec_linear_interpolators["REMXSA"][i].sample(dummy_temp);
+    _remxsB[_qp][i] = _xsec_linear_interpolators["REMXSB"][i].sample(dummy_temp);
     _fissxs[_qp][i] = _xsec_linear_interpolators["FISSXS"][i].sample(dummy_temp);
     _nsf[_qp][i] = _xsec_linear_interpolators["NSF"][i].sample(dummy_temp);
     _fisse[_qp][i] = _xsec_linear_interpolators["FISSE"][i].sample(dummy_temp) * 1e6 *
@@ -119,7 +124,8 @@ NuclearMaterial::dummyComputeQpProperties()
     _chi_t[_qp][i] = _xsec_linear_interpolators["CHI_T"][i].sample(dummy_temp);
     _chi_p[_qp][i] = _xsec_linear_interpolators["CHI_P"][i].sample(dummy_temp);
     _chi_d[_qp][i] = _xsec_linear_interpolators["CHI_D"][i].sample(dummy_temp);
-    _d_remxs_d_temp[_qp][i] = _xsec_linear_interpolators["REMXS"][i].sampleDerivative(dummy_temp);
+    _d_remxsA_d_temp[_qp][i] = _xsec_linear_interpolators["REMXSA"][i].sampleDerivative(dummy_temp);
+    _d_remxsB_d_temp[_qp][i] = _xsec_linear_interpolators["REMXSB"][i].sampleDerivative(dummy_temp);
     _d_fissxs_d_temp[_qp][i] = _xsec_linear_interpolators["FISSXS"][i].sampleDerivative(dummy_temp);
     _d_nsf_d_temp[_qp][i] = _xsec_linear_interpolators["NSF"][i].sampleDerivative(dummy_temp);
     _d_fisse_d_temp[_qp][i] = _xsec_linear_interpolators["FISSE"][i].sampleDerivative(dummy_temp) *
@@ -160,7 +166,8 @@ NuclearMaterial::splineComputeQpProperties()
 {
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] = _xsec_spline_interpolators["REMXS"][i].sample(_temperature[_qp]);
+    _remxsA[_qp][i] = _xsec_spline_interpolators["REMXSA"][i].sample(_temperature[_qp]);
+    _remxsB[_qp][i] = _xsec_spline_interpolators["REMXSB"][i].sample(_temperature[_qp]);
     _fissxs[_qp][i] = _xsec_spline_interpolators["FISSXS"][i].sample(_temperature[_qp]);
     _nsf[_qp][i] = _xsec_spline_interpolators["NSF"][i].sample(_temperature[_qp]);
     _fisse[_qp][i] = _xsec_spline_interpolators["FISSE"][i].sample(_temperature[_qp]) * 1e6 *
@@ -171,8 +178,10 @@ NuclearMaterial::splineComputeQpProperties()
     _chi_t[_qp][i] = _xsec_spline_interpolators["CHI_T"][i].sample(_temperature[_qp]);
     _chi_p[_qp][i] = _xsec_spline_interpolators["CHI_P"][i].sample(_temperature[_qp]);
     _chi_d[_qp][i] = _xsec_spline_interpolators["CHI_D"][i].sample(_temperature[_qp]);
-    _d_remxs_d_temp[_qp][i] =
-        _xsec_spline_interpolators["REMXS"][i].sampleDerivative(_temperature[_qp]);
+    _d_remxsA_d_temp[_qp][i] =
+        _xsec_spline_interpolators["REMXSA"][i].sampleDerivative(_temperature[_qp]);
+    _d_remxsB_d_temp[_qp][i] =
+        _xsec_spline_interpolators["REMXSB"][i].sampleDerivative(_temperature[_qp]);
     _d_fissxs_d_temp[_qp][i] =
         _xsec_spline_interpolators["FISSXS"][i].sampleDerivative(_temperature[_qp]);
     _d_nsf_d_temp[_qp][i] =
@@ -220,7 +229,8 @@ NuclearMaterial::monotoneCubicComputeQpProperties()
 {
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] = _xsec_monotone_cubic_interpolators["REMXS"][i].sample(_temperature[_qp]);
+    _remxsA[_qp][i] = _xsec_monotone_cubic_interpolators["REMXSA"][i].sample(_temperature[_qp]);
+    _remxsB[_qp][i] = _xsec_monotone_cubic_interpolators["REMXSB"][i].sample(_temperature[_qp]);
     _fissxs[_qp][i] = _xsec_monotone_cubic_interpolators["FISSXS"][i].sample(_temperature[_qp]);
     _nsf[_qp][i] = _xsec_monotone_cubic_interpolators["NSF"][i].sample(_temperature[_qp]);
     _fisse[_qp][i] = _xsec_monotone_cubic_interpolators["FISSE"][i].sample(_temperature[_qp]) *
@@ -231,8 +241,10 @@ NuclearMaterial::monotoneCubicComputeQpProperties()
     _chi_t[_qp][i] = _xsec_monotone_cubic_interpolators["CHI_T"][i].sample(_temperature[_qp]);
     _chi_p[_qp][i] = _xsec_monotone_cubic_interpolators["CHI_P"][i].sample(_temperature[_qp]);
     _chi_d[_qp][i] = _xsec_monotone_cubic_interpolators["CHI_D"][i].sample(_temperature[_qp]);
-    _d_remxs_d_temp[_qp][i] =
-        _xsec_monotone_cubic_interpolators["REMXS"][i].sampleDerivative(_temperature[_qp]);
+    _d_remxsA_d_temp[_qp][i] =
+        _xsec_monotone_cubic_interpolators["REMXSA"][i].sampleDerivative(_temperature[_qp]);
+    _d_remxsB_d_temp[_qp][i] =
+        _xsec_monotone_cubic_interpolators["REMXSB"][i].sampleDerivative(_temperature[_qp]);
     _d_fissxs_d_temp[_qp][i] =
         _xsec_monotone_cubic_interpolators["FISSXS"][i].sampleDerivative(_temperature[_qp]);
     _d_nsf_d_temp[_qp][i] =
@@ -281,7 +293,8 @@ NuclearMaterial::linearComputeQpProperties()
 {
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] = _xsec_linear_interpolators["REMXS"][i].sample(_temperature[_qp]);
+    _remxsA[_qp][i] = _xsec_linear_interpolators["REMXSA"][i].sample(_temperature[_qp]);
+    _remxsB[_qp][i] = _xsec_linear_interpolators["REMXSB"][i].sample(_temperature[_qp]);
     _fissxs[_qp][i] = _xsec_linear_interpolators["FISSXS"][i].sample(_temperature[_qp]);
     _nsf[_qp][i] = _xsec_linear_interpolators["NSF"][i].sample(_temperature[_qp]);
     _fisse[_qp][i] = _xsec_linear_interpolators["FISSE"][i].sample(_temperature[_qp]) * 1e6 *
@@ -292,8 +305,10 @@ NuclearMaterial::linearComputeQpProperties()
     _chi_t[_qp][i] = _xsec_linear_interpolators["CHI_T"][i].sample(_temperature[_qp]);
     _chi_p[_qp][i] = _xsec_linear_interpolators["CHI_P"][i].sample(_temperature[_qp]);
     _chi_d[_qp][i] = _xsec_linear_interpolators["CHI_D"][i].sample(_temperature[_qp]);
-    _d_remxs_d_temp[_qp][i] =
-        _xsec_linear_interpolators["REMXS"][i].sampleDerivative(_temperature[_qp]);
+    _d_remxsA_d_temp[_qp][i] =
+        _xsec_linear_interpolators["REMXSA"][i].sampleDerivative(_temperature[_qp]);
+    _d_remxsB_d_temp[_qp][i] =
+        _xsec_linear_interpolators["REMXSB"][i].sampleDerivative(_temperature[_qp]);
     _d_fissxs_d_temp[_qp][i] =
         _xsec_linear_interpolators["FISSXS"][i].sampleDerivative(_temperature[_qp]);
     _d_nsf_d_temp[_qp][i] =

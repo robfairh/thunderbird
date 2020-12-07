@@ -59,7 +59,8 @@
   [./sigma_r0_flux0_1]
     type = P3SigmaR
     variable = flux0_1
-    remxs = 0.013903
+    group_number = 1
+    equation_number = 0
   [../]
   [./sigma_r0_flux2_1]
     type = P3SigmaCoupled
@@ -71,15 +72,13 @@
     type = P3InScatter
     variable = flux0_1
     group_number = 1
-    val1 = 1
-    val2 = -2
+    equation_number = 0
   [../]
   [./fission_sourceA1]
     type = P3FissionEigenKernel
     variable = flux0_1
     group_number = 1
-    val1 = 1
-    val2 = -2
+    equation_number = 0
   [../]
 
   # Eq A group 2
@@ -92,7 +91,8 @@
   [./sigma_r0_flux0_2]
     type = P3SigmaR
     variable = flux0_2
-    remxs = 0.005866
+    group_number = 2
+    equation_number = 0
   [../]
   [./sigma_r0_flux2_2]
     type = P3SigmaCoupled
@@ -104,15 +104,13 @@
     type = P3InScatter
     variable = flux0_2
     group_number = 2
-    val1 = 1
-    val2 = -2
+    equation_number = 0
   [../]
   [./fission_sourceA2]
     type = P3FissionEigenKernel
     variable = flux0_2
     group_number = 2
-    val1 = 1
-    val2 = -2
+    equation_number = 0
   [../]
 
   # Eq A group 3
@@ -125,7 +123,8 @@
   [./sigma_r0_flux0_3]
     type = P3SigmaR
     variable = flux0_3
-    remxs = 0.015848
+    group_number = 3
+    equation_number = 0
   [../]
   [./sigma_r0_flux2_3]
     type = P3SigmaCoupled
@@ -137,15 +136,13 @@
     type = P3InScatter
     variable = flux0_3
     group_number = 3
-    val1 = 1
-    val2 = -2
+    equation_number = 0
   [../]
   [./fission_sourceA3]
     type = P3FissionEigenKernel
     variable = flux0_3
     group_number = 3 
-    val1 = 1
-    val2 = -2
+    equation_number = 0
   [../]
 
   # Eq B group 1
@@ -158,7 +155,8 @@
   [./sigma_r1_flux21]
     type = P3SigmaR
     variable = flux2_1
-    remxs = 0.21055927
+    group_number = 1
+    equation_number = 1
   [../]
   [./sigma_r1_flux01]
     type = P3SigmaCoupled
@@ -170,15 +168,13 @@
     type = P3InScatter
     variable = flux2_1
     group_number = 1
-    val1 = 0.8
-    val2 = -0.4
+    equation_number = 1
   [../]
   [./fission_sourceB1]
     type = P3FissionEigenKernel
     variable = flux2_1
     group_number = 1
-    val1 = 0.8
-    val2 = -0.4
+    equation_number = 1
   [../]
 
   # Eq B group 2
@@ -191,7 +187,8 @@
   [./sigma_r1_flux22]
     type = P3SigmaR
     variable = flux2_2
-    remxs = 0.34688822
+    group_number = 2
+    equation_number = 1
   [../]
   [./sigma_r1_flux02]
     type = P3SigmaCoupled
@@ -203,15 +200,13 @@
     type = P3InScatter
     variable = flux2_2
     group_number = 2
-    val1 = 0.8
-    val2 = -0.4
+    equation_number = 1
   [../]
   [./fission_sourceB2]
     type = P3FissionEigenKernel
     variable = flux2_2
     group_number = 2
-    val1 = 0.8
-    val2 = -0.4
+    equation_number = 1
   [../]
 
   # Eq B group 3
@@ -224,7 +219,8 @@
   [./sigma_r1_flux23]
     type = P3SigmaR
     variable = flux2_3
-    remxs = 0.38063319
+    group_number = 3
+    equation_number = 1
   [../]
   [./sigma_r1_flux03]
     type = P3SigmaCoupled
@@ -236,15 +232,13 @@
     type = P3InScatter
     variable = flux2_3
     group_number = 3
-    val1 = 0.8
-    val2 = -0.4
+    equation_number = 1
   [../]
   [./fission_sourceB3]
     type = P3FissionEigenKernel
     variable = flux2_3
     group_number = 3
-    val1 = 0.8
-    val2 = -0.4
+    equation_number = 1
   [../]
 []
 

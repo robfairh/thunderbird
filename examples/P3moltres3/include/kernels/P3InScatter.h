@@ -18,6 +18,7 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
 
+  unsigned int _equation;
   unsigned int _group;
   unsigned int _num_groups;
   const MaterialProperty<std::vector<Real>> & _gtransfxs;
@@ -28,8 +29,6 @@ protected:
   std::vector<const VariableValue *> _flux2_groups;
   std::vector<unsigned int> _flux2_ids;
   
-  const Real & _val1;
-  const Real & _val2;
 };
 
 #endif // P3INSCATTER_H

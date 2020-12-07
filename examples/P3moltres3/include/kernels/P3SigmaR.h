@@ -17,7 +17,10 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
 
-  const Real & _remxs;
+  unsigned int _equation;
+  unsigned int _group;
+  const MaterialProperty<std::vector<Real>> & _remxsA;
+  const MaterialProperty<std::vector<Real>> & _remxsB;
 };
 
 #endif // P3SIGMAR_H

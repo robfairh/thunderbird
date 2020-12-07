@@ -55,7 +55,8 @@ GenericMoltresMaterial::GenericMoltresMaterial(const InputParameters & parameter
   _num_groups = getParam<unsigned>("num_groups");
   _num_precursor_groups = getParam<unsigned>("num_precursor_groups");
   std::string property_tables_root = getParam<std::string>("property_tables_root");
-  std::vector<std::string> xsec_names{"REMXS",
+  std::vector<std::string> xsec_names{"REMXSA",
+                                      "REMXSB",
                                       "FISSXS",
                                       "NSF",
                                       "FISSE",
@@ -70,7 +71,8 @@ GenericMoltresMaterial::GenericMoltresMaterial(const InputParameters & parameter
                                       "DECAY_CONSTANT"};
 
 
-  _file_map["REMXS"] = "REMXS";
+  _file_map["REMXSA"] = "REMXSA";
+  _file_map["REMXSB"] = "REMXSB";
   _file_map["NSF"] = "NSF";
   _file_map["DIFFCOEFA"] = "DIFFCOEFA";
   _file_map["DIFFCOEFB"] = "DIFFCOEFB";
@@ -464,7 +466,8 @@ GenericMoltresMaterial::leastSquaresConstruct(std::string & property_tables_root
     }
   }
 
-  _remxs_consts = xsec_map["REMXS"];
+  _remxsA_consts = xsec_map["REMXSA"];
+  _remxsB_consts = xsec_map["REMXSB"];
   _fissxs_consts = xsec_map["FISSXS"];
   _nsf_consts = xsec_map["NSF"];
   _fisse_consts = xsec_map["FISSE"];
@@ -484,7 +487,8 @@ GenericMoltresMaterial::dummyComputeQpProperties()
 {
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] = _xsec_map["REMXS"][i];
+    _remxsA[_qp][i] = _xsec_map["REMXSA"][i];
+    _remxsB[_qp][i] = _xsec_map["REMXSB"][i];
     _fissxs[_qp][i] = _xsec_map["FISSXS"][i];
     _nsf[_qp][i] = _xsec_map["NSF"][i];
     _fisse[_qp][i] = _xsec_map["FISSE"][i] * 1e6 * 1.6e-19; // convert from MeV to Joules
@@ -494,7 +498,8 @@ GenericMoltresMaterial::dummyComputeQpProperties()
     _chi_t[_qp][i] = _xsec_map["CHI_T"][i];
     _chi_p[_qp][i] = _xsec_map["CHI_P"][i];
     _chi_d[_qp][i] = _xsec_map["CHI_D"][i];
-    _d_remxs_d_temp[_qp][i] = _xsec_map["REMXS"][i];
+    _d_remxsA_d_temp[_qp][i] = _xsec_map["REMXSA"][i];
+    _d_remxsB_d_temp[_qp][i] = _xsec_map["REMXSB"][i];
     _d_fissxs_d_temp[_qp][i] = _xsec_map["FISSXS"][i];
     _d_nsf_d_temp[_qp][i] = _xsec_map["NSF"][i];
     _d_fisse_d_temp[_qp][i] = _xsec_map["FISSE"][i] * 1e6 * 1.6e-19; // convert from MeV to Joules
@@ -528,8 +533,10 @@ GenericMoltresMaterial::fuelBicubic()
 {
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] =
-        _xsec_bicubic_spline_interpolators["REMXS"][i].sample(_temperature[_qp], _other_temp);
+    _remxsA[_qp][i] =
+        _xsec_bicubic_spline_interpolators["REMXSA"][i].sample(_temperature[_qp], _other_temp);
+    _remxsB[_qp][i] =
+        _xsec_bicubic_spline_interpolators["REMXSB"][i].sample(_temperature[_qp], _other_temp);
     _fissxs[_qp][i] =
         _xsec_bicubic_spline_interpolators["FISSXS"][i].sample(_temperature[_qp], _other_temp);
     _nsf[_qp][i] =
@@ -549,7 +556,9 @@ GenericMoltresMaterial::fuelBicubic()
         _xsec_bicubic_spline_interpolators["CHI_P"][i].sample(_temperature[_qp], _other_temp);
     _chi_d[_qp][i] =
         _xsec_bicubic_spline_interpolators["CHI_D"][i].sample(_temperature[_qp], _other_temp);
-    _d_remxs_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["REMXS"][i].sampleDerivative(
+    _d_remxsA_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["REMXSA"][i].sampleDerivative(
+        _temperature[_qp], _other_temp, 1);
+    _d_remxsB_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["REMXSB"][i].sampleDerivative(
         _temperature[_qp], _other_temp, 1);
     _d_fissxs_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["FISSXS"][i].sampleDerivative(
         _temperature[_qp], _other_temp, 1);
@@ -598,8 +607,10 @@ GenericMoltresMaterial::moderatorBicubic()
 {
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] =
-        _xsec_bicubic_spline_interpolators["REMXS"][i].sample(_other_temp, _temperature[_qp]);
+    _remxsA[_qp][i] =
+        _xsec_bicubic_spline_interpolators["REMXSA"][i].sample(_other_temp, _temperature[_qp]);
+    _remxsB[_qp][i] =
+        _xsec_bicubic_spline_interpolators["REMXSB"][i].sample(_other_temp, _temperature[_qp]);
     _fissxs[_qp][i] =
         _xsec_bicubic_spline_interpolators["FISSXS"][i].sample(_other_temp, _temperature[_qp]);
     _nsf[_qp][i] =
@@ -619,7 +630,9 @@ GenericMoltresMaterial::moderatorBicubic()
         _xsec_bicubic_spline_interpolators["CHI_P"][i].sample(_other_temp, _temperature[_qp]);
     _chi_d[_qp][i] =
         _xsec_bicubic_spline_interpolators["CHI_D"][i].sample(_other_temp, _temperature[_qp]);
-    _d_remxs_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["REMXS"][i].sampleDerivative(
+    _d_remxsA_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["REMXSA"][i].sampleDerivative(
+        _other_temp, _temperature[_qp], 2);
+    _d_remxsB_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["REMXSB"][i].sampleDerivative(
         _other_temp, _temperature[_qp], 2);
     _d_fissxs_d_temp[_qp][i] = _xsec_bicubic_spline_interpolators["FISSXS"][i].sampleDerivative(
         _other_temp, _temperature[_qp], 2);
@@ -681,7 +694,8 @@ GenericMoltresMaterial::leastSquaresComputeQpProperties()
 {
   for (decltype(_num_groups) i = 0; i < _num_groups; ++i)
   {
-    _remxs[_qp][i] = _remxs_consts[0][i] * _temperature[_qp] + _remxs_consts[1][i];
+    _remxsA[_qp][i] = _remxsA_consts[0][i] * _temperature[_qp] + _remxsA_consts[1][i];
+    _remxsB[_qp][i] = _remxsB_consts[0][i] * _temperature[_qp] + _remxsB_consts[1][i];
     _fissxs[_qp][i] = _fissxs_consts[0][i] * _temperature[_qp] + _fissxs_consts[1][i];
     _nsf[_qp][i] = _nsf_consts[0][i] * _temperature[_qp] + _nsf_consts[1][i];
     _fisse[_qp][i] = (_fisse_consts[0][i] * _temperature[_qp] + _fisse_consts[1][i]) * 1e6 *
@@ -692,7 +706,8 @@ GenericMoltresMaterial::leastSquaresComputeQpProperties()
     _chi_t[_qp][i] = _chi_t_consts[0][i] * _temperature[_qp] + _chi_t_consts[1][i];
     _chi_p[_qp][i] = _chi_p_consts[0][i] * _temperature[_qp] + _chi_p_consts[1][i];
     _chi_d[_qp][i] = _chi_d_consts[0][i] * _temperature[_qp] + _chi_d_consts[1][i];
-    _d_remxs_d_temp[_qp][i] = _remxs_consts[0][i];
+    _d_remxsA_d_temp[_qp][i] = _remxsA_consts[0][i];
+    _d_remxsB_d_temp[_qp][i] = _remxsB_consts[0][i];
     _d_fissxs_d_temp[_qp][i] = _fissxs_consts[0][i];
     _d_nsf_d_temp[_qp][i] = _nsf_consts[0][i];
     _d_fisse_d_temp[_qp][i] = _fisse_consts[0][i] * 1e6 * 1.6e-19; // convert from MeV to Joules
@@ -724,7 +739,8 @@ GenericMoltresMaterial::computeQpProperties()
   for (unsigned int i = 0; i < _num_props; i++)
     (*_properties[i])[_qp] = _prop_values[i];
 
-  _remxs[_qp].resize(_vec_lengths["REMXS"]);
+  _remxsA[_qp].resize(_vec_lengths["REMXSA"]);
+  _remxsB[_qp].resize(_vec_lengths["REMXSB"]);
   _fissxs[_qp].resize(_vec_lengths["FISSXS"]);
   _nsf[_qp].resize(_vec_lengths["NSF"]);
   _fisse[_qp].resize(_vec_lengths["FISSE"]);
@@ -737,7 +753,8 @@ GenericMoltresMaterial::computeQpProperties()
   _gtransfxs[_qp].resize(_vec_lengths["GTRANSFXS"]);
   _beta_eff[_qp].resize(_vec_lengths["BETA_EFF"]);
   _decay_constant[_qp].resize(_vec_lengths["DECAY_CONSTANT"]);
-  _d_remxs_d_temp[_qp].resize(_vec_lengths["REMXS"]);
+  _d_remxsA_d_temp[_qp].resize(_vec_lengths["REMXSA"]);
+  _d_remxsB_d_temp[_qp].resize(_vec_lengths["REMXSB"]);
   _d_fissxs_d_temp[_qp].resize(_vec_lengths["FISSXS"]);
   _d_nsf_d_temp[_qp].resize(_vec_lengths["NSF"]);
   _d_fisse_d_temp[_qp].resize(_vec_lengths["FISSE"]);
@@ -775,5 +792,6 @@ GenericMoltresMaterial::computeQpProperties()
 
   if (_perform_control && _peak_power_density > _peak_power_density_set_point)
     for (unsigned i = 0; i < _num_groups; ++i)
-      _remxs[_qp][i] += _controller_gain * (_peak_power_density - _peak_power_density_set_point);
+      // not sure about this 
+      _remxsA[_qp][i] += _controller_gain * (_peak_power_density - _peak_power_density_set_point);
 }

@@ -67,7 +67,8 @@ protected:
 
   const VariableValue & _temperature;
 
-  MaterialProperty<std::vector<Real>> & _remxs;
+  MaterialProperty<std::vector<Real>> & _remxsA;
+  MaterialProperty<std::vector<Real>> & _remxsB;
   MaterialProperty<std::vector<Real>> & _fissxs;
   MaterialProperty<std::vector<Real>> & _nsf;
   MaterialProperty<std::vector<Real>> & _fisse;
@@ -81,7 +82,8 @@ protected:
   MaterialProperty<std::vector<Real>> & _beta_eff;
   MaterialProperty<Real> & _beta;
   MaterialProperty<std::vector<Real>> & _decay_constant;
-  MaterialProperty<std::vector<Real>> & _d_remxs_d_temp;
+  MaterialProperty<std::vector<Real>> & _d_remxsA_d_temp;
+  MaterialProperty<std::vector<Real>> & _d_remxsB_d_temp;
   MaterialProperty<std::vector<Real>> & _d_fissxs_d_temp;
   MaterialProperty<std::vector<Real>> & _d_nsf_d_temp;
   MaterialProperty<std::vector<Real>> & _d_fisse_d_temp;
@@ -109,7 +111,8 @@ protected:
   std::map<std::string, std::string> _file_map;
   std::vector<double> _XsTemperature;
 
-  std::vector<std::vector<Real>> _remxs_consts = std::vector<std::vector<Real>>(2);
+  std::vector<std::vector<Real>> _remxsA_consts = std::vector<std::vector<Real>>(2);
+  std::vector<std::vector<Real>> _remxsB_consts = std::vector<std::vector<Real>>(2);
   std::vector<std::vector<Real>> _fissxs_consts = std::vector<std::vector<Real>>(2);
   std::vector<std::vector<Real>> _nubar_consts = std::vector<std::vector<Real>>(2);
   std::vector<std::vector<Real>> _nsf_consts = std::vector<std::vector<Real>>(2);
