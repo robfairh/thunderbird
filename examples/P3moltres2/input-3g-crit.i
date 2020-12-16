@@ -8,7 +8,7 @@
 [Mesh]
   type = GeneratedMesh
   dim = 1
-  xmax = 250.
+  xmax = 300.
   nx = 500
   elem_type = EDGE2
 []
@@ -52,9 +52,7 @@
   [./diff_flux0_1]
     type = P3Diffusion
     variable = flux0_1
-    # diffcoef = 1.83477519
-    # diffcoef = 0.69922674
-    diffcoef = 1.25180928
+    diffcoef = 1.83477519
   [../]
   [./sigma_r0_flux0_1]
     type = P3SigmaR
@@ -86,10 +84,7 @@
   [./diff_flux0_2]
     type = P3Diffusion
     variable = flux0_2
-    # diffcoef = 1.03382895
-    # diffcoef = 1.83477519
-    # diffcoef = 0.69922674
-    diffcoef = 0.75030232
+    diffcoef = 1.03382895
   [../]
   [./sigma_r0_flux0_2]
     type = P3SigmaR
@@ -121,9 +116,7 @@
   [./diff_flux0_3]
     type = P3Diffusion
     variable = flux0_3
-    # diffcoef = 0.94602475
-    # diffcoef = 1.83477519
-    diffcoef = 0.69922674
+    diffcoef = 0.94602475
   [../]
   [./sigma_r0_flux0_3]
     type = P3SigmaR
@@ -156,8 +149,6 @@
     type = P3Diffusion
     variable = flux2_1
     diffcoef = 1.25180928
-    # diffcoef = 1.83477519
-    # diffcoef = 0.69922674
   [../]
   [./sigma_r1_flux21]
     type = P3SigmaR
@@ -174,24 +165,21 @@
     type = P3InScatter
     variable = flux2_1
     group_number = 1
-    val1 = 0.8
-    val2 = -0.4
+    val1 = -0.4
+    val2 = 0.8
   [../]
   [./fission_sourceB1]
     type = P3FissionEigenKernel
     variable = flux2_1
     group_number = 1
-    val1 = 0.8
-    val2 = -0.4
+    val1 = -0.4
+    val2 = 0.8
   [../]
 
   [./diff_fluxB2]
     type = P3Diffusion
     variable = flux2_2
     diffcoef = 0.75030232
-    # diffcoef = 1.03382895
-    # diffcoef = 1.83477519
-    # diffcoef = 0.69922674
   [../]
   [./sigma_r1_flux22]
     type = P3SigmaR
@@ -208,23 +196,21 @@
     type = P3InScatter
     variable = flux2_2
     group_number = 2
-    val1 = 0.8
-    val2 = -0.4
+    val1 = -0.4
+    val2 = 0.8
   [../]
   [./fission_sourceB2]
     type = P3FissionEigenKernel
     variable = flux2_2
     group_number = 2
-    val1 = 0.8
-    val2 = -0.4
+    val1 = -0.4
+    val2 = 0.8
   [../]
 
   [./diff_fluxB3]
     type = P3Diffusion
     variable = flux2_3
     diffcoef = 0.69922674
-    # diffcoef = 0.94602475
-    # diffcoef = 1.83477519
   [../]
   [./sigma_r1_flux23]
     type = P3SigmaR
@@ -241,15 +227,15 @@
     type = P3InScatter
     variable = flux2_3
     group_number = 3
-    val1 = 0.8
-    val2 = -0.4
+    val1 = -0.4
+    val2 = 0.8
   [../]
   [./fission_sourceB3]
     type = P3FissionEigenKernel
     variable = flux2_3
     group_number = 3
-    val1 = 0.8
-    val2 = -0.4
+    val1 = -0.4
+    val2 = 0.8
   [../]
 []
 
@@ -336,8 +322,8 @@
   # solve_type = 'NEWTON' # needs the Jacobians
   # solve_type = 'JFNK' # doesn't need the Jacobians
   solve_type = 'PJFNK' # doesn't need the Jacobians
-  petsc_options = '-snes_converged_reason -ksp_converged_reason -snes_linesearch_monitor'
 
+  petsc_options = '-snes_converged_reason -ksp_converged_reason -snes_linesearch_monitor'
   petsc_options_iname = '-pc_type -sub_pc_type'
   petsc_options_value = 'asm lu'
 
@@ -376,7 +362,7 @@
     type = LineValueSampler
     variable = 'flux0_1 flux0_2 flux0_3 flux2_1 flux2_2 flux2_3'
     start_point = '0 0 0'
-    end_point = '250 0 0'
+    end_point = '300 0 0'
     sort_by = x
     num_points = 100
     execute_on = timestep_end

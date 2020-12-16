@@ -58,8 +58,8 @@ P3InScatter::computeQpResidual()
   }
   else
   {
-    _val1 = 0.8;
-    _val2 = -0.4;
+    _val1 = -0.4;
+    _val2 = 0.8;
   }
 
   for (unsigned int i = 0; i < _num_groups; ++i)
