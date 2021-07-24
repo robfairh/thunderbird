@@ -36,4 +36,7 @@
 
 # input07.i
 
-* 
+* Vertical 2D fuel element, divided into 4 heat generation zones
+* heating values come from csv
+* Natural convection
+* geom06
