@@ -3,21 +3,7 @@
 []
 
 [Mesh]
-  [./generate]
-    type = GeneratedMeshGenerator
-    dim = 2
-    xmax = 1.0
-    ymax = 1.0
-    nx = 20
-    ny = 20
-    elem_type = QUAD9
-  []
-  [./bottom_left]
-    type = ExtraNodesetGenerator
-    input = generate
-    new_boundary = corner
-    coord = '0 0'
-  [../]
+  file = geom04.msh
 []
 
 [Variables]
@@ -118,13 +104,13 @@
   [./x_no_slip]
     type = DirichletBC
     variable = vel_x
-    boundary = 'top bottom left right'
+    boundary = 'top bottom left right source_wall'
     value = 0.0
   [../]
   [./y_no_slip]
     type = DirichletBC
     variable = vel_y
-    boundary = 'top bottom left right'
+    boundary = 'top bottom left right source_wall'
     value = 0.0
   [../]
   
@@ -138,21 +124,21 @@
   [./tempbc1]
     type = DirichletBC
     variable = temp
-    boundary = 'left'
-    value = 1
+    boundary = 'top bottom left right'
+    value = 0.0
   [../]
   [./tempbc2]
     type = DirichletBC
     variable = temp
-    boundary = 'right'
-    value = 0
+    boundary = 'source_wall'
+    value = 1.0
   [../]
 []
 
 [Materials]
   [./const]
     type = GenericConstantMaterial
-    block = 0
+    # block = 0
     prop_names = 'rho mu    k     cp  alpha'
     prop_values = '1  1e-1  1e-3  1   1e-2'
   [../]
@@ -193,5 +179,6 @@
 
 [Outputs]
   #execute_on = 'timestep_end'
+  file_base = 'input04'
   exodus = true
 []

@@ -3,20 +3,18 @@
 []
 
 [Mesh]
-  type = GeneratedMesh
-  dim = 2
-  xmin = 0
-  xmax = 1.0
-  ymin = 0
-  ymax = 1.0
-  nx = 20
-  ny = 20
-  elem_type = QUAD9
-[]
-
-[MeshModifiers]
+  [./generate]
+    type = GeneratedMeshGenerator
+    dim = 2
+    xmax = 1.0
+    ymax = 1.0
+    nx = 20
+    ny = 20
+    elem_type = QUAD9
+  []
   [./bottom_left]
-    type = AddExtraNodeset
+    type = ExtraNodesetGenerator
+    input = generate
     new_boundary = corner
     coord = '0 0'
   [../]

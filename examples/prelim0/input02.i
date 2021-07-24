@@ -193,5 +193,6 @@
 
 [Outputs]
   #execute_on = 'timestep_end'
+  file_base = 'input02'
   exodus = true
 []
