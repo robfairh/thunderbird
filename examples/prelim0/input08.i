@@ -3,7 +3,7 @@
 []
 
 [Mesh]
-  file = geom06.msh
+  file = geom07.msh
 []
 
 [Variables]
@@ -25,6 +25,7 @@
   [./temp]
     order = SECOND
     family = LAGRANGE
+    intial_condition = 0
   [../]
 []
 
@@ -110,55 +111,27 @@
   [./temp_source_1]
     type = BodyForce
     variable = temp
-    function = 'heat_source_1'
+    function = 'heat_source_0'
     block = 'source_1'
   [../]
   [./temp_source_2]
     type = BodyForce
     variable = temp
-    function = 'heat_source_2'
+    function = 'heat_source_0'
     block = 'source_2'
   [../]
   [./temp_source_3]
     type = BodyForce
     variable = temp
-    function = 'heat_source_3'
+    function = 'heat_source_0'
     block = 'source_3'
   [../]
 []
 
 [Functions]
   [./heat_source_0]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 1
-  [../]
-  [./heat_source_1]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 2
-  [../]
-  [./heat_source_2]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 3
-  [../]
-  [./heat_source_3]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 4
+    type = ParsedFunction
+    value = 2.
   [../]
 []
 
@@ -184,19 +157,32 @@
   [../]
 
   [./tempbc1]
-    type = DirichletBC
+    type = NeumannBC
     variable = temp
-    boundary = 'top floor left right'
+    boundary = 'top left right floor'
     value = 0.0
   [../]
+  [./tempbc2]
+    type = DirichletBC
+    variable = temp
+    boundary = 'source_floor'
+    value = 0
+  [../]
+
 []
 
 [Materials]
-  [./const]
+  [./const_room]
     type = GenericConstantMaterial
-    # block = 0
-    prop_names = 'rho mu    k     cp  alpha'
-    prop_values = '1  1e-1  1e-3  1   1e-2'
+    block = 'room'
+    prop_names = 'rho mu        k     cp  alpha'
+    prop_values = '1  1.e-01  1e-3   1    1e-2'
+  [../]
+  [./const_source]
+    type = GenericConstantMaterial
+    block = 'source_0 source_1 source_2 source_3'
+    prop_names = 'rho     k      cp'
+    prop_values = '1    1   1'
   [../]
 []
 
@@ -209,7 +195,7 @@
 
 [Executioner]
   type = Transient
-  end_time = 50
+  end_time = 2
 
   nl_rel_tol = 1e-6
   nl_abs_tol = 1e-6
@@ -236,6 +222,6 @@
 
 [Outputs]
   # execute_on = 'timestep_end'
-  file_base = 'input07'
+  file_base = 'input08'
   exodus = true
 []

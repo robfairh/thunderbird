@@ -40,3 +40,10 @@
 * heating values come from csv
 * Natural convection
 * geom06
+
+# input08.i
+
+* Vertical 2D fuel element, 1 generation zone
+* constant heat source
+* Natural convection
+* geom06

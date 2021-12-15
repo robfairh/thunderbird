@@ -3,7 +3,7 @@
 []
 
 [Mesh]
-  file = geom06.msh
+  file = geom08.msh
 []
 
 [Variables]
@@ -25,6 +25,10 @@
   [./temp]
     order = SECOND
     family = LAGRANGE
+    [./InitialCondition]
+      type = ConstantIC
+      value = 25
+    [../]
   [../]
 []
 
@@ -73,7 +77,7 @@
     variable = vel_x
     component = 0
     temperature = temp
-    constant = 0
+    constant = 25
     block = 'room'
   [../]
   [./buoyancy_y]
@@ -81,7 +85,7 @@
     variable = vel_y
     component = 1
     temperature = temp
-    constant = 0
+    constant = 25
     block = 'room'
   [../]
 
@@ -97,8 +101,9 @@
     block = 'room'
   [../]
   [./source_diff]
-    type = Diffusion
+    type = MatDiffusion
     variable = temp
+    diffusivity = k_sol
     block = 'source_0 source_1 source_2 source_3'
   [../]
   [./temp_source_0]
@@ -110,55 +115,29 @@
   [./temp_source_1]
     type = BodyForce
     variable = temp
-    function = 'heat_source_1'
+    function = 'heat_source_0'
     block = 'source_1'
   [../]
   [./temp_source_2]
     type = BodyForce
     variable = temp
-    function = 'heat_source_2'
+    function = 'heat_source_0'
     block = 'source_2'
   [../]
   [./temp_source_3]
     type = BodyForce
     variable = temp
-    function = 'heat_source_3'
+    function = 'heat_source_0'
     block = 'source_3'
   [../]
 []
 
 [Functions]
   [./heat_source_0]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 1
-  [../]
-  [./heat_source_1]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 2
-  [../]
-  [./heat_source_2]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 3
-  [../]
-  [./heat_source_3]
-    type = PiecewiseLinear
-    data_file = 'heat_source_2.csv'
-    format = columns
-    xy_in_file_only = false
-    x_index_in_file = 0
-    y_index_in_file = 4
+    type = ParsedFunction
+    # value = 6.25e6  # W/m3
+    # value = 2.5e4   # W/??
+    value = 1.25e4  # W/m2
   [../]
 []
 
@@ -184,19 +163,31 @@
   [../]
 
   [./tempbc1]
+    type = NeumannBC
+    variable = temp
+    boundary = 'top left right floor'
+    value = 0.0
+  [../]
+  [./tempbc2]
     type = DirichletBC
     variable = temp
-    boundary = 'top floor left right'
-    value = 0.0
+    boundary = 'source_floor'
+    value = 50
   [../]
 []
 
 [Materials]
-  [./const]
+  [./const_room]
     type = GenericConstantMaterial
-    # block = 0
-    prop_names = 'rho mu    k     cp  alpha'
-    prop_values = '1  1e-1  1e-3  1   1e-2'
+    block = 'room'
+    prop_names = 'rho        mu      k      cp     alpha'
+    prop_values = '1.2   1.8e-05  2.6e-2    1e3    3.356e-3'
+  [../]
+  [./const_source]
+    type = GenericConstantMaterial
+    block = 'source_0 source_1 source_2 source_3'
+    prop_names = 'rho     k_sol    cp'
+    prop_values = '8e3    80       450'
   [../]
 []
 
@@ -209,7 +200,7 @@
 
 [Executioner]
   type = Transient
-  end_time = 50
+  end_time = 10
 
   nl_rel_tol = 1e-6
   nl_abs_tol = 1e-6
@@ -236,6 +227,6 @@
 
 [Outputs]
   # execute_on = 'timestep_end'
-  file_base = 'input07'
+  file_base = 'input08b'
   exodus = true
 []
